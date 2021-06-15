@@ -1,0 +1,506 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6656245C2679271400777E17 /* EASlider.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6656245B2679271400777E17 /* EASlider.xib */; };
+		666445FD267670E5008A9545 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FC267670E5008A9545 /* AppDelegate.swift */; };
+		666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FE267670E5008A9545 /* SceneDelegate.swift */; };
+		66644601267670E5008A9545 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66644600267670E5008A9545 /* MainViewController.swift */; };
+		66644606267670E8008A9545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66644605267670E8008A9545 /* Assets.xcassets */; };
+		66644609267670E8008A9545 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66644607267670E8008A9545 /* LaunchScreen.storyboard */; };
+		66644611267672A2008A9545 /* UIView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66644610267672A2008A9545 /* UIView + Extensions.swift */; };
+		666DC775267693180074C6CB /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC774267693180074C6CB /* Container.swift */; };
+		666DC7792676A1B60074C6CB /* Neucha-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 666DC7782676A1B60074C6CB /* Neucha-Regular.ttf */; };
+		666DC77D2676A89B0074C6CB /* FontTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC77C2676A89B0074C6CB /* FontTypes.swift */; };
+		666DC77F26773A0A0074C6CB /* Ubuntu-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 666DC77E26773A0A0074C6CB /* Ubuntu-Regular.ttf */; };
+		666DC78126773E7D0074C6CB /* SOSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC78026773E7D0074C6CB /* SOSButton.swift */; };
+		666DC78426774E780074C6CB /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC78326774E780074C6CB /* K.swift */; };
+		666DC78626775F200074C6CB /* PracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC78526775F200074C6CB /* PracticeViewController.swift */; };
+		666DC78826775FF40074C6CB /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC78726775FF40074C6CB /* NavigationController.swift */; };
+		666DC78B2677C0320074C6CB /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC78A2677C0320074C6CB /* Exercise.swift */; };
+		666DC78E2677C1F10074C6CB /* EASlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC78D2677C1F10074C6CB /* EASlider.swift */; };
+		666DC7902677C6750074C6CB /* ExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC78F2677C6750074C6CB /* ExerciseView.swift */; };
+		B8DCC5B228FAC621B37BB781 /* Pods_Emotional_Aid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		27BE5C501EC86A6C65644885 /* Pods-Emotional Aid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emotional Aid.debug.xcconfig"; path = "Target Support Files/Pods-Emotional Aid/Pods-Emotional Aid.debug.xcconfig"; sourceTree = "<group>"; };
+		5483F5A5744E6155215ECB35 /* Pods-Emotional Aid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emotional Aid.release.xcconfig"; path = "Target Support Files/Pods-Emotional Aid/Pods-Emotional Aid.release.xcconfig"; sourceTree = "<group>"; };
+		6656245B2679271400777E17 /* EASlider.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EASlider.xib; sourceTree = "<group>"; };
+		666445F9267670E5008A9545 /* Emotional Aid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Emotional Aid.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		666445FC267670E5008A9545 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		666445FE267670E5008A9545 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		66644600267670E5008A9545 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		66644605267670E8008A9545 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		66644608267670E8008A9545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6664460A267670E8008A9545 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		66644610267672A2008A9545 /* UIView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Extensions.swift"; sourceTree = "<group>"; };
+		666DC774267693180074C6CB /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
+		666DC7782676A1B60074C6CB /* Neucha-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Neucha-Regular.ttf"; sourceTree = "<group>"; };
+		666DC77C2676A89B0074C6CB /* FontTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontTypes.swift; sourceTree = "<group>"; };
+		666DC77E26773A0A0074C6CB /* Ubuntu-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Regular.ttf"; sourceTree = "<group>"; };
+		666DC78026773E7D0074C6CB /* SOSButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOSButton.swift; sourceTree = "<group>"; };
+		666DC78326774E780074C6CB /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
+		666DC78526775F200074C6CB /* PracticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeViewController.swift; sourceTree = "<group>"; };
+		666DC78726775FF40074C6CB /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		666DC78A2677C0320074C6CB /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
+		666DC78D2677C1F10074C6CB /* EASlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EASlider.swift; sourceTree = "<group>"; };
+		666DC78F2677C6750074C6CB /* ExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseView.swift; sourceTree = "<group>"; };
+		E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emotional_Aid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		666445F6267670E5008A9545 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8DCC5B228FAC621B37BB781 /* Pods_Emotional_Aid.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1ABE0B5777869CB9879191A5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		666445F0267670E5008A9545 = {
+			isa = PBXGroup;
+			children = (
+				666445FB267670E5008A9545 /* Emotional Aid */,
+				666445FA267670E5008A9545 /* Products */,
+				990F7215D74728F2B1484B48 /* Pods */,
+				1ABE0B5777869CB9879191A5 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		666445FA267670E5008A9545 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				666445F9267670E5008A9545 /* Emotional Aid.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		666445FB267670E5008A9545 /* Emotional Aid */ = {
+			isa = PBXGroup;
+			children = (
+				666445FC267670E5008A9545 /* AppDelegate.swift */,
+				666445FE267670E5008A9545 /* SceneDelegate.swift */,
+				666DC78C2677C1A00074C6CB /* Model */,
+				666DC78226773F4C0074C6CB /* View */,
+				6664461326767420008A9545 /* Controller */,
+				6664461226767418008A9545 /* Utilities */,
+				66644605267670E8008A9545 /* Assets.xcassets */,
+				66644607267670E8008A9545 /* LaunchScreen.storyboard */,
+				6664460A267670E8008A9545 /* Info.plist */,
+			);
+			path = "Emotional Aid";
+			sourceTree = "<group>";
+		};
+		6664461226767418008A9545 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				66644610267672A2008A9545 /* UIView + Extensions.swift */,
+				666DC774267693180074C6CB /* Container.swift */,
+				666DC77B2676A1C50074C6CB /* Fonts */,
+				666DC77C2676A89B0074C6CB /* FontTypes.swift */,
+				666DC78326774E780074C6CB /* K.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		6664461326767420008A9545 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				666DC78926775FFC0074C6CB /* Navigation */,
+				66644600267670E5008A9545 /* MainViewController.swift */,
+				666DC78526775F200074C6CB /* PracticeViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		666DC77B2676A1C50074C6CB /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				666DC77E26773A0A0074C6CB /* Ubuntu-Regular.ttf */,
+				666DC7782676A1B60074C6CB /* Neucha-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		666DC78226773F4C0074C6CB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				666DC78026773E7D0074C6CB /* SOSButton.swift */,
+				666DC78D2677C1F10074C6CB /* EASlider.swift */,
+				666DC78F2677C6750074C6CB /* ExerciseView.swift */,
+				6656245B2679271400777E17 /* EASlider.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		666DC78926775FFC0074C6CB /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				666DC78726775FF40074C6CB /* NavigationController.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		666DC78C2677C1A00074C6CB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				666DC78A2677C0320074C6CB /* Exercise.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		990F7215D74728F2B1484B48 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				27BE5C501EC86A6C65644885 /* Pods-Emotional Aid.debug.xcconfig */,
+				5483F5A5744E6155215ECB35 /* Pods-Emotional Aid.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		666445F8267670E5008A9545 /* Emotional Aid */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6664460D267670E8008A9545 /* Build configuration list for PBXNativeTarget "Emotional Aid" */;
+			buildPhases = (
+				840CDD48F949EF4C845C4E21 /* [CP] Check Pods Manifest.lock */,
+				666445F5267670E5008A9545 /* Sources */,
+				666445F6267670E5008A9545 /* Frameworks */,
+				666445F7267670E5008A9545 /* Resources */,
+				73A3AD18D443AB8ACB1F4892 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Emotional Aid";
+			productName = "Emotional Aid";
+			productReference = 666445F9267670E5008A9545 /* Emotional Aid.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		666445F1267670E5008A9545 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1250;
+				TargetAttributes = {
+					666445F8267670E5008A9545 = {
+						CreatedOnToolsVersion = 12.5;
+					};
+				};
+			};
+			buildConfigurationList = 666445F4267670E5008A9545 /* Build configuration list for PBXProject "Emotional Aid" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 666445F0267670E5008A9545;
+			productRefGroup = 666445FA267670E5008A9545 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				666445F8267670E5008A9545 /* Emotional Aid */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		666445F7267670E5008A9545 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6656245C2679271400777E17 /* EASlider.xib in Resources */,
+				666DC77F26773A0A0074C6CB /* Ubuntu-Regular.ttf in Resources */,
+				666DC7792676A1B60074C6CB /* Neucha-Regular.ttf in Resources */,
+				66644609267670E8008A9545 /* LaunchScreen.storyboard in Resources */,
+				66644606267670E8008A9545 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		73A3AD18D443AB8ACB1F4892 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Emotional Aid/Pods-Emotional Aid-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Emotional Aid/Pods-Emotional Aid-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Emotional Aid/Pods-Emotional Aid-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		840CDD48F949EF4C845C4E21 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Emotional Aid-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		666445F5267670E5008A9545 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				666DC77D2676A89B0074C6CB /* FontTypes.swift in Sources */,
+				66644611267672A2008A9545 /* UIView + Extensions.swift in Sources */,
+				66644601267670E5008A9545 /* MainViewController.swift in Sources */,
+				666DC78626775F200074C6CB /* PracticeViewController.swift in Sources */,
+				666DC78126773E7D0074C6CB /* SOSButton.swift in Sources */,
+				666DC775267693180074C6CB /* Container.swift in Sources */,
+				666DC78B2677C0320074C6CB /* Exercise.swift in Sources */,
+				666DC78426774E780074C6CB /* K.swift in Sources */,
+				666DC78826775FF40074C6CB /* NavigationController.swift in Sources */,
+				666445FD267670E5008A9545 /* AppDelegate.swift in Sources */,
+				666DC78E2677C1F10074C6CB /* EASlider.swift in Sources */,
+				666DC7902677C6750074C6CB /* ExerciseView.swift in Sources */,
+				666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		66644607267670E8008A9545 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				66644608267670E8008A9545 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6664460B267670E8008A9545 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6664460C267670E8008A9545 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6664460E267670E8008A9545 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27BE5C501EC86A6C65644885 /* Pods-Emotional Aid.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DMNW5WHDHR;
+				INFOPLIST_FILE = "Emotional Aid/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gervash.Emotional-Aid";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		6664460F267670E8008A9545 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5483F5A5744E6155215ECB35 /* Pods-Emotional Aid.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DMNW5WHDHR;
+				INFOPLIST_FILE = "Emotional Aid/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gervash.Emotional-Aid";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		666445F4267670E5008A9545 /* Build configuration list for PBXProject "Emotional Aid" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6664460B267670E8008A9545 /* Debug */,
+				6664460C267670E8008A9545 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6664460D267670E8008A9545 /* Build configuration list for PBXNativeTarget "Emotional Aid" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6664460E267670E8008A9545 /* Debug */,
+				6664460F267670E8008A9545 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 666445F1267670E5008A9545 /* Project object */;
+}
