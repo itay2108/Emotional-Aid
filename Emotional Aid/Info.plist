@@ -43,6 +43,7 @@
 	<string>LaunchScreen</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Ubuntu-Light.ttf</string>
 		<string>Ubuntu-Regular.ttf</string>
 		<string>Neucha-Regular.ttf</string>
 	</array>

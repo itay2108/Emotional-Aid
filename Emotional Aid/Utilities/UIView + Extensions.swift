@@ -10,6 +10,18 @@ import SnapKit
 
 public extension UIView {
     
+    var frameHeight: CGFloat {
+        get {
+            return self.frame.size.height
+        }
+    }
+    
+    var frameWidth: CGFloat {
+        get {
+            return self.frame.size.width
+        }
+    }
+    
     var widthModifier: CGFloat {
         get {
             return UIScreen.main.bounds.size.height / 812
@@ -34,7 +46,7 @@ public extension UIView {
         
     }
     
-    func shadow(color: UIColor, radius: CGFloat, opacity: CGFloat, xOffset: CGFloat, yOffset: CGFloat) {
+    func shadow(color: UIColor, radius: CGFloat, opacity: CGFloat = 0.5, xOffset: CGFloat = 0, yOffset: CGFloat = 0) {
         self.layer.shadowColor = color.cgColor
         self.layer.shadowRadius = radius
         self.layer.shadowOpacity = Float(opacity)
@@ -42,6 +54,7 @@ public extension UIView {
     }
     
     func roundCorners(_ corners: CACornerMask, radius: CGFloat) {
+        self.layer.masksToBounds = true
         self.layer.cornerRadius = radius
         self.layer.maskedCorners = corners
      }
@@ -94,9 +107,27 @@ extension UIViewController {
             return self.view.frame.height / 812
         }
     }
+    
+    var screenWidth: CGFloat {
+        get {
+            return self.view.frame.width
+        }
+    }
+    
+    var screenHeight: CGFloat {
+        get {
+            return self.view.frame.height
+        }
+    }
+    
+    func safeAreaSize(from direction: direction) -> CGFloat {
+        let insets = UIApplication.shared.windows[0].safeAreaInsets
+        let sizeArray = [insets.top, insets.right, insets.bottom, insets.left]
+        return sizeArray[direction.rawValue]
+    }
 }
 
-extension UIButton{
+extension UIButton {
 
     func addTextSpacing(_ letterSpacing: CGFloat){
         if self.titleLabel?.text?.count == nil { self.setTitle("Title", for: .normal)}
@@ -106,6 +137,23 @@ extension UIButton{
         self.setAttributedTitle(attributedString, for: .normal)
     }
 
+}
+
+extension UILabel {
+    
+    func textSpacing(of spacing: CGFloat) {
+        guard self.text != nil else { return }
+        let attributedString = NSMutableAttributedString(string: self.text!)
+        attributedString.addAttribute(NSAttributedString.Key.kern, value: spacing, range: NSMakeRange(0, self.text!.count))
+        self.attributedText = attributedString
+    }
+    
+}
+
+extension CGFloat {
+    func percentage(_ percent: Int) -> CGFloat {
+        return self / 100 * CGFloat(percent)
+    }
 }
 
 public enum direction: Int {

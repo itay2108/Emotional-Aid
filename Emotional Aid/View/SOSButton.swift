@@ -19,7 +19,7 @@ class SOSButton: UIButton {
         self.layer.masksToBounds = false
         
         self.setBackgroundImage(UIImage(named: "sos_button"), for: .normal)
-        self.titleLabel?.font = fontTypes.xl
+        self.titleLabel?.font = fontTypes.xl.withSize(64)
         self.setTitleColor(.white, for: .normal)
         self.contentEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
     }

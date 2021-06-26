@@ -17,7 +17,7 @@ class NavigationController: UINavigationController {
         self.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationBar.shadowImage = UIImage()
         self.navigationBar.isTranslucent = true
-        self.view.backgroundColor = .clear
+        self.view.backgroundColor = .white
         self.modalPresentationStyle = .fullScreen
         self.navigationItem.leftBarButtonItems = []
         self.navigationItem.hidesBackButton = true
