@@ -121,7 +121,7 @@ class MainViewController: UIViewController {
         }
         
         profileButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-30 * widthModifier)
+            make.right.equalToSuperview().offset(-24 * widthModifier)
             make.centerY.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.65)
             make.width.equalTo(navContainer.snp.height).multipliedBy(0.65)
@@ -131,7 +131,7 @@ class MainViewController: UIViewController {
             make.left.equalToSuperview().offset(30 * widthModifier)
             make.centerY.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.55)
-            make.right.equalTo(profileButton.snp.left).offset(-28 * widthModifier)
+            make.right.equalTo(profileButton.snp.left).offset(-20 * widthModifier)
         }
         
         logoContainer.snp.makeConstraints { make in
@@ -158,7 +158,7 @@ class MainViewController: UIViewController {
         ctaContainer.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-safeAreaSize(from: .bottom)).offset(-(tabBarController?.tabBar.frameHeight ?? 0))
             make.height.equalToSuperview().multipliedBy(0.33)
         }
         
@@ -182,6 +182,7 @@ class MainViewController: UIViewController {
     
     @objc func sosButtonPressed() {
         let destination = PracticeViewController()
+        destination.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(destination, animated: true)
     }
 

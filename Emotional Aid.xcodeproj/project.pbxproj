@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		660AC5402687B1B5003865D2 /* TheoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660AC53F2687B1B5003865D2 /* TheoryTableViewCell.swift */; };
+		660AC5422687BBD5003865D2 /* VideoCellIndexBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660AC5412687BBD5003865D2 /* VideoCellIndexBadge.swift */; };
+		660AC54426886AD1003865D2 /* TheoryVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660AC54326886AD1003865D2 /* TheoryVideo.swift */; };
+		660AC5462688B61F003865D2 /* TheoryVideoDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660AC5452688B61F003865D2 /* TheoryVideoDB.swift */; };
 		666445FD267670E5008A9545 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FC267670E5008A9545 /* AppDelegate.swift */; };
 		666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FE267670E5008A9545 /* SceneDelegate.swift */; };
 		66644601267670E5008A9545 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66644600267670E5008A9545 /* MainViewController.swift */; };
@@ -33,6 +37,10 @@
 /* Begin PBXFileReference section */
 		27BE5C501EC86A6C65644885 /* Pods-Emotional Aid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emotional Aid.debug.xcconfig"; path = "Target Support Files/Pods-Emotional Aid/Pods-Emotional Aid.debug.xcconfig"; sourceTree = "<group>"; };
 		5483F5A5744E6155215ECB35 /* Pods-Emotional Aid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emotional Aid.release.xcconfig"; path = "Target Support Files/Pods-Emotional Aid/Pods-Emotional Aid.release.xcconfig"; sourceTree = "<group>"; };
+		660AC53F2687B1B5003865D2 /* TheoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoryTableViewCell.swift; sourceTree = "<group>"; };
+		660AC5412687BBD5003865D2 /* VideoCellIndexBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCellIndexBadge.swift; sourceTree = "<group>"; };
+		660AC54326886AD1003865D2 /* TheoryVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoryVideo.swift; sourceTree = "<group>"; };
+		660AC5452688B61F003865D2 /* TheoryVideoDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoryVideoDB.swift; sourceTree = "<group>"; };
 		666445F9267670E5008A9545 /* Emotional Aid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Emotional Aid.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		666445FC267670E5008A9545 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		666445FE267670E5008A9545 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,9 +136,9 @@
 			isa = PBXGroup;
 			children = (
 				666DC78926775FFC0074C6CB /* Navigation */,
+				669ADB9F26863C8900070CEE /* TheoryViewController.swift */,
 				66644600267670E5008A9545 /* MainViewController.swift */,
 				666DC78526775F200074C6CB /* PracticeViewController.swift */,
-				669ADB9F26863C8900070CEE /* TheoryViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -151,6 +159,8 @@
 				666DC78026773E7D0074C6CB /* SOSButton.swift */,
 				666DC78D2677C1F10074C6CB /* EASlider.swift */,
 				666DC78F2677C6750074C6CB /* ExerciseView.swift */,
+				660AC53F2687B1B5003865D2 /* TheoryTableViewCell.swift */,
+				660AC5412687BBD5003865D2 /* VideoCellIndexBadge.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -168,6 +178,8 @@
 			isa = PBXGroup;
 			children = (
 				666DC78A2677C0320074C6CB /* Exercise.swift */,
+				660AC54326886AD1003865D2 /* TheoryVideo.swift */,
+				660AC5452688B61F003865D2 /* TheoryVideoDB.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -299,9 +311,13 @@
 			files = (
 				666DC77D2676A89B0074C6CB /* FontTypes.swift in Sources */,
 				66644611267672A2008A9545 /* UIView + Extensions.swift in Sources */,
+				660AC5422687BBD5003865D2 /* VideoCellIndexBadge.swift in Sources */,
+				660AC5402687B1B5003865D2 /* TheoryTableViewCell.swift in Sources */,
 				669ADBA026863C8900070CEE /* TheoryViewController.swift in Sources */,
 				66644601267670E5008A9545 /* MainViewController.swift in Sources */,
+				660AC54426886AD1003865D2 /* TheoryVideo.swift in Sources */,
 				666DC78626775F200074C6CB /* PracticeViewController.swift in Sources */,
+				660AC5462688B61F003865D2 /* TheoryVideoDB.swift in Sources */,
 				666DC78126773E7D0074C6CB /* SOSButton.swift in Sources */,
 				666DC775267693180074C6CB /* Container.swift in Sources */,
 				666DC78B2677C0320074C6CB /* Exercise.swift in Sources */,

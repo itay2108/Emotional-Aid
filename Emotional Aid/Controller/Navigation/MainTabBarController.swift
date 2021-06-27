@@ -39,46 +39,37 @@ class MainTabBarController: UITabBarController {
     func setTabBarPreferences() {
         
         //set tab bar position and size
-        setTabBarHeight(to: 64)
+        increaseTabBarHeight(by: 24)
         self.tabBar.itemPositioning = .centered
         self.tabBar.itemWidth = screenWidth / 2.75
         
         //set tab bar corners
-        self.tabBar.roundCorners([.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: self.tabBar.frameHeight.percentage(10))
-        self.tabBar.layer.shouldRasterize = true
-        tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        self.tabBar.roundCorners([.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: self.tabBar.frameHeight.percentage(22))
         
         //set tab bar design and properties
-        self.tabBar.isTranslucent = false
         self.tabBar.tintColor = K.colors.appRed
-        self.tabBar.clipsToBounds = true
-        self.tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
         //padding corrections for tab bar items
         for item in tabBar.items ?? [] {
             item.setTitleTextAttributes([NSAttributedString.Key.font : FontTypes.shared.ubuntu.withSize(13)], for: .normal)
-            item.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -5 * heightModifier)
+            item.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -16 * heightModifier)
+            item.imageInsets = UIEdgeInsets(top: -6 * heightModifier, left: 0, bottom: 6 * heightModifier, right: 0)
             
             // visual correction for practice image
             if item.tag == 0 { item.imageInsets.left = 4 * widthModifier}
         }
         
-        
-        
-        //add tab bar shadow layer
-        self.view.layer.addSublayer(generateShadowLayerFor(self.tabBar, shadowColor: .black, shadowRadius: tabBar.frameHeight.percentage(7)))
-        
-        self.selectedIndex = 1
-        
-        
     }
     
-    func setTabBarHeight(to height: Int) {
-        var tabFrame = self.tabBar.frame
-        tabFrame.size.height = CGFloat(height) * heightModifier + self.safeAreaSize(from: .bottom)
-        print(safeAreaSize(from: .bottom))
-        tabFrame.origin.y = self.view.frame.size.height - CGFloat(height) - self.safeAreaSize(from: .bottom)
-        self.tabBar.frame = tabFrame
+    func increaseTabBarHeight(by height: Int) {
+        
+        let newTabBarHeight = tabBar.frame.size.height + CGFloat(height)
+        
+        var newFrame = tabBar.frame
+        newFrame.size.height = newTabBarHeight
+        newFrame.origin.y = view.frame.size.height - newTabBarHeight
+
+        tabBar.frame = newFrame
     }
     
     func generateShadowLayerFor(_ parentView: UIView, shadowColor color: UIColor, shadowRadius radius: CGFloat) -> CALayer {

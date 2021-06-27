@@ -10,6 +10,7 @@ import SnapKit
 
 class PracticeViewController: UIViewController {
     
+    
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
     }
@@ -74,13 +75,14 @@ class PracticeViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItems = []
         self.navigationItem.hidesBackButton = true
-
+        
         setUpUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
     }
+
 
     private func setUpUI() {
         self.view.backgroundColor = .white
@@ -168,7 +170,6 @@ class PracticeViewController: UIViewController {
     }
     
     @objc func backButtonPressed() {
-        print("papa")
         self.navigationController?.popViewController(animated: true)
     }
     

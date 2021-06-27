@@ -148,11 +148,36 @@ extension UILabel {
         self.attributedText = attributedString
     }
     
+    func setLineHeight(lineHeight: CGFloat) {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 1.0
+            paragraphStyle.lineHeightMultiple = lineHeight
+            paragraphStyle.alignment = self.textAlignment
+
+            let attrString = NSMutableAttributedString()
+            if (self.attributedText != nil) {
+                attrString.append( self.attributedText!)
+            } else {
+                attrString.append( NSMutableAttributedString(string: self.text!))
+                attrString.addAttribute(NSAttributedString.Key.font, value: self.font ?? FontTypes.shared.p, range: NSMakeRange(0, attrString.length))
+            }
+            attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+            self.attributedText = attrString
+        }
+    
 }
 
 extension CGFloat {
     func percentage(_ percent: Int) -> CGFloat {
         return self / 100 * CGFloat(percent)
+    }
+}
+
+extension CACornerMask {
+    static var allCorners: CACornerMask {
+        get {
+            return [CACornerMask.layerMaxXMaxYCorner, CACornerMask.layerMinXMinYCorner, CACornerMask.layerMinXMaxYCorner, CACornerMask.layerMaxXMinYCorner]
+        }
     }
 }
 

@@ -36,12 +36,28 @@ class ExerciseView: UIView {
        return label
     }()
     
-    lazy var accessoryContainer: UIView = {
-       let view = UIView()
+    lazy var accessoryContainer: UIStackView = {
+       let view = UIStackView()
+        view.distribution = .equalSpacing
+        view.axis = .vertical
         view.backgroundColor = .lightGray
         return view
     }()
-
+    
+    lazy var accessoryAnimation: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage()
+        return view
+    }()
+    
+    lazy var accessorySlider: UISlider = {
+       let slider = UISlider()
+        slider.maximumValue = 10
+        slider.minimumValue = -10
+        slider.value = 0
+       return slider
+    }()
+    
     lazy var descriptionLabel: UILabel = {
        let label = UILabel()
         label.text = exercise.description
@@ -73,6 +89,10 @@ class ExerciseView: UIView {
         
         scrollView.addSubview(contentView)
         contentView.addSubview(accessoryContainer)
+        
+        accessoryContainer.addSubview(accessoryAnimation)
+        accessoryContainer.addSubview(accessorySlider)
+        
         contentView.addSubview(descriptionLabel)
     }
     
@@ -102,7 +122,12 @@ class ExerciseView: UIView {
             make.top.equalToSuperview().offset(16 * heightModifier)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(384 * heightModifier)
+        }
+        
+        accessoryAnimation.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(84 * heightModifier)
+            make.top.equalToSuperview().offset(16 * heightModifier)
         }
         
         descriptionLabel.snp.makeConstraints { make in
