@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+  platform :ios, '14.0'
 
 target 'Emotional Aid' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -7,8 +7,8 @@ target 'Emotional Aid' do
 
   # Pods for Emotional Aid
 
-	pod 'RealmSwift'
   pod 'SnapKit'
  	pod 'SwiftFontName'
-
+  pod 'Gifu'
+  
 end

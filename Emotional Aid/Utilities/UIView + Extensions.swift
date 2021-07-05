@@ -179,6 +179,18 @@ extension CACornerMask {
             return [CACornerMask.layerMaxXMaxYCorner, CACornerMask.layerMinXMinYCorner, CACornerMask.layerMinXMaxYCorner, CACornerMask.layerMaxXMinYCorner]
         }
     }
+    
+    static var topCorners: CACornerMask {
+        get {
+            return [CACornerMask.layerMinXMinYCorner, CACornerMask.layerMaxXMinYCorner]
+        }
+    }
+    
+    static var bottomCorners: CACornerMask {
+        get {
+            return [CACornerMask.layerMinXMaxYCorner, CACornerMask.layerMaxXMaxYCorner]
+        }
+    }
 }
 
 public enum direction: Int {

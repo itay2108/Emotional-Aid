@@ -7,15 +7,12 @@
 
 import UIKit
 import SnapKit
+import Gifu
 
 class ExerciseView: UIView {
     
-    var exercise: Exercise = Exercise() {
-        didSet {
-            print("exercise set for view")
-            refreshView()
-        }
-    }
+    var defaultAnimationHeight: CGFloat = 256
+    var defaultSliderHeight: CGFloat = 89
     
     var scrollView: UIScrollView = {
        let view = UIScrollView()
@@ -26,9 +23,8 @@ class ExerciseView: UIView {
 
     var contentView: UIView = UIView()
 
-    lazy var questionLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
        let label = UILabel()
-        label.text = "\(exercise.index). \(exercise.title)"
         label.numberOfLines = 0
         label.font = FontTypes.shared.h1
         label.textAlignment = .left
@@ -38,15 +34,16 @@ class ExerciseView: UIView {
     
     lazy var accessoryContainer: UIStackView = {
        let view = UIStackView()
-        view.distribution = .equalSpacing
+        view.distribution = .equalCentering
         view.axis = .vertical
-        view.backgroundColor = .lightGray
+        view.alignment = .center
+        view.backgroundColor = .clear
         return view
     }()
     
-    lazy var accessoryAnimation: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage()
+    lazy var accessoryAnimation: GIFImageView = {
+        let view = GIFImageView()
+        view.contentMode = .scaleAspectFit
         return view
     }()
     
@@ -60,7 +57,6 @@ class ExerciseView: UIView {
     
     lazy var descriptionLabel: UILabel = {
        let label = UILabel()
-        label.text = exercise.description
         label.numberOfLines = 0
         label.sizeToFit()
         label.font = FontTypes.shared.p
@@ -74,38 +70,30 @@ class ExerciseView: UIView {
         setConstraintsToContainers()
     }
     
-    func refreshView() {
-        print("refreshing view")
-        questionLabel.text = "\(exercise.index). \(exercise.title)"
-        descriptionLabel.text = "\(exercise.description)"
-        
-        self.layoutIfNeeded()
-    }
-    
     func layoutContainers() {
         
-        self.addSubview(questionLabel)
+        self.addSubview(titleLabel)
         self.addSubview(scrollView)
         
         scrollView.addSubview(contentView)
         contentView.addSubview(accessoryContainer)
         
-        accessoryContainer.addSubview(accessoryAnimation)
-        accessoryContainer.addSubview(accessorySlider)
+        accessoryContainer.addArrangedSubview(accessoryAnimation)
+        accessoryContainer.addArrangedSubview(accessorySlider)
         
         contentView.addSubview(descriptionLabel)
     }
     
     func setConstraintsToContainers() {
         
-        questionLabel.snp.makeConstraints { make in
+        titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16 * heightModifier)
             make.left.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.66)
+            make.right.equalToSuperview().offset(-24 * widthModifier)
         }
         
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(questionLabel.snp.bottom).offset(16 * heightModifier)
+            make.top.equalTo(titleLabel.snp.bottom).offset(16 * heightModifier)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
@@ -125,18 +113,34 @@ class ExerciseView: UIView {
         }
         
         accessoryAnimation.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalTo(84 * heightModifier)
-            make.top.equalToSuperview().offset(16 * heightModifier)
+            make.width.equalToSuperview().multipliedBy(0.9)
+            make.height.equalTo(256 * heightModifier)
+        }
+        
+        accessorySlider.snp.makeConstraints { make in
+            make.width.equalToSuperview().multipliedBy(0.9)
+            make.height.equalTo(89 * heightModifier)
         }
         
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(accessoryContainer.snp.bottom).offset(16 * heightModifier)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-64 * heightModifier)
+            make.bottom.equalToSuperview().offset(-128 * heightModifier)
         }
         
+    }
+    
+    func changeviewState(of view: UIView, to state: viewState, with height: CGFloat = 96) {
+        if state == .expanded {
+            view.snp.updateConstraints { update in
+                update.height.equalTo(height * heightModifier)
+            }
+        } else if state == .collapsed {
+            view.snp.updateConstraints { update in
+                update.height.equalTo(0)
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -151,4 +155,9 @@ class ExerciseView: UIView {
         setUpView()
     }
     
+}
+
+enum viewState {
+    case expanded
+    case collapsed
 }

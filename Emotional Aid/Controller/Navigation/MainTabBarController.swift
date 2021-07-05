@@ -14,6 +14,7 @@ class MainTabBarController: UITabBarController {
         super.viewDidLoad()
         
         self.viewControllers = tabBarVCs()
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -49,6 +50,12 @@ class MainTabBarController: UITabBarController {
         //set tab bar design and properties
         self.tabBar.tintColor = K.colors.appRed
         
+        //self.tabBar.barTintColor = .white.withAlphaComponent(0.8)
+        self.tabBar.barTintColor = K.colors.appOffWhite?.withAlphaComponent(0.1)
+        self.tabBar.backgroundColor = K.colors.appOffWhite
+        self.tabBar.isTranslucent = true
+
+        
         //padding corrections for tab bar items
         for item in tabBar.items ?? [] {
             item.setTitleTextAttributes([NSAttributedString.Key.font : FontTypes.shared.ubuntu.withSize(13)], for: .normal)
@@ -64,7 +71,6 @@ class MainTabBarController: UITabBarController {
     func increaseTabBarHeight(by height: Int) {
         
         let newTabBarHeight = tabBar.frame.size.height + CGFloat(height)
-        
         var newFrame = tabBar.frame
         newFrame.size.height = newTabBarHeight
         newFrame.origin.y = view.frame.size.height - newTabBarHeight

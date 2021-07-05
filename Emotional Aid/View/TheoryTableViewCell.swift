@@ -13,7 +13,11 @@ class TheoryTableViewCell: UITableViewCell {
     
     private lazy var indexBadge: VideoCellIndexBadge = VideoCellIndexBadge()
     
-    private lazy var mainContainer: UIView = Container()
+    private lazy var mainContainer: UIView = {
+        let view = Container()
+        view.roundCorners(.allCorners, radius: 10 * heightModifier)
+        return view
+    }()
     
     private lazy var videoThumb: UIImageView = {
        let view = UIImageView()
@@ -24,7 +28,7 @@ class TheoryTableViewCell: UITableViewCell {
     
     private lazy var thumbPlayButton: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "video-play")
+        view.image = UIImage(named: "play-fill")
         view.contentMode = .scaleAspectFit
         return view
     }()
@@ -34,6 +38,7 @@ class TheoryTableViewCell: UITableViewCell {
     private lazy var videoTitle: UILabel = {
        let label = UILabel()
         label.font = FontTypes.shared.ubuntu.withSize(16 * heightModifier)
+        label.textColor = K.colors.appText
         label.text = "Video Title"
         return label
     }()
@@ -41,11 +46,18 @@ class TheoryTableViewCell: UITableViewCell {
     private lazy var videoDescription: UILabel = {
         let label = UILabel()
         label.font = FontTypes.shared.ubuntuLight.withSize(11.6 * heightModifier)
+        label.textColor = K.colors.appText
         label.numberOfLines = 3
         label.contentMode = .topLeft
         label.sizeToFit()
         label.text = "This is a dummy/ndescription. It is/nused to test stuff."
         return label
+    }()
+    
+    private lazy var tapGR: UITapGestureRecognizer = {
+        let gr = UITapGestureRecognizer()
+        gr.addTarget(self, action: #selector(handleTaps(_:)))
+        return gr
     }()
     
     lazy var cellSeparator: UIImageView = {
@@ -56,11 +68,16 @@ class TheoryTableViewCell: UITableViewCell {
 }()
     
     func setUpUI() {
+        
+        self.backgroundColor = .white
+        self.selectionStyle = .none
+        
         addSubviews()
         addConstraintsToSubviews()
     }
     
     func addSubviews() {
+        self.addGestureRecognizer(tapGR)
         self.addSubview(header)
         header.addSubview(indexBadge)
         
@@ -139,6 +156,7 @@ class TheoryTableViewCell: UITableViewCell {
             make.width.equalTo(24 * widthModifier)
             make.height.equalTo(6 * heightModifier)
         }
+    
     }
     
     func setCell(with data: TheoryVideo, index: Int) {
@@ -148,6 +166,22 @@ class TheoryTableViewCell: UITableViewCell {
         self.indexBadge.indexLabel.text = String(index+1)
         
         setNeedsLayout()
+    }
+    
+    @objc private func handleTaps(_ gestureRecognizer: UITapGestureRecognizer) {
+        //recognize taps and tint cell accordingly
+        if gestureRecognizer.state == .recognized {
+            print("Tap began")
+            mainContainer.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
+        }
+        
+        if gestureRecognizer.state == .ended || gestureRecognizer.state == .cancelled {
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                print("Tap ended")
+                self.mainContainer.backgroundColor = .white
+            }
+        }
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

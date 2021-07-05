@@ -45,11 +45,12 @@ class TheoryViewController: UIViewController{
        let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(TheoryTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(TheoryTableViewCell.self, forCellReuseIdentifier: "theoryCell")
         tableView.rowHeight = 156 * heightModifier
         tableView.separatorStyle = .none
         tableView.separatorColor = .clear
         tableView.showsVerticalScrollIndicator = false
+        tableView.backgroundColor = .white
         return tableView
     }()
     
@@ -123,7 +124,7 @@ extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = videoTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TheoryTableViewCell
+        let cell = videoTableView.dequeueReusableCell(withIdentifier: "theoryCell", for: indexPath) as! TheoryTableViewCell
         
         cell.setCell(with: videoDatabase.database[indexPath.row], index: indexPath.row)
         

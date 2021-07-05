@@ -13,6 +13,7 @@ import UIKit
             static let appRed = UIColor(named: "ea_red")
             static let appBlue = UIColor(named: "ea_blue")
             static let appText = UIColor(named: "ea_text")
+            static let appOffWhite = UIColor(named: "ea_offwhite")
         }
         
         struct uikit {
