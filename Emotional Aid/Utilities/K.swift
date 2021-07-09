@@ -23,4 +23,8 @@ import UIKit
             static let demobar = UIImage(named: "bar_1")
         }
         
+        struct audio {
+            static let lesson1 = Bundle.main.url(forResource: "lesson", withExtension: "wav")
+        }
+        
     }

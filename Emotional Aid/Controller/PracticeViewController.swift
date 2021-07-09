@@ -7,14 +7,11 @@
 
 import UIKit
 import SnapKit
+import AVFoundation
 
 class PracticeViewController: UIViewController {
     
     var exerciseModel: ExerciseModel = ExerciseModel()
-    
-//    override var prefersHomeIndicatorAutoHidden: Bool {
-//        return true
-//    }
     
     private lazy var navContainer: UIView = {
         return Container()
@@ -107,13 +104,14 @@ class PracticeViewController: UIViewController {
         return sv
     }()
     
-    private lazy var playPauseButton: UIButton = {
-        let button = UIButton()
+    private lazy var playPauseButton: MediaButton = {
+        let button = MediaButton()
         button.setImage(UIImage(named: "play-clear")?.withTintColor(K.colors.appBlue ?? .black), for: .normal)
         button.contentMode = .scaleAspectFit
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
+        button.addTarget(self, action: #selector(playPauseButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -141,6 +139,22 @@ class PracticeViewController: UIViewController {
         return button
     }()
     
+    private lazy var swipeLeftGR: UISwipeGestureRecognizer = {
+       let gr = UISwipeGestureRecognizer()
+        gr.cancelsTouchesInView = false
+        gr.direction = .left
+        gr.addTarget(self, action: #selector(handleLeftSwipe(_:)))
+        return gr
+    }()
+    
+    private lazy var swipeRightGR: UISwipeGestureRecognizer = {
+       let gr = UISwipeGestureRecognizer()
+        gr.cancelsTouchesInView = false
+        gr.direction = .right
+        gr.addTarget(self, action: #selector(handleRightSwipe(_:)))
+        return gr
+    }()
+    
     //MARK: - UI Methods
     
     override func viewDidLoad() {
@@ -162,6 +176,8 @@ class PracticeViewController: UIViewController {
         addSubviews()
         setConstraints()
         setExercise(toExercise: exerciseModel.currentExercise)
+        
+        print(K.audio.lesson1)
     }
     
     private func addSubviews() {
@@ -184,6 +200,9 @@ class PracticeViewController: UIViewController {
         audioControlsSV.addArrangedSubview(goBackwardsButton)
         audioControlsSV.addArrangedSubview(playPauseButton)
         audioControlsSV.addArrangedSubview(goForwardButton)
+        
+        view.addGestureRecognizer(swipeLeftGR)
+        view.addGestureRecognizer(swipeRightGR)
         
     }
     
@@ -295,6 +314,10 @@ class PracticeViewController: UIViewController {
         //select the new exercise with index from the exercise list
         let newExercise = exerciseModel.dataBase[index]
         
+        //set new exercise internal boolean value to selected 
+        exerciseModel.deselectAllExercises()
+        newExercise.isCurrentlySelected = true
+        
         //set title and descriptions
         exerciseView.titleLabel.text = "\(index + 1). \(newExercise.title)"
         audioGuideTitle.text = newExercise.title
@@ -382,7 +405,7 @@ class PracticeViewController: UIViewController {
         let destination = ExerciseQueueController()
         destination.modalPresentationStyle = .popover
         destination.exerciseModel = exerciseModel
-        //self.navigationController?.pushViewController(destination, animated: false)
+        destination.delegate = self
         self.present(destination, animated: true, completion: nil)
     }
     
@@ -391,9 +414,41 @@ class PracticeViewController: UIViewController {
         setExercise(toExercise: exerciseModel.currentExercise)
     }
     
+    @objc func playPauseButtonPressed(_ button: MediaButton) {
+        button.isPlaying = !button.isPlaying
+        
+        AudioManager.shared.insert(audio: exerciseModel.dataBase[exerciseModel.currentExercise].audioGuides?[0]) {
+            AudioManager.shared.playAudio()
+        }
+    }
+    
     @objc func goForwardButtonPressed() {
         exerciseModel.currentExercise += 1
         setExercise(toExercise: exerciseModel.currentExercise)
     }
     
+    @objc func handleLeftSwipe(_ gr: UISwipeGestureRecognizer) {
+        if gr.state == .ended && gr.state != .cancelled {
+            Vibration.soft.vibrate()
+            exerciseModel.currentExercise += 1
+            setExercise(toExercise: exerciseModel.currentExercise)
+        }
+    }
+    
+    @objc func handleRightSwipe(_ gr: UISwipeGestureRecognizer) {
+        if gr.state == .ended && gr.state != .cancelled {
+            Vibration.soft.vibrate()
+            exerciseModel.currentExercise -= 1
+            setExercise(toExercise: exerciseModel.currentExercise)
+        }
+    }
+    
+}
+
+extension PracticeViewController: ExerciseSelectorDelegate {
+    
+    func set(exerciseTo index: Int) {
+        setExercise(toExercise: index)
+    }
+
 }

@@ -16,7 +16,7 @@
 		66644601267670E5008A9545 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66644600267670E5008A9545 /* MainViewController.swift */; };
 		66644606267670E8008A9545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66644605267670E8008A9545 /* Assets.xcassets */; };
 		66644609267670E8008A9545 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66644607267670E8008A9545 /* LaunchScreen.storyboard */; };
-		66644611267672A2008A9545 /* UIView + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66644610267672A2008A9545 /* UIView + Extensions.swift */; };
+		66644611267672A2008A9545 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66644610267672A2008A9545 /* Extensions.swift */; };
 		666DC775267693180074C6CB /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC774267693180074C6CB /* Container.swift */; };
 		666DC7792676A1B60074C6CB /* Neucha-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 666DC7782676A1B60074C6CB /* Neucha-Regular.ttf */; };
 		666DC77D2676A89B0074C6CB /* FontTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC77C2676A89B0074C6CB /* FontTypes.swift */; };
@@ -35,6 +35,12 @@
 		66B9A04226921544005E827B /* ExerciseQueueController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A04126921544005E827B /* ExerciseQueueController.swift */; };
 		66B9A04426921ADD005E827B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A04326921ADD005E827B /* CardView.swift */; };
 		66B9A04A26938708005E827B /* ExerciseQueueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A04926938708005E827B /* ExerciseQueueTableViewCell.swift */; };
+		66B9A050269770DB005E827B /* MediaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A04F269770DB005E827B /* MediaButton.swift */; };
+		66B9A05226977606005E827B /* ExerciseSelectorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A05126977606005E827B /* ExerciseSelectorDelegate.swift */; };
+		66B9A0542697822B005E827B /* Ubuntu-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66B9A0532697822B005E827B /* Ubuntu-Medium.ttf */; };
+		66B9A0562698AC08005E827B /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A0552698AC08005E827B /* Vibration.swift */; };
+		66B9A05C2698C49E005E827B /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A05B2698C49E005E827B /* AudioManager.swift */; };
+		66B9A05D2698D9AB005E827B /* lesson.wav in Resources */ = {isa = PBXBuildFile; fileRef = 66B9A0592698B0FB005E827B /* lesson.wav */; };
 		66E88B3A26874CD000412FB5 /* Ubuntu-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */; };
 		B8DCC5B228FAC621B37BB781 /* Pods_Emotional_Aid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */; };
 /* End PBXBuildFile section */
@@ -53,7 +59,7 @@
 		66644605267670E8008A9545 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		66644608267670E8008A9545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6664460A267670E8008A9545 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		66644610267672A2008A9545 /* UIView + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Extensions.swift"; sourceTree = "<group>"; };
+		66644610267672A2008A9545 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		666DC774267693180074C6CB /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		666DC7782676A1B60074C6CB /* Neucha-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Neucha-Regular.ttf"; sourceTree = "<group>"; };
 		666DC77C2676A89B0074C6CB /* FontTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontTypes.swift; sourceTree = "<group>"; };
@@ -72,6 +78,12 @@
 		66B9A04126921544005E827B /* ExerciseQueueController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseQueueController.swift; sourceTree = "<group>"; };
 		66B9A04326921ADD005E827B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		66B9A04926938708005E827B /* ExerciseQueueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseQueueTableViewCell.swift; sourceTree = "<group>"; };
+		66B9A04F269770DB005E827B /* MediaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaButton.swift; sourceTree = "<group>"; };
+		66B9A05126977606005E827B /* ExerciseSelectorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectorDelegate.swift; sourceTree = "<group>"; };
+		66B9A0532697822B005E827B /* Ubuntu-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Medium.ttf"; sourceTree = "<group>"; };
+		66B9A0552698AC08005E827B /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
+		66B9A0592698B0FB005E827B /* lesson.wav */ = {isa = PBXFileReference; explicitFileType = audio.wav; name = lesson.wav; path = "Emotional Aid/Assets/Sounds/lesson.wav"; sourceTree = SOURCE_ROOT; };
+		66B9A05B2698C49E005E827B /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Light.ttf"; sourceTree = "<group>"; };
 		E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emotional_Aid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -117,6 +129,7 @@
 		666445FB267670E5008A9545 /* Emotional Aid */ = {
 			isa = PBXGroup;
 			children = (
+				66B9A0572698B0D9005E827B /* Assets */,
 				666445FC267670E5008A9545 /* AppDelegate.swift */,
 				666445FE267670E5008A9545 /* SceneDelegate.swift */,
 				666DC78C2677C1A00074C6CB /* Model */,
@@ -133,12 +146,13 @@
 		6664461226767418008A9545 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				66644610267672A2008A9545 /* UIView + Extensions.swift */,
+				66644610267672A2008A9545 /* Extensions.swift */,
 				66B9A04326921ADD005E827B /* CardView.swift */,
 				666DC774267693180074C6CB /* Container.swift */,
 				666DC77B2676A1C50074C6CB /* Fonts */,
 				666DC77C2676A89B0074C6CB /* FontTypes.swift */,
 				666DC78326774E780074C6CB /* K.swift */,
+				66B9A0552698AC08005E827B /* Vibration.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -158,6 +172,7 @@
 		666DC77B2676A1C50074C6CB /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				66B9A0532697822B005E827B /* Ubuntu-Medium.ttf */,
 				66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */,
 				666DC77E26773A0A0074C6CB /* Ubuntu-Regular.ttf */,
 				666DC7782676A1B60074C6CB /* Neucha-Regular.ttf */,
@@ -168,13 +183,13 @@
 		666DC78226773F4C0074C6CB /* View */ = {
 			isa = PBXGroup;
 			children = (
-				66B9A03C268F6968005E827B /* Exercise Animations */,
 				666DC78D2677C1F10074C6CB /* EASlider.swift */,
 				666DC78F2677C6750074C6CB /* ExerciseView.swift */,
 				666DC78026773E7D0074C6CB /* SOSButton.swift */,
 				660AC53F2687B1B5003865D2 /* TheoryTableViewCell.swift */,
 				660AC5412687BBD5003865D2 /* VideoCellIndexBadge.swift */,
 				66B9A04926938708005E827B /* ExerciseQueueTableViewCell.swift */,
+				66B9A04F269770DB005E827B /* MediaButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -191,10 +206,12 @@
 		666DC78C2677C1A00074C6CB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				66B9A05B2698C49E005E827B /* AudioManager.swift */,
 				666DC78A2677C0320074C6CB /* Exercise.swift */,
+				66B9A03F268F73D7005E827B /* ExerciseModel.swift */,
+				66B9A05126977606005E827B /* ExerciseSelectorDelegate.swift */,
 				660AC54326886AD1003865D2 /* TheoryVideo.swift */,
 				660AC5452688B61F003865D2 /* TheoryVideoDB.swift */,
-				66B9A03F268F73D7005E827B /* ExerciseModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -205,6 +222,23 @@
 				66B9A03D268F697D005E827B /* relax.gif */,
 			);
 			path = "Exercise Animations";
+			sourceTree = "<group>";
+		};
+		66B9A0572698B0D9005E827B /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				66B9A03C268F6968005E827B /* Exercise Animations */,
+				66B9A0582698B0E9005E827B /* Sounds */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		66B9A0582698B0E9005E827B /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				66B9A0592698B0FB005E827B /* lesson.wav */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		990F7215D74728F2B1484B48 /* Pods */ = {
@@ -277,6 +311,8 @@
 			files = (
 				666DC77F26773A0A0074C6CB /* Ubuntu-Regular.ttf in Resources */,
 				66B9A03E268F697D005E827B /* relax.gif in Resources */,
+				66B9A05D2698D9AB005E827B /* lesson.wav in Resources */,
+				66B9A0542697822B005E827B /* Ubuntu-Medium.ttf in Resources */,
 				666DC7792676A1B60074C6CB /* Neucha-Regular.ttf in Resources */,
 				66E88B3A26874CD000412FB5 /* Ubuntu-Light.ttf in Resources */,
 				66644609267670E8008A9545 /* LaunchScreen.storyboard in Resources */,
@@ -335,12 +371,14 @@
 			files = (
 				666DC77D2676A89B0074C6CB /* FontTypes.swift in Sources */,
 				66B9A04226921544005E827B /* ExerciseQueueController.swift in Sources */,
-				66644611267672A2008A9545 /* UIView + Extensions.swift in Sources */,
+				66644611267672A2008A9545 /* Extensions.swift in Sources */,
 				660AC5422687BBD5003865D2 /* VideoCellIndexBadge.swift in Sources */,
 				660AC5402687B1B5003865D2 /* TheoryTableViewCell.swift in Sources */,
 				669ADBA026863C8900070CEE /* TheoryViewController.swift in Sources */,
 				66644601267670E5008A9545 /* MainViewController.swift in Sources */,
 				660AC54426886AD1003865D2 /* TheoryVideo.swift in Sources */,
+				66B9A05226977606005E827B /* ExerciseSelectorDelegate.swift in Sources */,
+				66B9A050269770DB005E827B /* MediaButton.swift in Sources */,
 				666DC78626775F200074C6CB /* PracticeViewController.swift in Sources */,
 				660AC5462688B61F003865D2 /* TheoryVideoDB.swift in Sources */,
 				666DC78126773E7D0074C6CB /* SOSButton.swift in Sources */,
@@ -355,6 +393,8 @@
 				666DC7902677C6750074C6CB /* ExerciseView.swift in Sources */,
 				666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */,
 				66B9A04426921ADD005E827B /* CardView.swift in Sources */,
+				66B9A05C2698C49E005E827B /* AudioManager.swift in Sources */,
+				66B9A0562698AC08005E827B /* Vibration.swift in Sources */,
 				66B9A040268F73D7005E827B /* ExerciseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

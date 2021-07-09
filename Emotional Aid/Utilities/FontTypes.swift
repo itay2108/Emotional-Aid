@@ -25,6 +25,7 @@ public class FontTypes {
     
     var ubuntu = UIFont.systemFont(ofSize: 18)
     var ubuntuLight = UIFont.systemFont(ofSize: 18)
+    var ubuntuMedium = UIFont.systemFont(ofSize: 18)
     
     init() {
         sizeModifier = UIScreen.main.bounds.size.height / 812
@@ -32,7 +33,8 @@ public class FontTypes {
         guard
             let neucha: UIFont = UIFont(name: "neucha", size: 18),
             let ubuntu: UIFont = UIFont(name: "Ubuntu-Regular", size: 18),
-            let ubuntuLight: UIFont = UIFont(name: "Ubuntu-Light", size: 18)
+            let ubuntuLight: UIFont = UIFont(name: "Ubuntu-Light", size: 18),
+            let ubuntinMedium: UIFont = UIFont(name: "Ubuntu-Medium", size: 18)
         else { print("could not set extra fonts"); return }
         
         
@@ -47,6 +49,7 @@ public class FontTypes {
         p  = ubuntu.withSize(13 * sizeModifier)
         self.ubuntu = ubuntu
         self.ubuntuLight = ubuntuLight
+        self.ubuntuMedium = ubuntinMedium
     }
     
 }

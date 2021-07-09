@@ -181,6 +181,8 @@ class MainViewController: UIViewController {
     
     
     @objc func sosButtonPressed() {
+        Vibration.soft.vibrate()
+        
         let destination = PracticeViewController()
         destination.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(destination, animated: true)

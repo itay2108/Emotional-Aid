@@ -18,9 +18,11 @@ class Exercise {
     
     var shortDescription: String
     var description: String
-    var audioGuides: URL?
+    var audioGuides: [URL?]? = nil
     
-    init(title: String = "Exercise Title", isAnimationPresent: Bool = false, animationURLName: String? = nil, isSliderPresent: Bool = false, shortDescription: String = "The what desc", description: String = "The why description", audioGuide: URL? = nil) {
+    var isCurrentlySelected: Bool = false
+    
+    init(title: String = "Exercise Title", isAnimationPresent: Bool = false, animationURLName: String? = nil, isSliderPresent: Bool = false, shortDescription: String = "The what desc", description: String = "The why description", audioGuides: [URL?]? = nil) {
         self.title = title
         
         self.isAnimationPresent = isAnimationPresent
@@ -30,6 +32,8 @@ class Exercise {
         
         self.shortDescription = shortDescription
         self.description = description
+        
+        self.audioGuides = audioGuides
     }
     
 }
