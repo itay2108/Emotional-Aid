@@ -64,7 +64,7 @@ class PracticeViewController: UIViewController {
     private lazy var exerciseView: ExerciseView = {
         let view = ExerciseView()
         view.titleLabel.text = "1. Lorem ipsum dolor sit amet"
-        view.descriptionLabel.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus. Nulla porta risus quis mi ultricies, ut gravida nulla pharetra. Donec id nunc non dolor maximus luctus. Cras id leo sed lacus pretium pretium. Aenean commodo lectus sed hendrerit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus. Nulla porta risus quis mi ultricies, ut gravida nulla pharetra. Donec id nunc non dolor maximus luctus. Cras id leo sed lacus pretium pretium. Aenean commodo lectus sed hendrerit auctor. "
+        view.descriptionLabel.text = "Lorem ipsum dolor sit amet"
         return view
     }()
     
@@ -164,6 +164,7 @@ class PracticeViewController: UIViewController {
         self.navigationItem.hidesBackButton = true
         
         setUpUI()
+        setUpObservers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -176,8 +177,6 @@ class PracticeViewController: UIViewController {
         addSubviews()
         setConstraints()
         setExercise(toExercise: exerciseModel.currentExercise)
-        
-        print(K.audio.lesson1)
     }
     
     private func addSubviews() {
@@ -391,7 +390,7 @@ class PracticeViewController: UIViewController {
         return formattedLongDescription
     }
     
-    //MARK: - Targets & Selectors
+    //MARK: - Button/GR Targets & Selectors
     
     @objc func backButtonPressed() {
         self.navigationController?.popViewController(animated: true)
@@ -406,25 +405,58 @@ class PracticeViewController: UIViewController {
         destination.modalPresentationStyle = .popover
         destination.exerciseModel = exerciseModel
         destination.delegate = self
+        
         self.present(destination, animated: true, completion: nil)
     }
     
     @objc func goBackwardsButtonPressed() {
-        exerciseModel.currentExercise -= 1
-        setExercise(toExercise: exerciseModel.currentExercise)
+        
+        let isPlayerInitiallyPaused = AudioManager.shared.playbackState == .paused ? true : false
+        
+        if AudioManager.shared.playerTime() < 2 && exerciseModel.currentExercise != 0 {
+            
+            AudioManager.shared.stopAudio()
+            
+            exerciseModel.currentExercise -= 1
+            setExercise(toExercise: exerciseModel.currentExercise)
+            
+            AudioManager.shared.insert(audio: exerciseModel.dataBase[exerciseModel.currentExercise].audioGuides?[0])
+        } else {
+            AudioManager.shared.rewindAudio()
+        }
+        
+        if !isPlayerInitiallyPaused { AudioManager.shared.playAudio() }
+        
     }
     
     @objc func playPauseButtonPressed(_ button: MediaButton) {
-        button.isPlaying = !button.isPlaying
         
-        AudioManager.shared.insert(audio: exerciseModel.dataBase[exerciseModel.currentExercise].audioGuides?[0]) {
+        switch AudioManager.shared.playbackState {
+        case .standby:
+            AudioManager.shared.insert(audio: exerciseModel.dataBase[exerciseModel.currentExercise].audioGuides?[0]) {
+                AudioManager.shared.playAudio()
+            }
+        case .ready:
+            AudioManager.shared.playAudio()
+        case .playing:
+            AudioManager.shared.pauseAudio()
+        case .paused:
+            AudioManager.shared.playAudio()
+        case .finished:
+            AudioManager.shared.rewindAudio()
             AudioManager.shared.playAudio()
         }
+
     }
     
     @objc func goForwardButtonPressed() {
+        AudioManager.shared.stopAudio()
+        
         exerciseModel.currentExercise += 1
         setExercise(toExercise: exerciseModel.currentExercise)
+        
+        AudioManager.shared.insert(audio: exerciseModel.dataBase[exerciseModel.currentExercise].audioGuides?[0])
+
     }
     
     @objc func handleLeftSwipe(_ gr: UISwipeGestureRecognizer) {
@@ -443,6 +475,22 @@ class PracticeViewController: UIViewController {
         }
     }
     
+    //MARK: - Communication methods
+    
+    private func setUpObservers() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStateChange), name: NSNotification.Name.audioManagerStateDidChange, object: nil)
+    }
+    
+    @objc private func handlePlaybackStateChange() {
+        self.playPauseButton.playbackState = AudioManager.shared.playbackState
+    }
+    
+    //MARK: - deinit
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension PracticeViewController: ExerciseSelectorDelegate {
@@ -452,3 +500,5 @@ extension PracticeViewController: ExerciseSelectorDelegate {
     }
 
 }
+
+

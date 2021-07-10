@@ -41,6 +41,7 @@
 		66B9A0562698AC08005E827B /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A0552698AC08005E827B /* Vibration.swift */; };
 		66B9A05C2698C49E005E827B /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A05B2698C49E005E827B /* AudioManager.swift */; };
 		66B9A05D2698D9AB005E827B /* lesson.wav in Resources */ = {isa = PBXBuildFile; fileRef = 66B9A0592698B0FB005E827B /* lesson.wav */; };
+		66B9A05F2699ABC8005E827B /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A05E2699ABC8005E827B /* NotificationName.swift */; };
 		66E88B3A26874CD000412FB5 /* Ubuntu-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */; };
 		B8DCC5B228FAC621B37BB781 /* Pods_Emotional_Aid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */; };
 /* End PBXBuildFile section */
@@ -84,6 +85,7 @@
 		66B9A0552698AC08005E827B /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
 		66B9A0592698B0FB005E827B /* lesson.wav */ = {isa = PBXFileReference; explicitFileType = audio.wav; name = lesson.wav; path = "Emotional Aid/Assets/Sounds/lesson.wav"; sourceTree = SOURCE_ROOT; };
 		66B9A05B2698C49E005E827B /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		66B9A05E2699ABC8005E827B /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Light.ttf"; sourceTree = "<group>"; };
 		E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emotional_Aid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -146,12 +148,12 @@
 		6664461226767418008A9545 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				66644610267672A2008A9545 /* Extensions.swift */,
 				66B9A04326921ADD005E827B /* CardView.swift */,
 				666DC774267693180074C6CB /* Container.swift */,
-				666DC77B2676A1C50074C6CB /* Fonts */,
+				66644610267672A2008A9545 /* Extensions.swift */,
 				666DC77C2676A89B0074C6CB /* FontTypes.swift */,
 				666DC78326774E780074C6CB /* K.swift */,
+				66B9A05E2699ABC8005E827B /* NotificationName.swift */,
 				66B9A0552698AC08005E827B /* Vibration.swift */,
 			);
 			path = Utilities;
@@ -228,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				66B9A03C268F6968005E827B /* Exercise Animations */,
+				666DC77B2676A1C50074C6CB /* Fonts */,
 				66B9A0582698B0E9005E827B /* Sounds */,
 			);
 			path = Assets;
@@ -386,6 +389,7 @@
 				666DC78B2677C0320074C6CB /* Exercise.swift in Sources */,
 				666DC78426774E780074C6CB /* K.swift in Sources */,
 				666DC78826775FF40074C6CB /* NavigationController.swift in Sources */,
+				66B9A05F2699ABC8005E827B /* NotificationName.swift in Sources */,
 				666445FD267670E5008A9545 /* AppDelegate.swift in Sources */,
 				669ADB9E26863B8800070CEE /* MainTabBarController.swift in Sources */,
 				666DC78E2677C1F10074C6CB /* EASlider.swift in Sources */,

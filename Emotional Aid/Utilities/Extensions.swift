@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Darwin
 
 public extension UIView {
     
@@ -193,9 +194,43 @@ extension CACornerMask {
     }
 }
 
+extension Int {
+    func seconds(inComponents components: [timeComponent]) -> [Int] {
+        
+        var result: [Int] = []
+        
+        let days = self / 86400
+        let hours = (self - (days * 86400)) / 3600
+        let minutes = (self - (days * 86400) - (hours * 3600)) / 60
+        let seconds = (self - (days * 86400) - (hours * 3600) - (minutes * 60))
+        
+        for component in components {
+            switch component {
+            case .day:
+                result.append(days)
+            case .hour:
+                result.append(hours)
+            case .minute:
+                result.append(minutes)
+            case .second:
+                result.append(seconds)
+            }
+        }
+        return result
+    }
+
+}
+
 public enum direction: Int {
     case top = 0
     case right = 1
     case bottom = 2
     case left = 3
+}
+
+public enum timeComponent {
+    case second
+    case minute
+    case hour
+    case day
 }
