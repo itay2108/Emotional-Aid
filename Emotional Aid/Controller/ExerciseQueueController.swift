@@ -107,6 +107,8 @@ class ExerciseQueueController: UIViewController {
         }
         
         slider.value = Float(AudioManager.shared.playerTime())
+        slider.addTarget(self, action: #selector(handleSliderValueChanged(_:_:)), for: .valueChanged)
+        
         return slider
     }()
     
@@ -138,6 +140,7 @@ class ExerciseQueueController: UIViewController {
         super.viewDidLoad()
         
         setUpUI()
+        setUpObservers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -159,7 +162,7 @@ class ExerciseQueueController: UIViewController {
                 AudioManager.shared.insert(audio: exerciseModel!.dataBase[exerciseModel!.currentExercise].audioGuides?[0])
             }
         }
-        updateAudioUIWith(interval: 0.1)
+        updateAudioUIEvery(interval: 0.1)
 
     }
     
@@ -253,13 +256,9 @@ class ExerciseQueueController: UIViewController {
         
     }
     
-    func updateUI(with Exercise: Exercise) {
-        
-    }
-    
     //MARK: - media methods
     
-    func updateAudioUIWith(interval: TimeInterval) {
+    func updateAudioUIEvery(interval: TimeInterval) {
         audioProgressSlider.maximumValue = Float(AudioManager.shared.player?.duration ?? 0)
         audioUIUpdateTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.updateAudioUI), userInfo: nil, repeats: true)
     }
@@ -339,7 +338,7 @@ class ExerciseQueueController: UIViewController {
         }
         
         if AudioManager.shared.playbackState == .playing {
-            updateAudioUIWith(interval: 0.1)
+            updateAudioUIEvery(interval: 0.1)
         }
 
     }
@@ -364,6 +363,23 @@ class ExerciseQueueController: UIViewController {
 
     }
     
+    @objc func handleSliderValueChanged(_ slider: UISlider, _ event: UIEvent) {
+        
+        let wasPlayingAudio = AudioManager.shared.playbackState == .playing ? true : false
+        
+        if AudioManager.shared.playbackState != .standby {
+            audioUIUpdateTimer?.invalidate()
+            
+            if let eventPhase = event.allTouches?.first?.phase {
+                if eventPhase == .ended && wasPlayingAudio {
+                    AudioManager.shared.playAudioAt(time: Double(slider.value))
+                    updateAudioUIEvery(interval: 0.1)
+                }
+            }
+        
+        }
+    }
+    
     private func setExercise(to index: Int) {
         //update current exercise in exercise model
         exerciseModel!.currentExercise = index
@@ -385,12 +401,37 @@ class ExerciseQueueController: UIViewController {
     private func setUpObservers() {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStateChange), name: NSNotification.Name.audioManagerStateDidChange, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAudioBuffer(_:)), name: NSNotification.Name.audioEngineBufferReceived, object: nil)
     }
     
     @objc private func handlePlaybackStateChange() {
         self.playPauseButton.playbackState = AudioManager.shared.playbackState
+        
+        //start listening to keywaords that will change current exercise (ie "next"/"rewind"/etc
+        if AudioManager.shared.playbackState == .finished {
+        
+            AudioManager.shared.prepareAudioEngine {
+                
+                AudioManager.shared.startAudioEngine()
+            }
+        }
+        
     }
     
+    @objc private func handleAudioBuffer(_ notification: NSNotification) {
+        //handle spoken words with speech recognizer
+        if let buffer = notification.userInfo?["buffer"] as? AVAudioPCMBuffer {
+            SpeechRecognitionManager.main.initiate(language: .russian) { success in
+                if success {
+                    SpeechRecognitionManager.main.listen(to: buffer) { result in
+                        print(result)
+                    }
+                }
+            }
+        }
+    }
+
     
 }
 

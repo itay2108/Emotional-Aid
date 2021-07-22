@@ -351,9 +351,11 @@ class PracticeViewController: UIViewController {
     
     func applyDemoMode(isActive demo: Bool) {
         if demo {
-            exerciseView.accessoryAnimation.animate(withGIFNamed: exerciseModel.dataBase[exerciseModel.currentExercise].animationURLName!)
-            exerciseView.accessoryAnimation.isHidden = false
-            exerciseView.changeviewState(of: exerciseView.accessoryAnimation, to: .expanded, with: exerciseView.defaultAnimationHeight)
+            if exerciseModel.dataBase[exerciseModel.currentExercise].isAnimationPresent {
+                exerciseView.accessoryAnimation.animate(withGIFNamed: exerciseModel.dataBase[exerciseModel.currentExercise].animationURLName!)
+                exerciseView.accessoryAnimation.isHidden = false
+                exerciseView.changeviewState(of: exerciseView.accessoryAnimation, to: .expanded, with: exerciseView.defaultAnimationHeight)
+            }
         } else {
             exerciseView.changeviewState(of: exerciseView.accessoryAnimation, to: .collapsed)
             exerciseView.accessoryAnimation.isHidden = true
@@ -374,9 +376,9 @@ class PracticeViewController: UIViewController {
         let formattedLongDescription = NSMutableAttributedString()
         
         let shortDescTitle = NSMutableAttributedString(string: "The What\n\n", attributes: headingAttr)
-        let shortDesctAttributed = NSMutableAttributedString(string: "\(exercise.shortDescription)\n", attributes: paragraphAttr)
+        let shortDesctAttributed = NSMutableAttributedString(string: "\(exercise.theWhat)\n", attributes: paragraphAttr)
         let longDescTitle = NSMutableAttributedString(string: "\nThe Why\n\n", attributes: headingAttr)
-        let descriptionAttributed = NSMutableAttributedString(string: exercise.description, attributes: paragraphAttr)
+        let descriptionAttributed = NSMutableAttributedString(string: exercise.theWhy, attributes: paragraphAttr)
         
         if isDemo {
             formattedLongDescription.append(shortDescTitle)

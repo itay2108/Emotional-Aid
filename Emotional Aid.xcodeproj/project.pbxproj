@@ -11,6 +11,8 @@
 		660AC5422687BBD5003865D2 /* VideoCellIndexBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660AC5412687BBD5003865D2 /* VideoCellIndexBadge.swift */; };
 		660AC54426886AD1003865D2 /* TheoryVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660AC54326886AD1003865D2 /* TheoryVideo.swift */; };
 		660AC5462688B61F003865D2 /* TheoryVideoDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660AC5452688B61F003865D2 /* TheoryVideoDB.swift */; };
+		6615C23426A2EF27009865E2 /* Personality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6615C23326A2EF27009865E2 /* Personality.swift */; };
+		6615C23626A30081009865E2 /* SpeechRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6615C23526A30081009865E2 /* SpeechRecognitionManager.swift */; };
 		666445FD267670E5008A9545 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FC267670E5008A9545 /* AppDelegate.swift */; };
 		666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FE267670E5008A9545 /* SceneDelegate.swift */; };
 		66644601267670E5008A9545 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66644600267670E5008A9545 /* MainViewController.swift */; };
@@ -53,6 +55,8 @@
 		660AC5412687BBD5003865D2 /* VideoCellIndexBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCellIndexBadge.swift; sourceTree = "<group>"; };
 		660AC54326886AD1003865D2 /* TheoryVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoryVideo.swift; sourceTree = "<group>"; };
 		660AC5452688B61F003865D2 /* TheoryVideoDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoryVideoDB.swift; sourceTree = "<group>"; };
+		6615C23326A2EF27009865E2 /* Personality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Personality.swift; sourceTree = "<group>"; };
+		6615C23526A30081009865E2 /* SpeechRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionManager.swift; sourceTree = "<group>"; };
 		666445F9267670E5008A9545 /* Emotional Aid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Emotional Aid.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		666445FC267670E5008A9545 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		666445FE267670E5008A9545 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -212,6 +216,8 @@
 				666DC78A2677C0320074C6CB /* Exercise.swift */,
 				66B9A03F268F73D7005E827B /* ExerciseModel.swift */,
 				66B9A05126977606005E827B /* ExerciseSelectorDelegate.swift */,
+				6615C23326A2EF27009865E2 /* Personality.swift */,
+				6615C23526A30081009865E2 /* SpeechRecognitionManager.swift */,
 				660AC54326886AD1003865D2 /* TheoryVideo.swift */,
 				660AC5452688B61F003865D2 /* TheoryVideoDB.swift */,
 			);
@@ -381,8 +387,10 @@
 				66644601267670E5008A9545 /* MainViewController.swift in Sources */,
 				660AC54426886AD1003865D2 /* TheoryVideo.swift in Sources */,
 				66B9A05226977606005E827B /* ExerciseSelectorDelegate.swift in Sources */,
+				6615C23626A30081009865E2 /* SpeechRecognitionManager.swift in Sources */,
 				66B9A050269770DB005E827B /* MediaButton.swift in Sources */,
 				666DC78626775F200074C6CB /* PracticeViewController.swift in Sources */,
+				6615C23426A2EF27009865E2 /* Personality.swift in Sources */,
 				660AC5462688B61F003865D2 /* TheoryVideoDB.swift in Sources */,
 				666DC78126773E7D0074C6CB /* SOSButton.swift in Sources */,
 				666DC775267693180074C6CB /* Container.swift in Sources */,

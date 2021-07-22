@@ -88,6 +88,17 @@ class MainViewController: UIViewController {
         setUpUI()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        SpeechRecognitionManager.main.authorizeSpeechRecognition { success in
+            if success { print("speech recognition authorized") }
+        }
+        
+        AudioManager.shared.requestMicrophoneUsage { success in
+            if success { print("microphone usage authorized") }
+            else { print("microphone usage denied") }
+        }
+    }
+    
     private func setUpUI() {
         self.view.backgroundColor = .white
         

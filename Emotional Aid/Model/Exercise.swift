@@ -16,13 +16,17 @@ class Exercise {
     
     var isSliderPresent: Bool
     
-    var shortDescription: String
-    var description: String
+    var theWhat: String
+    var theWhy: String
+    
+    var theWhatNegative: String?
+    var theWhyNegative: String?
+    
     var audioGuides: [URL?]? = nil
     
     var isCurrentlySelected: Bool = false
     
-    init(title: String = "Exercise Title", isAnimationPresent: Bool = false, animationURLName: String? = nil, isSliderPresent: Bool = false, shortDescription: String = "The what desc", description: String = "The why description", audioGuides: [URL?]? = nil) {
+    init(title: String = "Exercise Title", isAnimationPresent: Bool = false, animationURLName: String? = nil, isSliderPresent: Bool = false,  theWhat: String = "The what description", theWhy: String = "The why desc", theWhatNegative: String? = nil, theWhyNegative: String? = nil, audioGuides: [URL?]? = nil) {
         self.title = title
         
         self.isAnimationPresent = isAnimationPresent
@@ -30,8 +34,11 @@ class Exercise {
         
         self.isSliderPresent = isSliderPresent
         
-        self.shortDescription = shortDescription
-        self.description = description
+        self.theWhat = theWhat
+        self.theWhy = theWhy
+        
+        self.theWhatNegative = theWhatNegative
+        self.theWhyNegative = theWhyNegative
         
         self.audioGuides = audioGuides
     }
