@@ -8,22 +8,31 @@
 import UIKit
 
 class MediaButton: UIButton {
+    
+    var graphicsTint: UIColor? = K.colors.appRed {
+        didSet {
+            self.tintColor = graphicsTint
+            self.imageView?.tintColor = graphicsTint
+            self.imageView?.image = self.imageView?.image?.withTintColor(graphicsTint ?? .red)
+            layoutSubviews()
+        }
+    }
 
     var playbackState: AudioPlaybackState = .finished {
         didSet {
             switch playbackState {
             case .finished:
-                changeButtonImage(to: UIImage(named: "play-clear"), withTint: K.colors.appBlue)
+                changeButtonImage(to: UIImage(named: "play-clear")?.withRenderingMode(.alwaysTemplate), withTint: graphicsTint)
             case .playing:
-                changeButtonImage(to: UIImage(named: "pause-clear"), withTint: K.colors.appBlue)
+                changeButtonImage(to: UIImage(named: "pause-clear")?.withRenderingMode(.alwaysTemplate), withTint: graphicsTint)
             default:
-                changeButtonImage(to: UIImage(named: "play-clear"), withTint: K.colors.appBlue)
+                changeButtonImage(to: UIImage(named: "play-clear")?.withRenderingMode(.alwaysTemplate), withTint: graphicsTint)
             }
         }
     }
     
-    func changeButtonImage(to image: UIImage?, withTint color: UIColor?) {
-        self.setImage(image?.withTintColor(color ?? .gray), for: .normal)
+    func changeButtonImage(to image: UIImage?, withTint color: UIColor? = nil) {
+        self.setImage(image?.withTintColor(color ?? .gray).withRenderingMode(.alwaysTemplate), for: .normal)
         self.layoutSubviews()
     }
     

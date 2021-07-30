@@ -66,6 +66,34 @@ public extension UIView {
         return sizeArray[direction.rawValue]
     }
     
+    func gradientBackground(colors: [CGColor], type: CAGradientLayerType, direction: GradientDirection){
+        
+        let gradient: CAGradientLayer = CAGradientLayer()
+        
+        gradient.colors = colors
+        gradient.locations = [ 0.5, 1.0]
+        gradient.type = type
+        
+        switch direction {
+        case .leftToRight :
+            gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+            gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        case .topToBottom :
+            gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
+            gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        case .topLeftToBottomRight :
+            gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
+            gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        case .topRightToBottomLeft :
+            gradient.startPoint = CGPoint(x: 1.0, y: 0.0)
+            gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
+        }
+        
+        gradient.frame = self.bounds
+        
+        self.layer.insertSublayer(gradient, at: 0)
+    }
+    
 }
 
 extension Date {
@@ -218,6 +246,16 @@ extension Int {
         }
         return result
     }
+    
+    func isPositive() -> Bool {
+        let r = self > 0 ? true : false
+        return r
+    }
+    
+    func isNegative() -> Bool {
+        let r = self < 0 ? true : false
+        return r
+    }
 
 }
 
@@ -233,4 +271,11 @@ public enum timeComponent {
     case minute
     case hour
     case day
+}
+
+public enum GradientDirection {
+    case topToBottom
+    case leftToRight
+    case topLeftToBottomRight
+    case topRightToBottomLeft
 }

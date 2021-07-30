@@ -44,6 +44,10 @@
 		66B9A05C2698C49E005E827B /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A05B2698C49E005E827B /* AudioManager.swift */; };
 		66B9A05D2698D9AB005E827B /* lesson.wav in Resources */ = {isa = PBXBuildFile; fileRef = 66B9A0592698B0FB005E827B /* lesson.wav */; };
 		66B9A05F2699ABC8005E827B /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A05E2699ABC8005E827B /* NotificationName.swift */; };
+		66CDA0CD26AB0B11003FD85E /* SuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDA0CC26AB0B11003FD85E /* SuccessViewController.swift */; };
+		66CDA0CF26AC25D5003FD85E /* FailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDA0CE26AC25D5003FD85E /* FailViewController.swift */; };
+		66CDA0D126B1CEBD003FD85E /* FinishCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDA0D026B1CEBD003FD85E /* FinishCondition.swift */; };
+		66CDA0D326B48AF5003FD85E /* AudioGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDA0D226B48AF5003FD85E /* AudioGuide.swift */; };
 		66E88B3A26874CD000412FB5 /* Ubuntu-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */; };
 		B8DCC5B228FAC621B37BB781 /* Pods_Emotional_Aid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */; };
 /* End PBXBuildFile section */
@@ -90,6 +94,10 @@
 		66B9A0592698B0FB005E827B /* lesson.wav */ = {isa = PBXFileReference; explicitFileType = audio.wav; name = lesson.wav; path = "Emotional Aid/Assets/Sounds/lesson.wav"; sourceTree = SOURCE_ROOT; };
 		66B9A05B2698C49E005E827B /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		66B9A05E2699ABC8005E827B /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
+		66CDA0CC26AB0B11003FD85E /* SuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessViewController.swift; sourceTree = "<group>"; };
+		66CDA0CE26AC25D5003FD85E /* FailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailViewController.swift; sourceTree = "<group>"; };
+		66CDA0D026B1CEBD003FD85E /* FinishCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishCondition.swift; sourceTree = "<group>"; };
+		66CDA0D226B48AF5003FD85E /* AudioGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioGuide.swift; sourceTree = "<group>"; };
 		66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Light.ttf"; sourceTree = "<group>"; };
 		E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emotional_Aid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -171,6 +179,8 @@
 				66644600267670E5008A9545 /* MainViewController.swift */,
 				666DC78526775F200074C6CB /* PracticeViewController.swift */,
 				66B9A04126921544005E827B /* ExerciseQueueController.swift */,
+				66CDA0CC26AB0B11003FD85E /* SuccessViewController.swift */,
+				66CDA0CE26AC25D5003FD85E /* FailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -212,10 +222,12 @@
 		666DC78C2677C1A00074C6CB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				66CDA0D226B48AF5003FD85E /* AudioGuide.swift */,
 				66B9A05B2698C49E005E827B /* AudioManager.swift */,
 				666DC78A2677C0320074C6CB /* Exercise.swift */,
 				66B9A03F268F73D7005E827B /* ExerciseModel.swift */,
 				66B9A05126977606005E827B /* ExerciseSelectorDelegate.swift */,
+				66CDA0D026B1CEBD003FD85E /* FinishCondition.swift */,
 				6615C23326A2EF27009865E2 /* Personality.swift */,
 				6615C23526A30081009865E2 /* SpeechRecognitionManager.swift */,
 				660AC54326886AD1003865D2 /* TheoryVideo.swift */,
@@ -392,8 +404,10 @@
 				666DC78626775F200074C6CB /* PracticeViewController.swift in Sources */,
 				6615C23426A2EF27009865E2 /* Personality.swift in Sources */,
 				660AC5462688B61F003865D2 /* TheoryVideoDB.swift in Sources */,
+				66CDA0CF26AC25D5003FD85E /* FailViewController.swift in Sources */,
 				666DC78126773E7D0074C6CB /* SOSButton.swift in Sources */,
 				666DC775267693180074C6CB /* Container.swift in Sources */,
+				66CDA0CD26AB0B11003FD85E /* SuccessViewController.swift in Sources */,
 				666DC78B2677C0320074C6CB /* Exercise.swift in Sources */,
 				666DC78426774E780074C6CB /* K.swift in Sources */,
 				666DC78826775FF40074C6CB /* NavigationController.swift in Sources */,
@@ -401,9 +415,11 @@
 				666445FD267670E5008A9545 /* AppDelegate.swift in Sources */,
 				669ADB9E26863B8800070CEE /* MainTabBarController.swift in Sources */,
 				666DC78E2677C1F10074C6CB /* EASlider.swift in Sources */,
+				66CDA0D326B48AF5003FD85E /* AudioGuide.swift in Sources */,
 				66B9A04A26938708005E827B /* ExerciseQueueTableViewCell.swift in Sources */,
 				666DC7902677C6750074C6CB /* ExerciseView.swift in Sources */,
 				666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */,
+				66CDA0D126B1CEBD003FD85E /* FinishCondition.swift in Sources */,
 				66B9A04426921ADD005E827B /* CardView.swift in Sources */,
 				66B9A05C2698C49E005E827B /* AudioManager.swift in Sources */,
 				66B9A0562698AC08005E827B /* Vibration.swift in Sources */,

@@ -52,6 +52,8 @@ class ExerciseView: UIView {
         slider.maximumValue = 10
         slider.minimumValue = -10
         slider.value = 0
+        slider.isContinuous = false
+        slider.addTarget(self, action: #selector(sliderValueHasChanged(_:)), for: .valueChanged)
        return slider
     }()
     
@@ -141,6 +143,10 @@ class ExerciseView: UIView {
                 update.height.equalTo(0)
             }
         }
+    }
+    
+    @objc func sliderValueHasChanged(_ slider: UISlider) {
+        NotificationCenter.default.post(name: Notification.Name.exerciseSliderValueHasChanged, object: nil, userInfo: ["value" : slider.value])
     }
     
     required init?(coder aDecoder: NSCoder) {

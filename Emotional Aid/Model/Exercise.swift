@@ -22,11 +22,11 @@ class Exercise {
     var theWhatNegative: String?
     var theWhyNegative: String?
     
-    var audioGuides: [URL?]? = nil
+    var audioGuide: AudioGuide?
     
     var isCurrentlySelected: Bool = false
     
-    init(title: String = "Exercise Title", isAnimationPresent: Bool = false, animationURLName: String? = nil, isSliderPresent: Bool = false,  theWhat: String = "The what description", theWhy: String = "The why desc", theWhatNegative: String? = nil, theWhyNegative: String? = nil, audioGuides: [URL?]? = nil) {
+    init(title: String = "Exercise Title", isAnimationPresent: Bool = false, animationURLName: String? = nil, isSliderPresent: Bool = false,  theWhat: String = "The what description", theWhy: String = "The why desc", theWhatNegative: String? = nil, theWhyNegative: String? = nil, audioGuide: AudioGuide? = nil) {
         self.title = title
         
         self.isAnimationPresent = isAnimationPresent
@@ -40,7 +40,7 @@ class Exercise {
         self.theWhatNegative = theWhatNegative
         self.theWhyNegative = theWhyNegative
         
-        self.audioGuides = audioGuides
+        self.audioGuide = audioGuide
     }
     
 }

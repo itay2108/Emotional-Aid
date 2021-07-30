@@ -12,6 +12,20 @@ import MediaPlayer
 class ExerciseQueueController: UIViewController {
     
     var exerciseModel: ExerciseModel?
+    
+    var currentExercise: Exercise? {
+        get {
+            return exerciseModel != nil ? exerciseModel!.dataBase[exerciseModel!.currentExercise] : nil
+        }
+    }
+    var personality: Personality?
+    
+    var audioGuide: URL? {
+        get {
+            return personality?.emotionalState == .negative && currentExercise?.audioGuide?.negative != nil ? currentExercise?.audioGuide?.negative : currentExercise?.audioGuide?.positive
+        }
+    }
+    
     var delegate: ExerciseSelectorDelegate?
     
     var audioUIUpdateTimer: Timer?
@@ -62,6 +76,7 @@ class ExerciseQueueController: UIViewController {
         button.playbackState = AudioManager.shared.playbackState
         button.contentMode = .scaleAspectFit
         button.imageView?.contentMode = .scaleAspectFit
+        button.imageView?.tintColor = K.colors.appBlue
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
         button.addTarget(self, action: #selector(playPauseButtonPressed(_:)), for: .touchUpInside)
@@ -159,7 +174,7 @@ class ExerciseQueueController: UIViewController {
         
         if AudioManager.shared.playbackState == .standby {
             if exerciseModel != nil {
-                AudioManager.shared.insert(audio: exerciseModel!.dataBase[exerciseModel!.currentExercise].audioGuides?[0])
+                AudioManager.shared.insert(audio: audioGuide)
             }
         }
         updateAudioUIEvery(interval: 0.1)
@@ -308,8 +323,8 @@ class ExerciseQueueController: UIViewController {
             queueTableView.selectRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), animated: true, scrollPosition: .middle)
             
             delegate?.set(exerciseTo: exerciseModel!.currentExercise)
-            
-            AudioManager.shared.insert(audio: exerciseModel!.dataBase[exerciseModel!.currentExercise].audioGuides?[0])
+
+            AudioManager.shared.insert(audio: audioGuide)
         } else {
             AudioManager.shared.rewindAudio()
         }
@@ -323,7 +338,8 @@ class ExerciseQueueController: UIViewController {
         
         switch AudioManager.shared.playbackState {
         case .standby:
-            AudioManager.shared.insert(audio: exerciseModel!.dataBase[exerciseModel!.currentExercise].audioGuides?[0]) {
+            
+            AudioManager.shared.insert(audio: audioGuide) {
                 AudioManager.shared.playAudio()
             }
         case .ready:
@@ -357,7 +373,7 @@ class ExerciseQueueController: UIViewController {
         
         delegate?.set(exerciseTo: exerciseModel!.currentExercise)
         
-        AudioManager.shared.insert(audio: exerciseModel!.dataBase[exerciseModel!.currentExercise].audioGuides?[0]) {
+        AudioManager.shared.insert(audio: audioGuide) {
             AudioManager.shared.playAudio()
         }
 
@@ -371,9 +387,11 @@ class ExerciseQueueController: UIViewController {
             audioUIUpdateTimer?.invalidate()
             
             if let eventPhase = event.allTouches?.first?.phase {
-                if eventPhase == .ended && wasPlayingAudio {
+                if eventPhase == .ended {
                     AudioManager.shared.playAudioAt(time: Double(slider.value))
-                    updateAudioUIEvery(interval: 0.1)
+                    
+                    if wasPlayingAudio { updateAudioUIEvery(interval: 0.1) }
+                    else { AudioManager.shared.pauseAudio() }
                 }
             }
         
@@ -402,34 +420,40 @@ class ExerciseQueueController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStateChange), name: NSNotification.Name.audioManagerStateDidChange, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleAudioBuffer(_:)), name: NSNotification.Name.audioEngineBufferReceived, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleAudioBuffer(_:)), name: NSNotification.Name.audioEngineBufferReceived, object: nil)
     }
     
     @objc private func handlePlaybackStateChange() {
         self.playPauseButton.playbackState = AudioManager.shared.playbackState
         
-        //start listening to keywaords that will change current exercise (ie "next"/"rewind"/etc
-        if AudioManager.shared.playbackState == .finished {
-        
-            AudioManager.shared.prepareAudioEngine {
-                
-                AudioManager.shared.startAudioEngine()
-            }
-        }
+//        //start listening to keywaords that will change current exercise (ie "next"/"rewind"/etc
+//        if AudioManager.shared.playbackState == .finished {
+//
+//            AudioManager.shared.prepareAudioEngine {
+//
+//                AudioManager.shared.startAudioEngine()
+//            }
+//        }
         
     }
     
-    @objc private func handleAudioBuffer(_ notification: NSNotification) {
-        //handle spoken words with speech recognizer
-        if let buffer = notification.userInfo?["buffer"] as? AVAudioPCMBuffer {
-            SpeechRecognitionManager.main.initiate(language: .russian) { success in
-                if success {
-                    SpeechRecognitionManager.main.listen(to: buffer) { result in
-                        print(result)
-                    }
-                }
-            }
-        }
+//    @objc private func handleAudioBuffer(_ notification: NSNotification) {
+//        //handle spoken words with speech recognizer
+//        if let buffer = notification.userInfo?["buffer"] as? AVAudioPCMBuffer {
+//            SpeechRecognitionManager.main.initiate(language: .russian) { success in
+//                if success {
+//                    SpeechRecognitionManager.main.listen(to: buffer) { result in
+//                        print(result)
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
+    //MARK: - deinit
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     
@@ -465,7 +489,7 @@ extension ExerciseQueueController: UITableViewDelegate, UITableViewDataSource {
         //stop current exerciser audio and play selected one
         AudioManager.shared.stopAudio()
         
-        AudioManager.shared.insert(audio: exerciseModel!.dataBase[exerciseModel!.currentExercise].audioGuides?[0]) {
+        AudioManager.shared.insert(audio: audioGuide) {
             AudioManager.shared.playAudio()
         }
     }
