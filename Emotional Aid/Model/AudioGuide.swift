@@ -11,8 +11,14 @@ class AudioGuide {
     var positive: URL?
     var negative: URL?
     
-    init(positive: URL?, negative: URL? = nil) {
+    var part2: URL? = nil
+    var part3: URL? = nil
+    
+    init(positive: URL?, negative: URL? = nil, part2: URL? = nil, part3: URL? = nil) {
         self.positive = positive
         self.negative = negative
+        
+        self.part2 = part2
+        self.part3 = part3
     }
 }

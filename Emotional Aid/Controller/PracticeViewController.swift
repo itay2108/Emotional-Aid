@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import AVFoundation
 
 class PracticeViewController: UIViewController {
     
@@ -477,7 +476,7 @@ class PracticeViewController: UIViewController {
     
     @objc func goBackwardsButtonPressed() {
         
-        let isPlayerInitiallyPaused = AudioManager.shared.playbackState == .paused ? true : false
+        let isPlayerInitiallyPaused = AudioManager.shared.playbackState == .paused || AudioManager.shared.playbackState == .ready ? true : false
         
         if AudioManager.shared.playerTime() < 2 && exerciseModel.currentExercise != 0 && exerciseModel.currentExercise > 0 {
             
@@ -492,6 +491,7 @@ class PracticeViewController: UIViewController {
             AudioManager.shared.rewindAudio()
         }
         
+        print(isPlayerInitiallyPaused)
         if !isPlayerInitiallyPaused { AudioManager.shared.playAudio() }
         
     }
@@ -519,12 +519,15 @@ class PracticeViewController: UIViewController {
     
     @objc func goForwardButtonPressed() {
         
+        let firstScore = personality.practiceScores.first
+        let lastScore = personality.practiceScores.last
+        
         if exerciseModel.currentExercise < exerciseModel.dataBase.count - 1 {
             setNextExercise()
         } else /* If it is the last exercise - show success or fail according to scores */{
             if let finishCondition = checkForFinishCondition(with: personality.practiceScores) {
                 if isFinishWithSuccess(with: finishCondition) {
-                    self.navigationController?.pushViewController(SuccessViewController(success: finishCondition), animated: true)
+                    self.navigationController?.pushViewController(SuccessViewController(success: finishCondition, first: firstScore ?? nil, lastScore: lastScore ?? nil), animated: true)
                 } else {
                     self.navigationController?.pushViewController(FailViewController(fail: finishCondition), animated: true)
                 }

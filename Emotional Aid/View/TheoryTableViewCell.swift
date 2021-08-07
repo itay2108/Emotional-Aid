@@ -56,6 +56,7 @@ class TheoryTableViewCell: UITableViewCell {
     
     private lazy var tapGR: UITapGestureRecognizer = {
         let gr = UITapGestureRecognizer()
+        gr.cancelsTouchesInView = false
         gr.addTarget(self, action: #selector(handleTaps(_:)))
         return gr
     }()
@@ -161,8 +162,15 @@ class TheoryTableViewCell: UITableViewCell {
     
     func setCell(with data: TheoryVideo, index: Int) {
         self.videoTitle.text = data.title
-        self.videoDescription.text = data.description
-        self.videoThumb.image = data.thumb
+        self.videoDescription.text = data.subtitle
+        
+        if let thumbURL = data.thumbURL {
+            if let imageData: NSData = NSData(contentsOf: thumbURL) {
+                        self.videoThumb.image = UIImage(data: imageData as Data)
+                    }
+        }
+        
+        
         self.indexBadge.indexLabel.text = String(index+1)
         
         setNeedsLayout()
@@ -171,14 +179,12 @@ class TheoryTableViewCell: UITableViewCell {
     @objc private func handleTaps(_ gestureRecognizer: UITapGestureRecognizer) {
         //recognize taps and tint cell accordingly
         if gestureRecognizer.state == .recognized {
-            print("Tap began")
             mainContainer.backgroundColor = UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1)
         }
         
         if gestureRecognizer.state == .ended || gestureRecognizer.state == .cancelled {
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
-                print("Tap ended")
                 self.mainContainer.backgroundColor = .white
             }
         }

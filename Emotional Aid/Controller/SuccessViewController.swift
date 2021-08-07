@@ -10,6 +10,8 @@ import SnapKit
 
 class SuccessViewController: UIViewController {
     
+    var firstScore: Int?
+    var lastScore: Int?
     var finishCondition: FinishCondition
     
     private lazy var navContainer: UIView  = {
@@ -50,7 +52,7 @@ class SuccessViewController: UIViewController {
         label.contentMode = .topLeft
         label.textAlignment = .center
         label.sizeToFit()
-        label.text = K.text.successDescription
+        label.text = K.text.successDescriptionA
         return label
     }()
     
@@ -149,7 +151,7 @@ class SuccessViewController: UIViewController {
             successDescription.text = K.text.successBecameNegativeDescription
         case .success:
             mainArtwork.image = K.uikit.successArt
-            successDescription.text = K.text.successDescription
+            successDescription.text = "\(K.text.successDescriptionA)\(String(describing: firstScore))\(K.text.successDescriptionB)\(String(describing: lastScore))\(K.text.successDescriptionC)"
         default:
             mainArtwork.image = K.uikit.successArt
             successDescription.text = ""
@@ -164,8 +166,10 @@ class SuccessViewController: UIViewController {
     
     //MARK: - inits
     
-    init(success reason: FinishCondition) {
+    init(success reason: FinishCondition, first score: Int? = nil, lastScore: Int? = nil) {
         self.finishCondition = reason
+        self.firstScore = score
+        self.lastScore = lastScore
         super.init(nibName: nil, bundle: nil)
     }
     

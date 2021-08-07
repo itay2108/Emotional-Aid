@@ -44,7 +44,7 @@ class ExerciseModel {
                     isSliderPresent: false,
                     theWhat: "Ощутите ваши точки соприкосновения с полом, спинкой стула, поверхностью стула или кровати (если вы лежите). Почувствуйте их. Напрягите их / Расслабьте их поочередно. Примите положение, которое тело будет более энергичным, готовым к действию / Примите положение более умиротворенное.",
                     theWhy: "Наша поза является основополагающим источником команд для мозга, потому что в зависимости от позы активируется центр давления. Мозг в зависимости от позы понимает - регулировать тебя вверх или вниз. Если мы напрягаем или, наоборот, расслабляем те зоны тела, которые контактируют со стулом или с диваном для того, чтобы тело приняло позу большей собранности, готовности к действию или наоборот расслабленности и транслировало этот сигнал мозгу. Одна только смена позы переводит нас в другое состояние, потому что тело дает команду мозгу, хотя еще недавно мы этого не знали. ",
-                    audioGuide: AudioGuide(positive: K.audio.lesson1)
+                    audioGuide: AudioGuide(positive: K.audio.lesson1, negative: K.audio.lesson1Negative)
         ),
         //5
         Exercise(   title: "butterfly hug",
@@ -53,7 +53,7 @@ class ExerciseModel {
                     isSliderPresent: false,
                     theWhat: "Дышите 1 к 1, сколько длится вдох, столько должен длиться выдох. Если +: дышите постепенно приближаясь к точке, чтобы вдох длился вдвое короче выдоха.",
                     theWhy: "Если -: дышим в пропорции 1к1. Это чуть увеличивает количество поступаемого кислорода в кровь и помогает выводить мозг из режима стоп-крана. Если +: с помощью дыхания 1 к 2 мы уменьшаем количество поступаемого в кровь кислорода и активируем вагальный тормоз и снижаем частоту сердечных сокращений. Возвращаемся из гиперактивации в окно толерантности.",
-                    audioGuide: AudioGuide(positive: K.audio.lesson1)
+                    audioGuide: AudioGuide(positive: K.audio.lesson1, negative: K.audio.lesson1Negative)
         ),
         //6
         Exercise(   title: "руки на бёдрах",
@@ -71,7 +71,7 @@ class ExerciseModel {
                     isSliderPresent: false,
                     theWhat: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus.",
                     theWhy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus. Nulla porta risus quis mi ultricies, ut gravida nulla pharetra. Donec id nunc non dolor maximus luctus. Cras id leo sed lacus pretium pretium. Aenean commodo lectus sed hendrerit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus. Nulla porta risus quis mi ultricies, ut gravida nulla pharetra. Donec id nunc non dolor maximus luctus. Cras id leo sed lacus pretium pretium. Aenean commodo lectus sed hendrerit auctor.",
-                    audioGuide: AudioGuide(positive: K.audio.lesson1)
+                    audioGuide: AudioGuide(positive: K.audio.lesson1, negative: K.audio.lesson1Negative)
         ),
         //8
         Exercise(   title: "назовите состояние вашей нервной системы",

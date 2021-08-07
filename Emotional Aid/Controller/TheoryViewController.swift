@@ -6,8 +6,14 @@
 //
 
 import UIKit
+import AVKit
+import FirebaseStorage
 
-class TheoryViewController: UIViewController{
+class TheoryViewController: UIViewController {
+    
+    let storage = Storage.storage().reference()
+    
+    var videoPlayer: AVPlayer?
     
     private lazy var navContainer:  UIView      = {
         return Container()
@@ -51,6 +57,7 @@ class TheoryViewController: UIViewController{
         tableView.separatorColor = .clear
         tableView.showsVerticalScrollIndicator = false
         tableView.backgroundColor = .white
+        tableView.allowsSelection = true
         return tableView
     }()
     
@@ -116,6 +123,19 @@ class TheoryViewController: UIViewController{
         
         
     }
+    
+    //MARK: - video methods
+    
+    func videoPlayerVC(with url: URL?) -> AVPlayerViewController? {
+        guard let videoURL = url else { print("url is nil"); return nil }
+        
+        let vc = AVPlayerViewController()
+        videoPlayer = AVPlayer(url: videoURL)
+        
+        vc.player = videoPlayer
+        
+        return vc
+    }
 }
 
 extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
@@ -156,7 +176,15 @@ extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let firVidURL = "https://firebasestorage.googleapis.com/v0/b/emotional-aid.appspot.com/o/videoplayback.mp4?alt=media&token=d1a16b07-aaac-42eb-8634-28d6f52757b8"
+        if let destination = videoPlayerVC(with: URL(string: firVidURL)) {
+            present(destination, animated: true) {
+                destination.player?.play()
+            }
+        }
+        
+    }
     
 
     

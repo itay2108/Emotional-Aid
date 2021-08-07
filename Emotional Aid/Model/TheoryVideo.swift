@@ -7,16 +7,18 @@
 
 import UIKit
 
-class TheoryVideo {
+class TheoryVideo: NSObject {
     
-    var title: String
-    var description: String
-    
-    var thumb: UIImage?
-    
-    init(title: String = "Video Title", description: String = "The quick brown fox jumps over the lazy dog./nThe quick brown fox jumps over the lazy dog.", thumb: UIImage? = nil) {
-        self.title = title
-        self.description = description
-        self.thumb = thumb
+    let url: URL?
+    let thumbURL: URL?
+    let title: String
+    let subtitle: String
+
+    init(url: URL?, thumbURL: URL?, title: String = "Video Title", subtitle: String = "Video description.") {
+      self.url = url
+      self.thumbURL = thumbURL
+      self.title = title
+      self.subtitle = subtitle
+      super.init()
     }
 }

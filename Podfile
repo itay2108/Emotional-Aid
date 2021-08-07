@@ -11,4 +11,8 @@ target 'Emotional Aid' do
  	pod 'SwiftFontName'
   pod 'Gifu'
   
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Storage'
+  
 end
