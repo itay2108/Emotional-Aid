@@ -192,14 +192,14 @@ class SignUpViewController: UIViewController {
     
     @objc private func handleAppleAuthButtonTapped(_ button: UIButton) {
         print("tap")
-        performSignIn()
+        performSignInWithApple()
     }
     
     //MARK: - auth methods
     
     fileprivate var currentNonce: String?
     
-    private func performSignIn() {
+    private func performSignInWithApple() {
         let request = createAppleIDRequest()
         let authController = ASAuthorizationController(authorizationRequests: [request])
         
