@@ -31,8 +31,19 @@
 		666DC78E2677C1F10074C6CB /* EASlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC78D2677C1F10074C6CB /* EASlider.swift */; };
 		666DC7902677C6750074C6CB /* ExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666DC78F2677C6750074C6CB /* ExerciseView.swift */; };
 		6683B4F226BE8BFC00225BF6 /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6683B4F126BE8BFC00225BF6 /* AuthButton.swift */; };
-		6683B4F426BE8D8D00225BF6 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6683B4F326BE8D8D00225BF6 /* SignUpViewController.swift */; };
+		6683B4F426BE8D8D00225BF6 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6683B4F326BE8D8D00225BF6 /* AuthViewController.swift */; };
 		6683B4F626BEC17F00225BF6 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6683B4F526BEC17F00225BF6 /* AuthManager.swift */; };
+		668E315126C05FB400CFE274 /* videoLesson1Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 668E315026C05FB400CFE274 /* videoLesson1Thumb.png */; };
+		668E315326C0600C00CFE274 /* videoLesson2Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 668E315226C0600C00CFE274 /* videoLesson2Thumb.png */; };
+		668E315526C0604100CFE274 /* videoLesson3Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 668E315426C0604100CFE274 /* videoLesson3Thumb.png */; };
+		668E315726C060CB00CFE274 /* videoLesson4Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 668E315626C060CB00CFE274 /* videoLesson4Thumb.png */; };
+		668E315926C060F300CFE274 /* videoLesson5Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 668E315826C060F200CFE274 /* videoLesson5Thumb.png */; };
+		668E315B26C0611500CFE274 /* videoLesson6Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 668E315A26C0611500CFE274 /* videoLesson6Thumb.png */; };
+		668E315D26C0613F00CFE274 /* videoLesson7Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 668E315C26C0613F00CFE274 /* videoLesson7Thumb.png */; };
+		668E315F26C06B6800CFE274 /* EmailAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E315E26C06B6800CFE274 /* EmailAuthViewController.swift */; };
+		668E316226C103C300CFE274 /* EAValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E316126C103C300CFE274 /* EAValidationView.swift */; };
+		668E316426C15C7100CFE274 /* SignInTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E316326C15C7100CFE274 /* SignInTextField.swift */; };
+		668E316626C1681F00CFE274 /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668E316526C1681F00CFE274 /* AuthState.swift */; };
 		669ADB9E26863B8800070CEE /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669ADB9D26863B8800070CEE /* MainTabBarController.swift */; };
 		669ADBA026863C8900070CEE /* TheoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669ADB9F26863C8900070CEE /* TheoryViewController.swift */; };
 		66B9A03E268F697D005E827B /* relax.gif in Resources */ = {isa = PBXBuildFile; fileRef = 66B9A03D268F697D005E827B /* relax.gif */; };
@@ -53,8 +64,6 @@
 		66CDA0D326B48AF5003FD85E /* AudioGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDA0D226B48AF5003FD85E /* AudioGuide.swift */; };
 		66CDA0D526B55524003FD85E /* lessonNegative.wav in Resources */ = {isa = PBXBuildFile; fileRef = 66CDA0D426B55524003FD85E /* lessonNegative.wav */; };
 		66CDA0D926B58B67003FD85E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66CDA0D826B58B67003FD85E /* GoogleService-Info.plist */; };
-		66CDA0DC26B59302003FD85E /* theory1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 66CDA0DB26B59302003FD85E /* theory1.mp4 */; };
-		66CDA0E126B7105C003FD85E /* videoLesson1Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 66CDA0E026B7105C003FD85E /* videoLesson1Thumb.png */; };
 		66E88B3A26874CD000412FB5 /* Ubuntu-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */; };
 		B8DCC5B228FAC621B37BB781 /* Pods_Emotional_Aid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */; };
 /* End PBXBuildFile section */
@@ -88,9 +97,20 @@
 		666DC78D2677C1F10074C6CB /* EASlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EASlider.swift; sourceTree = "<group>"; };
 		666DC78F2677C6750074C6CB /* ExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseView.swift; sourceTree = "<group>"; };
 		6683B4F126BE8BFC00225BF6 /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
-		6683B4F326BE8D8D00225BF6 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		6683B4F326BE8D8D00225BF6 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		6683B4F526BEC17F00225BF6 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		6683B4F726BEF88B00225BF6 /* Emotional Aid.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Emotional Aid.entitlements"; sourceTree = "<group>"; };
+		668E315026C05FB400CFE274 /* videoLesson1Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoLesson1Thumb.png; sourceTree = "<group>"; };
+		668E315226C0600C00CFE274 /* videoLesson2Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoLesson2Thumb.png; sourceTree = "<group>"; };
+		668E315426C0604100CFE274 /* videoLesson3Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoLesson3Thumb.png; sourceTree = "<group>"; };
+		668E315626C060CB00CFE274 /* videoLesson4Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoLesson4Thumb.png; sourceTree = "<group>"; };
+		668E315826C060F200CFE274 /* videoLesson5Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoLesson5Thumb.png; sourceTree = "<group>"; };
+		668E315A26C0611500CFE274 /* videoLesson6Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoLesson6Thumb.png; sourceTree = "<group>"; };
+		668E315C26C0613F00CFE274 /* videoLesson7Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoLesson7Thumb.png; sourceTree = "<group>"; };
+		668E315E26C06B6800CFE274 /* EmailAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthViewController.swift; sourceTree = "<group>"; };
+		668E316126C103C300CFE274 /* EAValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EAValidationView.swift; sourceTree = "<group>"; };
+		668E316326C15C7100CFE274 /* SignInTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTextField.swift; sourceTree = "<group>"; };
+		668E316526C1681F00CFE274 /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		669ADB9D26863B8800070CEE /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		669ADB9F26863C8900070CEE /* TheoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoryViewController.swift; sourceTree = "<group>"; };
 		66B9A03D268F697D005E827B /* relax.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = relax.gif; sourceTree = "<group>"; };
@@ -111,8 +131,6 @@
 		66CDA0D226B48AF5003FD85E /* AudioGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioGuide.swift; sourceTree = "<group>"; };
 		66CDA0D426B55524003FD85E /* lessonNegative.wav */ = {isa = PBXFileReference; explicitFileType = audio.wav; name = lessonNegative.wav; path = "Emotional Aid/Assets/Sounds/lessonNegative.wav"; sourceTree = SOURCE_ROOT; };
 		66CDA0D826B58B67003FD85E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		66CDA0DB26B59302003FD85E /* theory1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = theory1.mp4; path = "Emotional Aid/Assets/Videos/theory1.mp4"; sourceTree = SOURCE_ROOT; };
-		66CDA0E026B7105C003FD85E /* videoLesson1Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videoLesson1Thumb.png; sourceTree = "<group>"; };
 		66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Light.ttf"; sourceTree = "<group>"; };
 		E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emotional_Aid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -192,13 +210,13 @@
 			isa = PBXGroup;
 			children = (
 				666DC78926775FFC0074C6CB /* Navigation */,
+				668E316026C06B6F00CFE274 /* Auth */,
 				669ADB9F26863C8900070CEE /* TheoryViewController.swift */,
 				66644600267670E5008A9545 /* MainViewController.swift */,
 				666DC78526775F200074C6CB /* PracticeViewController.swift */,
 				66B9A04126921544005E827B /* ExerciseQueueController.swift */,
 				66CDA0CC26AB0B11003FD85E /* SuccessViewController.swift */,
 				66CDA0CE26AC25D5003FD85E /* FailViewController.swift */,
-				6683B4F326BE8D8D00225BF6 /* SignUpViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -219,12 +237,14 @@
 			children = (
 				6683B4F126BE8BFC00225BF6 /* AuthButton.swift */,
 				666DC78D2677C1F10074C6CB /* EASlider.swift */,
+				668E316126C103C300CFE274 /* EAValidationView.swift */,
 				666DC78F2677C6750074C6CB /* ExerciseView.swift */,
+				66B9A04926938708005E827B /* ExerciseQueueTableViewCell.swift */,
+				66B9A04F269770DB005E827B /* MediaButton.swift */,
+				668E316326C15C7100CFE274 /* SignInTextField.swift */,
 				666DC78026773E7D0074C6CB /* SOSButton.swift */,
 				660AC53F2687B1B5003865D2 /* TheoryTableViewCell.swift */,
 				660AC5412687BBD5003865D2 /* VideoCellIndexBadge.swift */,
-				66B9A04926938708005E827B /* ExerciseQueueTableViewCell.swift */,
-				66B9A04F269770DB005E827B /* MediaButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -244,6 +264,7 @@
 				66CDA0D226B48AF5003FD85E /* AudioGuide.swift */,
 				66B9A05B2698C49E005E827B /* AudioManager.swift */,
 				6683B4F526BEC17F00225BF6 /* AuthManager.swift */,
+				668E316526C1681F00CFE274 /* AuthState.swift */,
 				666DC78A2677C0320074C6CB /* Exercise.swift */,
 				66B9A03F268F73D7005E827B /* ExerciseModel.swift */,
 				66B9A05126977606005E827B /* ExerciseSelectorDelegate.swift */,
@@ -254,6 +275,15 @@
 				660AC5452688B61F003865D2 /* TheoryVideoDB.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		668E316026C06B6F00CFE274 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				6683B4F326BE8D8D00225BF6 /* AuthViewController.swift */,
+				668E315E26C06B6800CFE274 /* EmailAuthViewController.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		66B9A03C268F6968005E827B /* Exercise Animations */ = {
@@ -271,7 +301,6 @@
 				666DC77B2676A1C50074C6CB /* Fonts */,
 				66B9A0582698B0E9005E827B /* Sounds */,
 				66CDA0DF26B71017003FD85E /* Thumbnails */,
-				66CDA0DA26B592E9003FD85E /* Videos */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -285,18 +314,16 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
-		66CDA0DA26B592E9003FD85E /* Videos */ = {
-			isa = PBXGroup;
-			children = (
-				66CDA0DB26B59302003FD85E /* theory1.mp4 */,
-			);
-			path = Videos;
-			sourceTree = "<group>";
-		};
 		66CDA0DF26B71017003FD85E /* Thumbnails */ = {
 			isa = PBXGroup;
 			children = (
-				66CDA0E026B7105C003FD85E /* videoLesson1Thumb.png */,
+				668E315026C05FB400CFE274 /* videoLesson1Thumb.png */,
+				668E315226C0600C00CFE274 /* videoLesson2Thumb.png */,
+				668E315426C0604100CFE274 /* videoLesson3Thumb.png */,
+				668E315626C060CB00CFE274 /* videoLesson4Thumb.png */,
+				668E315826C060F200CFE274 /* videoLesson5Thumb.png */,
+				668E315A26C0611500CFE274 /* videoLesson6Thumb.png */,
+				668E315C26C0613F00CFE274 /* videoLesson7Thumb.png */,
 			);
 			path = Thumbnails;
 			sourceTree = "<group>";
@@ -373,12 +400,17 @@
 				666DC77F26773A0A0074C6CB /* Ubuntu-Regular.ttf in Resources */,
 				66B9A03E268F697D005E827B /* relax.gif in Resources */,
 				66B9A05D2698D9AB005E827B /* lesson.wav in Resources */,
-				66CDA0E126B7105C003FD85E /* videoLesson1Thumb.png in Resources */,
 				66B9A0542697822B005E827B /* Ubuntu-Medium.ttf in Resources */,
+				668E315326C0600C00CFE274 /* videoLesson2Thumb.png in Resources */,
+				668E315126C05FB400CFE274 /* videoLesson1Thumb.png in Resources */,
 				666DC7792676A1B60074C6CB /* Neucha-Regular.ttf in Resources */,
 				66E88B3A26874CD000412FB5 /* Ubuntu-Light.ttf in Resources */,
+				668E315526C0604100CFE274 /* videoLesson3Thumb.png in Resources */,
 				66644609267670E8008A9545 /* LaunchScreen.storyboard in Resources */,
-				66CDA0DC26B59302003FD85E /* theory1.mp4 in Resources */,
+				668E315926C060F300CFE274 /* videoLesson5Thumb.png in Resources */,
+				668E315726C060CB00CFE274 /* videoLesson4Thumb.png in Resources */,
+				668E315B26C0611500CFE274 /* videoLesson6Thumb.png in Resources */,
+				668E315D26C0613F00CFE274 /* videoLesson7Thumb.png in Resources */,
 				66CDA0D526B55524003FD85E /* lessonNegative.wav in Resources */,
 				66644606267670E8008A9545 /* Assets.xcassets in Resources */,
 			);
@@ -451,6 +483,7 @@
 				66CDA0CF26AC25D5003FD85E /* FailViewController.swift in Sources */,
 				666DC78126773E7D0074C6CB /* SOSButton.swift in Sources */,
 				666DC775267693180074C6CB /* Container.swift in Sources */,
+				668E316626C1681F00CFE274 /* AuthState.swift in Sources */,
 				66CDA0CD26AB0B11003FD85E /* SuccessViewController.swift in Sources */,
 				666DC78B2677C0320074C6CB /* Exercise.swift in Sources */,
 				666DC78426774E780074C6CB /* K.swift in Sources */,
@@ -464,12 +497,15 @@
 				666DC7902677C6750074C6CB /* ExerciseView.swift in Sources */,
 				666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */,
 				66CDA0D126B1CEBD003FD85E /* FinishCondition.swift in Sources */,
+				668E315F26C06B6800CFE274 /* EmailAuthViewController.swift in Sources */,
 				66B9A04426921ADD005E827B /* CardView.swift in Sources */,
+				668E316426C15C7100CFE274 /* SignInTextField.swift in Sources */,
 				66B9A05C2698C49E005E827B /* AudioManager.swift in Sources */,
 				66B9A0562698AC08005E827B /* Vibration.swift in Sources */,
 				6683B4F626BEC17F00225BF6 /* AuthManager.swift in Sources */,
 				66B9A040268F73D7005E827B /* ExerciseModel.swift in Sources */,
-				6683B4F426BE8D8D00225BF6 /* SignUpViewController.swift in Sources */,
+				668E316226C103C300CFE274 /* EAValidationView.swift in Sources */,
+				6683B4F426BE8D8D00225BF6 /* AuthViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

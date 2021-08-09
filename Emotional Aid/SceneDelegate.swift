@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
                 window = UIWindow(frame: windowScene.coordinateSpace.bounds)
                 window?.windowScene = windowScene
-                window?.rootViewController = Auth.auth().currentUser == nil ? SignUpViewController() : MainTabBarController()
+                window?.rootViewController = Auth.auth().currentUser == nil ? NavigationController(rootViewController: AuthViewController()) : MainTabBarController()
                 window?.makeKeyAndVisible()
     }
 

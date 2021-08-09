@@ -32,7 +32,6 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             OperationQueue.main.addOperation {
                 switch authStatus {
                 case .authorized:
-                    print("speech recognition authorized")
                     completion(true)
                 default:
                     print("speech recognition denied")

@@ -26,6 +26,10 @@ import UIKit
             static let demobar = UIImage(named: "bar_1")
             static let successArt = UIImage(named: "success-art")
             static let failArt = UIImage(named: "fail-art")
+            
+            static let lineScribble1 = UIImage(named: "line-scribble-1")
+            static let lineScribble2 = UIImage(named: "line-scribble-2")
+            static let lineScribble3 = UIImage(named: "line-scribble-3")
         }
         
         struct audio {
@@ -48,6 +52,19 @@ import UIKit
             static let successDescriptionC = ". Рады, что вам удалось приблизиться к балансу! С каждым разом ваша нервная система будет всё увереннее овладевать навыком саморегуляции. Если что, мы рядом!"
             
             static let authDescription = "Зарегистрируйтесь, чтобы получить возможность просматривать видеоматериалы, выполнять упражнения, редактировать личную информацию или назначать консультации."
+            
+            static let blankError = "Please enter"
+            static let tooShort = "too short"
+            static let nameRequirements = "Names must contain only letters of the alphabet"
+            static let emailRequirements = "Invalid email format"
+            static let passwordRequirements = "Passwords must be 4-32 characters long"
+            static let passwordContainsSpaces = "Passwords must not contain spaces"
+        }
+        
+        struct regEx {
+            static let name = "^(([a-zA-Z]){2,}(\\ {1}([a-zA-Z]){1,}){0,4}?){2,64}$"
+            static let email = "[a-zA-Z0-9._%+-]{1,64}\\@{1}[a-zA-Z0-9._%+-]{1,64}\\.{1}[a-zA-Z]{2,32}"
+            static let password = "^(?=.*[A-Za-z])[A-Za-z\\d@$!%*?&]{4,32}$"
         }
         
     }

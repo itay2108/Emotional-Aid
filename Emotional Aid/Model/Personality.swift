@@ -11,7 +11,7 @@ class Personality {
     
     static let main = Personality()
     
-    var gender: Sex = .male
+    var name: String = ""
     
     var emotionalState: EmotionalState = .neutral
     

@@ -20,7 +20,7 @@ class TheoryViewController: UIViewController {
     }()
     
     private lazy var profileButton: UIButton    = {
-       let button = UIButton()
+        let button = UIButton()
         button.backgroundColor = .clear
         button.setImage(UIImage(named: "profile-button"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
@@ -30,7 +30,7 @@ class TheoryViewController: UIViewController {
     }()
     
     private lazy var logo: UIImageView          = {
-       let view = UIImageView()
+        let view = UIImageView()
         view.image = UIImage(named: "logo")
         view.contentMode = .scaleAspectFit
         return view
@@ -48,7 +48,7 @@ class TheoryViewController: UIViewController {
     }()
     
     private lazy var videoTableView: UITableView = {
-       let tableView = UITableView()
+        let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(TheoryTableViewCell.self, forCellReuseIdentifier: "theoryCell")
@@ -68,7 +68,7 @@ class TheoryViewController: UIViewController {
         self.view.backgroundColor = .white
         // Do any additional setup after loading the view.
         setUpUI()
-
+        
     }
     
     func setUpUI() {
@@ -161,12 +161,12 @@ extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
         header.textLabel?.textColor = K.colors.appText
         
     }
-
-
+    
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 42 * heightModifier
     }
-
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UITableViewHeaderFooterView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.bounds.width, height: tableView.sectionHeaderHeight))
         view.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
@@ -175,17 +175,20 @@ extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
         return view
     }
     
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let firVidURL = "https://firebasestorage.googleapis.com/v0/b/emotional-aid.appspot.com/o/videoplayback.mp4?alt=media&token=d1a16b07-aaac-42eb-8634-28d6f52757b8"
-        if let destination = videoPlayerVC(with: URL(string: firVidURL)) {
+        
+        guard let url = videoDatabase.database[indexPath.row].url else { return }
+        print(url)
+        if let destination = videoPlayerVC(with: url) {
             present(destination, animated: true) {
                 destination.player?.play()
             }
         }
         
+        
     }
     
-
+    
     
 }

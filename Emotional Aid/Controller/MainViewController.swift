@@ -9,7 +9,8 @@ import UIKit
 import SnapKit
 
 class MainViewController: UIViewController {
-
+    
+    private var didLogPermissionResults: Bool = false
     
     private lazy var navContainer:  UIView      = {
         return Container()
@@ -86,9 +87,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setUpUI()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
+        
         SpeechRecognitionManager.main.authorizeSpeechRecognition { success in
             if success { print("speech recognition authorized") }
         }

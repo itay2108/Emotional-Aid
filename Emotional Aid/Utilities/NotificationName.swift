@@ -23,5 +23,9 @@ extension Notification.Name {
     static var exerciseSliderValueHasChanged: Notification.Name {
             return .init(rawValue: "exerciseSlider.valueHasChanged")
     }
+    
+    static var SignInTextFieldDidBeginEditing: Notification.Name {
+            return .init(rawValue: "signInTextField.didBeginEditing")
+    }
 
 }

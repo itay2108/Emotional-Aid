@@ -125,6 +125,21 @@ extension Date {
 
 extension UIViewController {
     
+    func setupToHideKeyboardOnTapOnView()
+        {
+            let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(UIViewController.dismissKeyboard))
+
+            tap.cancelsTouchesInView = false
+            self.view.addGestureRecognizer(tap)
+        }
+
+        @objc func dismissKeyboard()
+        {
+            self.view.endEditing(true)
+        }
+    
     var widthModifier: CGFloat {
         get {
             return self.view.frame.width / 375
@@ -257,6 +272,26 @@ extension Int {
         return r
     }
 
+}
+
+extension Array {
+    func allElementsAreNil() -> Bool {
+        var allNil: Bool = true
+        
+        for i in (self as [Any?]) {
+            if i != nil {
+                allNil = false
+            }
+        }
+        
+        return allNil
+    }
+}
+
+extension String {
+    func containsSpaces() -> Bool {
+        return(self.rangeOfCharacter(from: .whitespacesAndNewlines) != nil)
+    }
 }
 
 public enum direction: Int {
