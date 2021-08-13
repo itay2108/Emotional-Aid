@@ -292,6 +292,13 @@ extension String {
     func containsSpaces() -> Bool {
         return(self.rangeOfCharacter(from: .whitespacesAndNewlines) != nil)
     }
+    
+    func wordCount() -> Int {
+        let components = self.components(separatedBy: .whitespacesAndNewlines)
+        let words = components.filter { !$0.isEmpty }
+            
+        return words.count
+    }
 }
 
 public enum direction: Int {

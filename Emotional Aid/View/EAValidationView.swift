@@ -28,13 +28,20 @@ class EAValidationView: UIView {
                 
                 switch validationError {
                 case .leftBlank:
-                    errorLabel.text = K.text.blankError + " " + type.rawValue
+                    errorLabel.text = K.text.errorDescriptions.blankError + " " + type.rawValue
                 case .nameFormat:
-                    errorLabel.text = K.text.nameRequirements
+                    errorLabel.text = K.text.errorDescriptions.nameRequirements
                 case .emailFormat:
-                    errorLabel.text = K.text.emailRequirements
+                    errorLabel.text = K.text.errorDescriptions.emailRequirements
                 case .passWordLength:
-                    errorLabel.text = K.text.passwordRequirements
+                    errorLabel.text = K.text.errorDescriptions.passwordRequirements
+                
+                case .signInGeneric:
+                    errorLabel.text = K.text.errorDescriptions.signInGeneric
+                case .noSuchUser:
+                    errorLabel.text = K.text.errorDescriptions.noSuchUser
+                case .wrongPassword:
+                    errorLabel.text = K.text.errorDescriptions.wrongPassword
                 default:
                     errorLabel.text = "couldn't authenticate"
                 }
@@ -226,4 +233,8 @@ enum ValidationError {
     case emailFormat
     case passWordLength
     case containsSpaces
+    
+    case noSuchUser
+    case wrongPassword
+    case signInGeneric
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import MediaPlayer
+import AVKit
 
 class ExerciseQueueController: UIViewController {
     
@@ -62,6 +63,45 @@ class ExerciseQueueController: UIViewController {
         return tableView
     }()
     
+    lazy var audioProgressSlider: UISlider = {
+        let slider = UISlider()
+        slider.setThumbImage(UIImage(named: "slider-thumb-half-opaque-blue"), for: .normal)
+        slider.tintColor = K.colors.appBlue
+        
+        if AudioManager.shared.playbackState != .standby {
+            slider.maximumValue = Float(AudioManager.shared.player?.duration ?? 0)
+        }
+        
+        slider.value = Float(AudioManager.shared.playerTime())
+        slider.addTarget(self, action: #selector(handleAudioProgressSliderValueChanged(_:_:)), for: .valueChanged)
+        
+        return slider
+    }()
+    
+    lazy var currentAudioTimeLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.font = FontTypes.shared.ubuntu.withSize(11 * heightModifier)
+        label.textAlignment = .left
+        label.textColor = K.colors.appText?.withAlphaComponent(0.3)
+
+        label.text = "0:00"
+        
+        return label
+    }()
+    
+    lazy var timeLeftForAudioLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.font = FontTypes.shared.ubuntu.withSize(11 * heightModifier)
+        label.textAlignment = .right
+        label.textColor = K.colors.appText?.withAlphaComponent(0.3)
+
+        label.text = "0:00"
+        
+        return label
+    }()
+    
     private lazy var audioControlsSV: UIStackView = {
         let sv = UIStackView()
         sv.axis = .horizontal
@@ -104,50 +144,37 @@ class ExerciseQueueController: UIViewController {
         return button
     }()
     
+    lazy var minVolumeIndicator: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "speaker.fill")
+        view.tintColor = K.colors.appRed
+        view.contentMode = .scaleAspectFit
+        return view
+    }()
+    
     lazy var volumeSlider: MPVolumeView = {
         let slider = MPVolumeView()
-        slider.maximumVolumeSliderImage(for: .normal)
-        slider.showsVolumeSlider = true
-        return slider
-    }()
-    
-    lazy var audioProgressSlider: UISlider = {
-        let slider = UISlider()
-        slider.setThumbImage(UIImage(named: "slider-thumb-half-opaque-blue"), for: .normal)
-        slider.tintColor = K.colors.appBlue
         
-        if AudioManager.shared.playbackState != .standby {
-            slider.maximumValue = Float(AudioManager.shared.player?.duration ?? 0)
+        slider.showsVolumeSlider = true
+        slider.tintColor = K.colors.appRed
+        slider.setVolumeThumbImage(UIImage(named: "slider-thumb-half-opaque-blue")?.withTintColor(K.colors.appRed ?? .white, renderingMode: .alwaysTemplate), for: .normal)
+        
+        for view in slider.subviews {
+            if view.isKind(of: UIButton.self) {
+                view.frame.size.width = 0
+                view.isHidden = true
+            }
         }
         
-        slider.value = Float(AudioManager.shared.playerTime())
-        slider.addTarget(self, action: #selector(handleSliderValueChanged(_:_:)), for: .valueChanged)
-        
         return slider
     }()
     
-    lazy var currentAudioTimeLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 2
-        label.font = FontTypes.shared.ubuntu.withSize(11 * heightModifier)
-        label.textAlignment = .left
-        label.textColor = K.colors.appText?.withAlphaComponent(0.3)
-
-        label.text = "0:00"
-        
-        return label
-    }()
-    
-    lazy var timeLeftForAudioLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 2
-        label.font = FontTypes.shared.ubuntu.withSize(11 * heightModifier)
-        label.textAlignment = .right
-        label.textColor = K.colors.appText?.withAlphaComponent(0.3)
-
-        label.text = "0:00"
-        
-        return label
+    lazy var maxVolumeIndicator: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "speaker.wave.3.fill")
+        view.tintColor = K.colors.appRed
+        view.contentMode = .scaleAspectFit
+        return view
     }()
     
     override func viewDidLoad() {
@@ -195,7 +222,9 @@ class ExerciseQueueController: UIViewController {
         audioControlsSV.addArrangedSubview(playPauseButton)
         audioControlsSV.addArrangedSubview(goForwardButton)
         
+        view.addSubview(minVolumeIndicator)
         view.addSubview(volumeSlider)
+        view.addSubview(maxVolumeIndicator)
     }
     
     private func addConstraintsToSubviews() {
@@ -214,11 +243,27 @@ class ExerciseQueueController: UIViewController {
             make.height.equalTo(currentExerciseTitleLabel.font.pointSize.percentage(233))
         }
         
-        volumeSlider.snp.makeConstraints { make in
+        minVolumeIndicator.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(42 * widthModifier)
-            make.right.equalToSuperview().offset(-42 * widthModifier)
+            make.height.equalTo(18 * heightModifier)
+            make.width.equalTo(minVolumeIndicator.snp.height)
             make.bottom.equalToSuperview().offset(-(28 * heightModifier + safeAreaSize(from: .bottom)))
+            
+        }
+        
+        volumeSlider.snp.makeConstraints { make in
+            make.left.equalTo(minVolumeIndicator.snp.right).offset(14 * widthModifier)
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo(minVolumeIndicator).offset(-1)
             make.height.equalTo(16 * heightModifier)
+        }
+        
+        maxVolumeIndicator.snp.makeConstraints { make in
+            make.left.equalTo(volumeSlider.snp.right).offset(10 * widthModifier)
+            make.height.equalTo(18 * heightModifier)
+            make.width.equalTo(maxVolumeIndicator.snp.height).multipliedBy(1.5)
+            make.bottom.equalToSuperview().offset(-(28 * heightModifier + safeAreaSize(from: .bottom)))
+            
         }
         
         audioControlsSV.snp.makeConstraints { make in
@@ -378,7 +423,13 @@ class ExerciseQueueController: UIViewController {
 
     }
     
-    @objc func handleSliderValueChanged(_ slider: UISlider, _ event: UIEvent) {
+    @objc func handleVolumeSliderValueChanged(_ slider: UISlider, _ event: UIEvent) {
+        AudioManager.shared.player?.volume = AVAudioSession.sharedInstance().outputVolume * slider.value
+        
+
+    }
+    
+    @objc func handleAudioProgressSliderValueChanged(_ slider: UISlider, _ event: UIEvent) {
         
         let wasPlayingAudio = AudioManager.shared.playbackState == .playing ? true : false
         
@@ -421,6 +472,8 @@ class ExerciseQueueController: UIViewController {
         
 //        NotificationCenter.default.addObserver(self, selector: #selector(handleAudioBuffer(_:)), name: NSNotification.Name.audioEngineBufferReceived, object: nil)
     }
+    
+
     
     @objc private func handlePlaybackStateChange() {
         self.playPauseButton.playbackState = AudioManager.shared.playbackState

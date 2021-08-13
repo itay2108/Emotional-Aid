@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import PaddingLabel
 
 class PracticeViewController: UIViewController {
     
@@ -17,6 +18,8 @@ class PracticeViewController: UIViewController {
             return exerciseModel.dataBase[exerciseModel.currentExercise]
         }
     }
+    
+    var didSetSliderScoreInCurrentExercise: Bool = false
     
     var personality: Personality = Personality()
     
@@ -152,6 +155,20 @@ class PracticeViewController: UIViewController {
         
         button.addTarget(self, action: #selector(goBackwardsButtonPressed), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var errorLabel: PaddingLabel = {
+        let label = PaddingLabel()
+        label.backgroundColor = .darkGray
+        label.roundCorners(.allCorners, radius: label.topInset * 1.3)
+        label.font = FontTypes.shared.ubuntu.withSize(14 * heightModifier)
+        label.topInset = label.font.pointSize
+        label.bottomInset = label.font.pointSize
+        label.numberOfLines = 0
+        label.textColor = .white
+        label.textAlignment = .center
+        
+        return label
     }()
     
     private lazy var swipeLeftGR: UISwipeGestureRecognizer = {
@@ -325,6 +342,32 @@ class PracticeViewController: UIViewController {
         
     }
     
+    private func presentErrorToast(message: String, fadeOutAfter: Double? = nil) {
+        
+        Vibration.error.vibrate()
+        
+        view.addSubview(errorLabel)
+        errorLabel.text = message
+        errorLabel.alpha = 1
+        
+        errorLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(audioGuideBar.snp.top).offset(-16 * heightModifier)
+            make.left.equalToSuperview().offset(64 * widthModifier)
+            make.centerX.equalToSuperview()
+        }
+        
+        //if no specified fade out time - calculate fadeout time depending on average wpm (333) reading speed + 1 second until user sees message.
+        let fadeoutTime: Double = fadeOutAfter ?? Double(message.wordCount() / 6) + 1
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + fadeoutTime) {
+            UIView.animate(withDuration: 0.3) {
+                self.errorLabel.alpha = 0
+            } completion: { success in
+                self.errorLabel.removeFromSuperview()
+            }
+        }
+    }
+    
     //MARK: - Exercise Logic Methods
     
     func setExercise(toExercise index: Int) {
@@ -397,6 +440,8 @@ class PracticeViewController: UIViewController {
         exerciseModel.currentExercise += 1
         setExercise(toExercise: exerciseModel.currentExercise)
         
+        //if errorlabel is still shown when user fixes first slider score - hide it immediately
+        errorLabel.alpha = 0
     }
     
     func checkForFinishCondition(with scores: [Int?]) -> FinishCondition? {
@@ -424,7 +469,7 @@ class PracticeViewController: UIViewController {
     
     func attributedDescription(of exercise: Exercise, isDemo: Bool) -> NSAttributedString {
         //for layout convenience reasons - the description text will be designed in a single label with attributes.
-        //this method return the attributed text description according to if the demo label is on or not.
+        //this method returns the attributed text description according to if the demo label is on or not.
         //if demo mode is on, the text will be title + shortDesc + title + longDesc. if not - the text will only be shortDesc.
         //create attributes for headings and paragraph
         let headingAttr: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font : FontTypes.shared.h3.withSize(24), NSAttributedString.Key.foregroundColor : K.colors.appRed ?? .red]
@@ -435,9 +480,9 @@ class PracticeViewController: UIViewController {
         if let what = (personality.emotionalState == .negative && exercise.theWhatNegative != nil) ? exercise.theWhatNegative : exercise.theWhat,
            let why = (personality.emotionalState == .negative && exercise.theWhyNegative != nil) ? exercise.theWhyNegative : exercise.theWhy {
             
-            let shortDescTitle = NSMutableAttributedString(string: "The What\n\n", attributes: headingAttr)
+            let shortDescTitle = NSMutableAttributedString(string: "Как?\n\n", attributes: headingAttr)
             let shortDesctAttributed = NSMutableAttributedString(string: "\(what)\n", attributes: paragraphAttr)
-            let longDescTitle = NSMutableAttributedString(string: "\nThe Why\n\n", attributes: headingAttr)
+            let longDescTitle = NSMutableAttributedString(string: "\nПочему?\n\n", attributes: headingAttr)
             let descriptionAttributed = NSMutableAttributedString(string: why, attributes: paragraphAttr)
             
             if isDemo {
@@ -519,20 +564,44 @@ class PracticeViewController: UIViewController {
     
     @objc func goForwardButtonPressed() {
         
-        let firstScore = personality.practiceScores.first
-        let lastScore = personality.practiceScores.last
+        //if current exercise has slider and user did not set any value, add 0 to the scores array.
+        if exerciseModel.dataBase[exerciseModel.currentExercise].isSliderPresent && !didSetSliderScoreInCurrentExercise {
+            guard let scoreIndex = exerciseModel.dataBase[exerciseModel.currentExercise].scoreIndex else { print("exercise score index is nil"); return }
+            
+            //if were on 2nd or 3rd slider - set score according to last score. if were on first slider - set 0
+            let scoreToSet = scoreIndex > 0 ? personality.practiceScores[scoreIndex - 1] : 0
+            personality.practiceScores[scoreIndex] = scoreToSet
+        }
+        
+        //dont let user do the practice if he's in a relatively calm state.
+        if let firstScore = personality.practiceScores[0] {
+            if -3 <= firstScore && firstScore <= 3 {
+                presentErrorToast(message: "It seems that you are not in such a bad mood, as your score is \(firstScore). try using this section when you are higher that 5 or lower than -5")
+                return
+            }
+        }
         
         if exerciseModel.currentExercise < exerciseModel.dataBase.count - 1 {
+            //move to next exercise
             setNextExercise()
+            //reset did set slider score bool value
+            didSetSliderScoreInCurrentExercise = false
+            
         } else /* If it is the last exercise - show success or fail according to scores */{
+                        
+            let firstScore = personality.practiceScores.first
+            let lastScore = personality.practiceScores.last
+            
             if let finishCondition = checkForFinishCondition(with: personality.practiceScores) {
                 if isFinishWithSuccess(with: finishCondition) {
                     self.navigationController?.pushViewController(SuccessViewController(success: finishCondition, first: firstScore ?? nil, lastScore: lastScore ?? nil), animated: true)
                 } else {
                     self.navigationController?.pushViewController(FailViewController(fail: finishCondition), animated: true)
                 }
+            } else {
+                print("couldnt get finish condition, try checking scores array.")
             }
-            
+            print("scores:", personality.practiceScores)
         }
     }
     
@@ -590,6 +659,7 @@ class PracticeViewController: UIViewController {
                 personality.emotionalState = .neutral
             }
             
+            didSetSliderScoreInCurrentExercise = true
         }
     }
     

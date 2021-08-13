@@ -53,12 +53,19 @@ import UIKit
             
             static let authDescription = "Зарегистрируйтесь, чтобы получить возможность просматривать видеоматериалы, выполнять упражнения, редактировать личную информацию или назначать консультации."
             
-            static let blankError = "Please enter"
-            static let tooShort = "too short"
-            static let nameRequirements = "Names must contain only letters of the alphabet"
-            static let emailRequirements = "Invalid email format"
-            static let passwordRequirements = "Passwords must be 4-32 characters long"
-            static let passwordContainsSpaces = "Passwords must not contain spaces"
+            struct errorDescriptions {
+                static let blankError = "Please enter"
+                static let tooShort = "too short"
+                static let nameRequirements = "Names must contain only letters of the alphabet"
+                static let emailRequirements = "Invalid email format"
+                static let passwordRequirements = "Passwords must be 4-32 characters long"
+                static let passwordContainsSpaces = "Passwords must not contain spaces"
+                
+                static let signInGeneric = "Coldn't sign in - please try again"
+                static let noSuchUser = "We couldn't find a user with this email"
+                static let wrongPassword = "wrong password"
+            }
+
         }
         
         struct regEx {

@@ -77,6 +77,7 @@ class EmailAuthViewController: UIViewController {
         let view = EAValidationView()
         view.type = .password
         view.title.text = "Ваш пароль"
+        view.textField.isSecureTextEntry = true
         view.textField.delegate = self
         return view
     }()
@@ -289,7 +290,17 @@ class EmailAuthViewController: UIViewController {
                 if authResult?.user != nil {
                     self.didSignInWith(user: authResult!.user, present: MainTabBarController())
                 } else {
-                    if let error = error { print(error.localizedDescription)}
+                    if let signInError = error as NSError? {
+                        switch signInError.code {
+                        case 17009:
+                            self.passwordTextField.validationError = .wrongPassword
+                        case 17011:
+                            self.emailTextField.validationError = .noSuchUser
+                        default:
+                            self.passwordTextField.validationError = .signInGeneric
+                        }
+                        print(signInError)
+                    }
                 }
             }
         }
@@ -323,6 +334,10 @@ class EmailAuthViewController: UIViewController {
         if [nameTextField.validationError, emailTextField.validationError, passwordTextField.validationError].allElementsAreNil() {
             //SIGN IN HERE
             performAuth(withEmail: emailTextField.textField.text, password: passwordTextField.textField.text)
+            
+            if let userName = nameTextField.textField.text {
+                Personality.main.name = userName
+            }
         }
     }
     

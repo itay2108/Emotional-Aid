@@ -27,5 +27,9 @@ extension Notification.Name {
     static var SignInTextFieldDidBeginEditing: Notification.Name {
             return .init(rawValue: "signInTextField.didBeginEditing")
     }
+    
+    static var SystemVolumeDidChange: Notification.Name {
+            return .init("systemVolume.DidChange")
+    }
 
 }

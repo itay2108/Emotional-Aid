@@ -10,6 +10,7 @@ target 'Emotional Aid' do
   pod 'SnapKit'
  	pod 'SwiftFontName'
   pod 'Gifu'
+  pod 'PaddingLabel'
   
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'

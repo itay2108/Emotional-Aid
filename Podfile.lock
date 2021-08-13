@@ -116,6 +116,7 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - PaddingLabel (1.2)
   - PromisesObjC (1.2.12)
   - SnapKit (5.0.1)
   - SwiftFontName (4.0.0)
@@ -126,6 +127,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - Gifu
   - GoogleSignIn
+  - PaddingLabel
   - SnapKit
   - SwiftFontName
 
@@ -147,6 +149,7 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - nanopb
+    - PaddingLabel
     - PromisesObjC
     - SnapKit
     - SwiftFontName
@@ -168,10 +171,11 @@ SPEC CHECKSUMS:
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  PaddingLabel: 21ab5282c780366018b04c30e3920c2f55a2fd14
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftFontName: 08aaa0143dadc7753587c4317d9e8a5f2c2418b5
 
-PODFILE CHECKSUM: f695f91a68a25cb15cb0726cd7ca1928aeedf12e
+PODFILE CHECKSUM: dc0bef1bb8e240100e86d8c0fc74b143e27dc62b
 
 COCOAPODS: 1.10.1

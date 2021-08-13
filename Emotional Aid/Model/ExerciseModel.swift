@@ -24,6 +24,7 @@ class ExerciseModel {
         Exercise(   title: "где вы на шкале?",
                     isAnimationPresent: false,
                     isSliderPresent: true,
+                    scoreIndex: 0,
                     theWhat: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus.",
                     theWhy: "Когда вы оцениваете уровень своего стресса, вы учитесь, во-первых, отделять реальность от собственного состояния, во-вторых, развиваете навык интрацепции, в-третьих, сама попытка категоризировать уровень стресса уже его снижает",
                     audioGuide: AudioGuide(positive: K.audio.lesson1)
@@ -77,6 +78,7 @@ class ExerciseModel {
         Exercise(   title: "назовите состояние вашей нервной системы",
                     isAnimationPresent: false,
                     isSliderPresent: true,
+                    scoreIndex: 1,
                     theWhat: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus.",
                     theWhy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus. Nulla porta risus quis mi ultricies, ut gravida nulla pharetra. Donec id nunc non dolor maximus luctus. Cras id leo sed lacus pretium pretium. Aenean commodo lectus sed hendrerit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus. Nulla porta risus quis mi ultricies, ut gravida nulla pharetra. Donec id nunc non dolor maximus luctus. Cras id leo sed lacus pretium pretium. Aenean commodo lectus sed hendrerit auctor.",
                     audioGuide: AudioGuide(positive: K.audio.lesson1)
@@ -130,6 +132,7 @@ class ExerciseModel {
         Exercise(   title: "что изменилось в вашем состоянии?",
                     isAnimationPresent: false,
                     isSliderPresent: true,
+                    scoreIndex: 2,
                     theWhat: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus.",
                     theWhy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus. Nulla porta risus quis mi ultricies, ut gravida nulla pharetra. Donec id nunc non dolor maximus luctus. Cras id leo sed lacus pretium pretium. Aenean commodo lectus sed hendrerit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus auctor, magna ut laoreet vehicula, orci erat vestibulum arcu, at facilisis nibh lacus in purus. Nulla porta risus quis mi ultricies, ut gravida nulla pharetra. Donec id nunc non dolor maximus luctus. Cras id leo sed lacus pretium pretium. Aenean commodo lectus sed hendrerit auctor.",
                     audioGuide: AudioGuide(positive: K.audio.lesson1)

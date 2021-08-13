@@ -23,6 +23,8 @@ class TheoryTableViewCell: UITableViewCell {
        let view = UIImageView()
         view.backgroundColor = .lightGray
         view.roundCorners(.allCorners, radius: 10)
+        view.layer.borderWidth = 3
+        view.layer.borderColor = K.colors.appBlue?.cgColor
         return view
     }()
     
@@ -47,7 +49,7 @@ class TheoryTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = FontTypes.shared.ubuntuLight.withSize(11.6 * heightModifier)
         label.textColor = K.colors.appText
-        label.numberOfLines = 3
+        label.numberOfLines = 4
         label.contentMode = .topLeft
         label.sizeToFit()
         label.text = "This is a dummy/ndescription. It is/nused to test stuff."
@@ -118,7 +120,8 @@ class TheoryTableViewCell: UITableViewCell {
         
         videoThumb.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(16 * widthModifier)
-            make.top.equalToSuperview().offset(12 * heightModifier)
+//            make.top.equalToSuperview().offset(12 * heightModifier)
+            make.centerY.equalToSuperview().offset(-4)
             make.width.equalToSuperview().multipliedBy(0.4)
             make.height.equalTo(videoThumb.snp.width).multipliedBy(0.5625)
             

@@ -58,6 +58,7 @@ class TheoryViewController: UIViewController {
         tableView.showsVerticalScrollIndicator = false
         tableView.backgroundColor = .white
         tableView.allowsSelection = true
+        tableView.contentInset.bottom = 64 * heightModifier
         return tableView
     }()
     
@@ -148,9 +149,10 @@ extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.setCell(with: videoDatabase.database[indexPath.row], index: indexPath.row)
         
-        if indexPath.row == videoDatabase.database.count - 1 {
-            cell.cellSeparator.isHidden = true
-        }
+//        if indexPath.row == videoDatabase.database.count - 1 {
+//            print(indexPath.row, videoDatabase.database.count - 1)
+//            cell.cellSeparator.isHidden = true
+//        }
         
         return cell
     }

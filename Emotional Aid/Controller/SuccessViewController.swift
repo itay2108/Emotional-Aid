@@ -22,7 +22,7 @@ class SuccessViewController: UIViewController {
         let button = UIButton()
         button.setBackgroundImage(K.uikit.xButton?.withTintColor(.white), for: .normal)
         button.tintColor = .white
-        //button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(closeButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -159,8 +159,7 @@ class SuccessViewController: UIViewController {
     }
     
     //MARK: - button selectors
-    
-    @objc func handleCloseButtonTapped(_ button: UIButton) {
+    @objc func closeButtonPressed(_ button: UIButton) {
         self.navigationController?.popToRootViewController(animated: true)
     }
     

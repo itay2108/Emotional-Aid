@@ -21,7 +21,7 @@ class FailViewController: UIViewController {
         let button = UIButton()
         button.setBackgroundImage(K.uikit.xButton?.withTintColor(.white), for: .normal)
         button.tintColor = .white
-        //button.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(closeButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -100,9 +100,10 @@ class FailViewController: UIViewController {
         textView.font = FontTypes.shared.ubuntu.withSize(13 * heightModifier)
         textView.textColor = .white
         textView.backgroundColor = .clear
-        //        textView.backgroundColor = .black.withAlphaComponent(0.12)
-        //        textView.roundCorners(.allCorners, radius: 15)
+        textView.backgroundColor = .black.withAlphaComponent(0.12)
+        textView.roundCorners(.allCorners, radius: 15)
         textView.textAlignment = .center
+        textView.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
         textView.isScrollEnabled = true
         textView.text = K.text.failDidNotHelpDescription
         return textView
@@ -283,6 +284,10 @@ class FailViewController: UIViewController {
     }
     
     //MARK: - Button selectors
+    
+    @objc func closeButtonPressed(_ button: UIButton) {
+        self.navigationController?.popToRootViewController(animated: true)
+    }
     
     @objc func playPauseButtonPressed(_ button: MediaButton) {
         
