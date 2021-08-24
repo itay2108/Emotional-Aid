@@ -117,6 +117,8 @@ class FailViewController: UIViewController {
         button.titleLabel?.font = FontTypes.shared.h3.withSize(18 * heightModifier)
         button.titleLabel?.textSpacing(of: 1.3)
         button.setTitleColor(K.colors.appText, for: .normal)
+        
+        button.addTarget(self, action: #selector(consultButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -312,6 +314,12 @@ class FailViewController: UIViewController {
         }
     }
     
+    @objc private func consultButtonPressed(_ button: UIButton) {
+        let destination = ConsultationFormViewController()
+        destination.delegate = self
+        self.present(destination, animated: true)
+    }
+    
     //MARK: - inits
     
     init(fail reason: FinishCondition) {
@@ -323,7 +331,13 @@ class FailViewController: UIViewController {
         self.finishCondition = .failDidNotHelp
         super.init(coder: aDecoder)
     }
-    
+
+}
+
+extension FailViewController: ConsultationFormViewControllerDelegate {
+    func didSuccessfullySendRequest() {
+        self.navigationController?.popToRootViewController(animated: true)
+    }
     
     
 }

@@ -10,7 +10,24 @@ import SnapKit
 
 class EAValidationView: UIView {
     
-    var type: ValidationFieldContentType = .generic
+    var type: ValidationFieldContentType = .generic {
+        didSet {
+            switch type {
+            case .email:
+                textField.autocapitalizationType = .none
+                textField.keyboardType = .emailAddress
+            case .password:
+                textField.autocapitalizationType = .none
+            case .phone:
+                textField.keyboardType = .phonePad
+            case .name:
+                textField.autocapitalizationType = .words
+            default:
+                textField.keyboardType = .default
+                textField.autocapitalizationType = .sentences
+            }
+        }
+    }
     var mustHaveContent: Bool = true
     var spacesAllowed: Bool = true
     
@@ -35,11 +52,17 @@ class EAValidationView: UIView {
                     errorLabel.text = K.text.errorDescriptions.emailRequirements
                 case .passWordLength:
                     errorLabel.text = K.text.errorDescriptions.passwordRequirements
+                case .phoneFormat:
+                    errorLabel.text = K.text.errorDescriptions.phoneFormat
                 
                 case .signInGeneric:
                     errorLabel.text = K.text.errorDescriptions.signInGeneric
+                case .signUpGeneric:
+                    errorLabel.text = K.text.errorDescriptions.signUpGeneric
                 case .noSuchUser:
                     errorLabel.text = K.text.errorDescriptions.noSuchUser
+                case .usernameExists:
+                    errorLabel.text = K.text.errorDescriptions.usernameExists
                 case .wrongPassword:
                     errorLabel.text = K.text.errorDescriptions.wrongPassword
                 default:
@@ -72,6 +95,8 @@ class EAValidationView: UIView {
         tf.font = FontTypes.shared.ubuntu.withSize(16 * heightModifier)
         tf.textAlignment = .left
         tf.textColor = K.colors.appText
+        tf.spellCheckingType = .no
+    
         return tf
     }()
     
@@ -94,6 +119,8 @@ class EAValidationView: UIView {
         return view
     }()
     
+    //hidden views
+    
     lazy var errorLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -102,6 +129,8 @@ class EAValidationView: UIView {
         return label
     }()
     
+    
+
     private func setUpView() {
         addSubviews()
         addConstraintsToSubviews()
@@ -163,6 +192,8 @@ class EAValidationView: UIView {
                 if isValidEmail(text!) { return nil } else { return .emailFormat }
             case .password:
                 if isValidPassword(text!) { return nil } else { return .passWordLength }
+            case .phone:
+                if isValidPhone(text!) { return nil } else { return .phoneFormat}
             default:
                 return nil
             }
@@ -192,6 +223,13 @@ class EAValidationView: UIView {
         return passwordPred.evaluate(with: password)
     }
     
+    func isValidPhone(_ phone: String) -> Bool {
+        let phoneRegEx = K.regEx.phone
+        
+        let phonePred = NSPredicate(format: "SELF MATCHES %@", phoneRegEx)
+        return phonePred.evaluate(with: phone)
+    }
+    
     //MARK: - communication
     
     private func setUpObservers() {
@@ -218,6 +256,10 @@ class EAValidationView: UIView {
         setUpObservers()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
 }
 
 enum ValidationFieldContentType: String {
@@ -225,6 +267,7 @@ enum ValidationFieldContentType: String {
     case name = "a name"
     case email = "an email"
     case password = "a password"
+    case phone = "a phone number"
 }
 
 enum ValidationError {
@@ -233,8 +276,12 @@ enum ValidationError {
     case emailFormat
     case passWordLength
     case containsSpaces
+    case phoneFormat
     
     case noSuchUser
     case wrongPassword
     case signInGeneric
+    
+    case usernameExists
+    case signUpGeneric
 }

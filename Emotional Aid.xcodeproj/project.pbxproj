@@ -64,6 +64,12 @@
 		66CDA0D326B48AF5003FD85E /* AudioGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDA0D226B48AF5003FD85E /* AudioGuide.swift */; };
 		66CDA0D526B55524003FD85E /* lessonNegative.wav in Resources */ = {isa = PBXBuildFile; fileRef = 66CDA0D426B55524003FD85E /* lessonNegative.wav */; };
 		66CDA0D926B58B67003FD85E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66CDA0D826B58B67003FD85E /* GoogleService-Info.plist */; };
+		66DBAD9A26C7D0D9002817EA /* ConsultationFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DBAD9926C7D0D9002817EA /* ConsultationFormViewController.swift */; };
+		66DBAD9E26C806BB002817EA /* ConsultationFormViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DBAD9D26C806BB002817EA /* ConsultationFormViewControllerDelegate.swift */; };
+		66DBADA026CFE0A5002817EA /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DBAD9F26CFE0A5002817EA /* EmailVerificationViewController.swift */; };
+		66DBADA226D3A4BD002817EA /* 02.gif in Resources */ = {isa = PBXBuildFile; fileRef = 66DBADA126D3A4BD002817EA /* 02.gif */; };
+		66DBADA426D3A4C2002817EA /* 03.gif in Resources */ = {isa = PBXBuildFile; fileRef = 66DBADA326D3A4C1002817EA /* 03.gif */; };
+		66DBADA626D4386A002817EA /* EmailVerificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DBADA526D4386A002817EA /* EmailVerificationDelegate.swift */; };
 		66E88B3A26874CD000412FB5 /* Ubuntu-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */; };
 		B8DCC5B228FAC621B37BB781 /* Pods_Emotional_Aid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */; };
 /* End PBXBuildFile section */
@@ -131,6 +137,12 @@
 		66CDA0D226B48AF5003FD85E /* AudioGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioGuide.swift; sourceTree = "<group>"; };
 		66CDA0D426B55524003FD85E /* lessonNegative.wav */ = {isa = PBXFileReference; explicitFileType = audio.wav; name = lessonNegative.wav; path = "Emotional Aid/Assets/Sounds/lessonNegative.wav"; sourceTree = SOURCE_ROOT; };
 		66CDA0D826B58B67003FD85E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		66DBAD9926C7D0D9002817EA /* ConsultationFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultationFormViewController.swift; sourceTree = "<group>"; };
+		66DBAD9D26C806BB002817EA /* ConsultationFormViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultationFormViewControllerDelegate.swift; sourceTree = "<group>"; };
+		66DBAD9F26CFE0A5002817EA /* EmailVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewController.swift; sourceTree = "<group>"; };
+		66DBADA126D3A4BD002817EA /* 02.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 02.gif; sourceTree = "<group>"; };
+		66DBADA326D3A4C1002817EA /* 03.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 03.gif; sourceTree = "<group>"; };
+		66DBADA526D4386A002817EA /* EmailVerificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationDelegate.swift; sourceTree = "<group>"; };
 		66E88B3926874CD000412FB5 /* Ubuntu-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Light.ttf"; sourceTree = "<group>"; };
 		E38A2FCDB96F490F506B6E7A /* Pods_Emotional_Aid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emotional_Aid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -211,12 +223,13 @@
 			children = (
 				666DC78926775FFC0074C6CB /* Navigation */,
 				668E316026C06B6F00CFE274 /* Auth */,
-				669ADB9F26863C8900070CEE /* TheoryViewController.swift */,
+				66DBAD9926C7D0D9002817EA /* ConsultationFormViewController.swift */,
+				66B9A04126921544005E827B /* ExerciseQueueController.swift */,
+				66CDA0CE26AC25D5003FD85E /* FailViewController.swift */,
 				66644600267670E5008A9545 /* MainViewController.swift */,
 				666DC78526775F200074C6CB /* PracticeViewController.swift */,
-				66B9A04126921544005E827B /* ExerciseQueueController.swift */,
 				66CDA0CC26AB0B11003FD85E /* SuccessViewController.swift */,
-				66CDA0CE26AC25D5003FD85E /* FailViewController.swift */,
+				669ADB9F26863C8900070CEE /* TheoryViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -265,6 +278,8 @@
 				66B9A05B2698C49E005E827B /* AudioManager.swift */,
 				6683B4F526BEC17F00225BF6 /* AuthManager.swift */,
 				668E316526C1681F00CFE274 /* AuthState.swift */,
+				66DBAD9D26C806BB002817EA /* ConsultationFormViewControllerDelegate.swift */,
+				66DBADA526D4386A002817EA /* EmailVerificationDelegate.swift */,
 				666DC78A2677C0320074C6CB /* Exercise.swift */,
 				66B9A03F268F73D7005E827B /* ExerciseModel.swift */,
 				66B9A05126977606005E827B /* ExerciseSelectorDelegate.swift */,
@@ -282,6 +297,7 @@
 			children = (
 				6683B4F326BE8D8D00225BF6 /* AuthViewController.swift */,
 				668E315E26C06B6800CFE274 /* EmailAuthViewController.swift */,
+				66DBAD9F26CFE0A5002817EA /* EmailVerificationViewController.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -290,6 +306,8 @@
 			isa = PBXGroup;
 			children = (
 				66B9A03D268F697D005E827B /* relax.gif */,
+				66DBADA126D3A4BD002817EA /* 02.gif */,
+				66DBADA326D3A4C1002817EA /* 03.gif */,
 			);
 			path = "Exercise Animations";
 			sourceTree = "<group>";
@@ -406,10 +424,12 @@
 				666DC7792676A1B60074C6CB /* Neucha-Regular.ttf in Resources */,
 				66E88B3A26874CD000412FB5 /* Ubuntu-Light.ttf in Resources */,
 				668E315526C0604100CFE274 /* videoLesson3Thumb.png in Resources */,
+				66DBADA226D3A4BD002817EA /* 02.gif in Resources */,
 				66644609267670E8008A9545 /* LaunchScreen.storyboard in Resources */,
 				668E315926C060F300CFE274 /* videoLesson5Thumb.png in Resources */,
 				668E315726C060CB00CFE274 /* videoLesson4Thumb.png in Resources */,
 				668E315B26C0611500CFE274 /* videoLesson6Thumb.png in Resources */,
+				66DBADA426D3A4C2002817EA /* 03.gif in Resources */,
 				668E315D26C0613F00CFE274 /* videoLesson7Thumb.png in Resources */,
 				66CDA0D526B55524003FD85E /* lessonNegative.wav in Resources */,
 				66644606267670E8008A9545 /* Assets.xcassets in Resources */,
@@ -465,13 +485,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66DBAD9E26C806BB002817EA /* ConsultationFormViewControllerDelegate.swift in Sources */,
 				666DC77D2676A89B0074C6CB /* FontTypes.swift in Sources */,
 				6683B4F226BE8BFC00225BF6 /* AuthButton.swift in Sources */,
 				66B9A04226921544005E827B /* ExerciseQueueController.swift in Sources */,
+				66DBADA626D4386A002817EA /* EmailVerificationDelegate.swift in Sources */,
 				66644611267672A2008A9545 /* Extensions.swift in Sources */,
 				660AC5422687BBD5003865D2 /* VideoCellIndexBadge.swift in Sources */,
 				660AC5402687B1B5003865D2 /* TheoryTableViewCell.swift in Sources */,
 				669ADBA026863C8900070CEE /* TheoryViewController.swift in Sources */,
+				66DBAD9A26C7D0D9002817EA /* ConsultationFormViewController.swift in Sources */,
 				66644601267670E5008A9545 /* MainViewController.swift in Sources */,
 				660AC54426886AD1003865D2 /* TheoryVideo.swift in Sources */,
 				66B9A05226977606005E827B /* ExerciseSelectorDelegate.swift in Sources */,
@@ -505,6 +528,7 @@
 				6683B4F626BEC17F00225BF6 /* AuthManager.swift in Sources */,
 				66B9A040268F73D7005E827B /* ExerciseModel.swift in Sources */,
 				668E316226C103C300CFE274 /* EAValidationView.swift in Sources */,
+				66DBADA026CFE0A5002817EA /* EmailVerificationViewController.swift in Sources */,
 				6683B4F426BE8D8D00225BF6 /* AuthViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -444,17 +444,61 @@ class PracticeViewController: UIViewController {
         errorLabel.alpha = 0
     }
     
+    func nextExerciseLogic() {
+        
+        //if current exercise has slider and user did not set any value, add 0 to the scores array.
+        if exerciseModel.dataBase[exerciseModel.currentExercise].isSliderPresent && !didSetSliderScoreInCurrentExercise {
+            guard let scoreIndex = exerciseModel.dataBase[exerciseModel.currentExercise].scoreIndex else { print("exercise score index is nil"); return }
+            
+            //if were on 2nd or 3rd slider - set score according to last score. if were on first slider - set 0
+            let scoreToSet = scoreIndex > 0 ? personality.practiceScores[scoreIndex - 1] : 0
+            personality.practiceScores[scoreIndex] = scoreToSet
+        }
+        
+        //dont let user do the practice if he's in a relatively calm state.
+        if let firstScore = personality.practiceScores[0] {
+            if -3 <= firstScore && firstScore <= 3 {
+                presentErrorToast(message: "It seems that you are not in such a bad mood, as your score is \(firstScore). try using this section when you are higher that 5 or lower than -5")
+                return
+            }
+        }
+        
+        if exerciseModel.currentExercise < exerciseModel.dataBase.count - 1 {
+            //move to next exercise
+            setNextExercise()
+            self.exerciseView.scrollView.setContentOffset(.zero, animated: true)
+            //reset did set slider score bool value
+            didSetSliderScoreInCurrentExercise = false
+            
+        } else /* If it is the last exercise - show success or fail according to scores */{
+                        
+            let firstScore = personality.practiceScores.first
+            let lastScore = personality.practiceScores.last
+            
+            if let finishCondition = checkForFinishCondition(with: personality.practiceScores) {
+                if isFinishWithSuccess(with: finishCondition) {
+                    self.navigationController?.pushViewController(SuccessViewController(success: finishCondition, first: firstScore ?? nil, lastScore: lastScore ?? nil), animated: true)
+                } else {
+                    self.navigationController?.pushViewController(FailViewController(fail: finishCondition), animated: true)
+                }
+            } else {
+                print("couldnt get finish condition, try checking scores array.")
+            }
+            print("scores:", personality.practiceScores)
+        }
+    }
+    
     func checkForFinishCondition(with scores: [Int?]) -> FinishCondition? {
         if scores.contains(where: {$0 == nil}) { return nil }
         
         let firstScore: Int = scores.first!!
         let lastScore: Int = scores.last!!
         
-        if firstScore.isNegative() && lastScore.isPositive() && lastScore > 5 { return .warningBecamePositive }
-        else if firstScore.isPositive() && lastScore.isNegative() && lastScore < -5 { return .warningBecameNegative }
-        else if firstScore.isNegative() && lastScore.isPositive() && lastScore <= 5 { return .successBecamePositive }
-        else if firstScore.isPositive() && lastScore.isNegative() && lastScore >= -5 { return .successBecameNegative }
-        else if lastScore * firstScore > 0 && lastScore.magnitude - firstScore.magnitude < 1 { return .failDidNotHelp }
+        if firstScore.isNegative() && lastScore.isPositive() && lastScore > 4 { return .warningBecamePositive }
+        else if firstScore.isPositive() && lastScore.isNegative() && lastScore < -4 { return .warningBecameNegative }
+        else if firstScore.isNegative() && lastScore.isPositive() && lastScore <= 4 { return .successBecamePositive }
+        else if firstScore.isPositive() && lastScore.isNegative() && lastScore >= -4 { return .successBecameNegative }
+        else if lastScore * firstScore > 0 && lastScore.magnitude - firstScore.magnitude > 1 { return .failDidNotHelp }
         else { return .success }
         
     }
@@ -563,52 +607,14 @@ class PracticeViewController: UIViewController {
     }
     
     @objc func goForwardButtonPressed() {
+        nextExerciseLogic()
         
-        //if current exercise has slider and user did not set any value, add 0 to the scores array.
-        if exerciseModel.dataBase[exerciseModel.currentExercise].isSliderPresent && !didSetSliderScoreInCurrentExercise {
-            guard let scoreIndex = exerciseModel.dataBase[exerciseModel.currentExercise].scoreIndex else { print("exercise score index is nil"); return }
-            
-            //if were on 2nd or 3rd slider - set score according to last score. if were on first slider - set 0
-            let scoreToSet = scoreIndex > 0 ? personality.practiceScores[scoreIndex - 1] : 0
-            personality.practiceScores[scoreIndex] = scoreToSet
-        }
-        
-        //dont let user do the practice if he's in a relatively calm state.
-        if let firstScore = personality.practiceScores[0] {
-            if -3 <= firstScore && firstScore <= 3 {
-                presentErrorToast(message: "It seems that you are not in such a bad mood, as your score is \(firstScore). try using this section when you are higher that 5 or lower than -5")
-                return
-            }
-        }
-        
-        if exerciseModel.currentExercise < exerciseModel.dataBase.count - 1 {
-            //move to next exercise
-            setNextExercise()
-            //reset did set slider score bool value
-            didSetSliderScoreInCurrentExercise = false
-            
-        } else /* If it is the last exercise - show success or fail according to scores */{
-                        
-            let firstScore = personality.practiceScores.first
-            let lastScore = personality.practiceScores.last
-            
-            if let finishCondition = checkForFinishCondition(with: personality.practiceScores) {
-                if isFinishWithSuccess(with: finishCondition) {
-                    self.navigationController?.pushViewController(SuccessViewController(success: finishCondition, first: firstScore ?? nil, lastScore: lastScore ?? nil), animated: true)
-                } else {
-                    self.navigationController?.pushViewController(FailViewController(fail: finishCondition), animated: true)
-                }
-            } else {
-                print("couldnt get finish condition, try checking scores array.")
-            }
-            print("scores:", personality.practiceScores)
-        }
     }
     
     @objc func handleLeftSwipe(_ gr: UISwipeGestureRecognizer) {
         if gr.state == .ended && gr.state != .cancelled {
             Vibration.soft.vibrate()
-            setNextExercise()
+            nextExerciseLogic()
         }
     }
     
@@ -667,6 +673,9 @@ class PracticeViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        self.exerciseView.accessoryAnimation.image = nil
+        
+        self.exerciseView.removeFromSuperview()
     }
 }
 

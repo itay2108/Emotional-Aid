@@ -64,6 +64,8 @@ class SuccessViewController: UIViewController {
         button.titleLabel?.font = FontTypes.shared.h3.withSize(18 * heightModifier)
         button.titleLabel?.textSpacing(of: 1.3)
         button.setTitleColor(K.colors.appText, for: .normal)
+        
+        button.addTarget(self, action: #selector(consultButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -159,10 +161,16 @@ class SuccessViewController: UIViewController {
     }
     
     //MARK: - button selectors
+    
     @objc func closeButtonPressed(_ button: UIButton) {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
+    @objc private func consultButtonPressed(_ button: UIButton) {
+        let destination = ConsultationFormViewController()
+        destination.delegate = self
+        self.present(destination, animated: true)
+    }
     //MARK: - inits
     
     init(success reason: FinishCondition, first score: Int? = nil, lastScore: Int? = nil) {
@@ -175,5 +183,11 @@ class SuccessViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         self.finishCondition = .failDidNotHelp
         super.init(coder: aDecoder)
+    }
+}
+
+extension SuccessViewController: ConsultationFormViewControllerDelegate {
+    func didSuccessfullySendRequest() {
+        self.navigationController?.popToRootViewController(animated: true)
     }
 }

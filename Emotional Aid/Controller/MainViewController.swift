@@ -32,6 +32,8 @@ class MainViewController: UIViewController {
         button.titleLabel?.font = FontTypes.shared.h3
         button.titleLabel?.textColor = .white
         button.setBackgroundImage(UIImage(named: "button-md"), for: .normal)
+        
+        button.addTarget(self, action: #selector(consultButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -188,6 +190,11 @@ class MainViewController: UIViewController {
         
     }
     
+    //MARK: - selectors
+    
+    @objc private func consultButtonPressed(_ button: UIButton) {
+        self.present(ConsultationFormViewController(), animated: true)
+    }
     
     @objc func sosButtonPressed() {
         Vibration.soft.vibrate()

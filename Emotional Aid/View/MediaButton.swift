@@ -57,5 +57,9 @@ class MediaButton: UIButton {
         setNeedsLayout()
         setUpObservers()
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
 }

@@ -104,13 +104,16 @@ class AuthViewController: UIViewController {
         return button
     }()
     
-    private lazy var privacyDescription: UILabel = {
-        let label = UILabel()
+    private lazy var privacyDescription: UITextView = {
+        let label = UITextView()
         label.font = FontTypes.shared.ubuntuLight.withSize(11 * heightModifier)
-        label.numberOfLines = 2
+        label.backgroundColor = .white
         label.textAlignment = .center
         label.textColor = K.colors.appText
-        label.text = "By signing up, you agree to our Privacy policy and Terms & conditions"
+        label.tintColor = K.colors.appBlueDark
+        label.attributedText = K.text.privacyAndTermsDescription
+        label.isEditable = false
+        label.isScrollEnabled = false
         return label
     }()
 
@@ -177,7 +180,7 @@ class AuthViewController: UIViewController {
             make.centerX.equalToSuperview()
             
             if authState == .signUp {
-                make.height.equalTo(privacyDescription.font.pointSize.percentage(225))
+                make.height.equalTo(privacyDescription.font?.pointSize.percentage(400) ?? 48 * heightModifier)
             } else {
                 make.height.equalTo(0)
             }
@@ -226,7 +229,7 @@ class AuthViewController: UIViewController {
                     make.bottom.equalToSuperview().offset(-(self.view.safeAreaSize(from: .bottom) + (16 * self.heightModifier)))
                     make.left.equalToSuperview().offset(64 * self.widthModifier)
                     make.centerX.equalToSuperview()
-                    make.height.equalTo(self.privacyDescription.font.pointSize.percentage(225))
+                    make.height.equalTo(self.privacyDescription.font?.pointSize.percentage(400) ?? 48 * self.heightModifier)
                 }
                 
             } else if self.authState == .signIn {

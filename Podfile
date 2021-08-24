@@ -11,6 +11,8 @@ target 'Emotional Aid' do
  	pod 'SwiftFontName'
   pod 'Gifu'
   pod 'PaddingLabel'
+  pod 'IQKeyboardManager'
+  pod 'IQKeyboardManagerSwift'
   
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'

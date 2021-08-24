@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Darwin
+import FirebaseAuth
 
 public extension UIView {
     
