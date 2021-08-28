@@ -51,6 +51,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
     
     func playAudio() {
         guard player != nil && player?.url != nil else { print("can't play audio - player is nil"); return }
+        if playbackState == .playing { print("player is already playing"); return }
         player!.play()
         playbackState = .playing
     }
@@ -64,12 +65,14 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
     
     func pauseAudio() {
         guard player != nil && player?.url != nil else { print("can't pause audio - player is nil"); return }
+        if playbackState == .paused { print("player is already paused"); return }
         player!.pause()
         playbackState = .paused
     }
     
     func stopAudio() {
         guard player != nil && player?.url != nil else { print("can't stop audio - player is nil"); return }
+        if playbackState == .standby { print("player is already stopped"); return }
         player!.stop()
         playbackState = .standby
     }
@@ -98,6 +101,10 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
     
     private var audioEngine: AVAudioEngine?
     
+    var audioEngineMaxAllowedTimeActive = 10
+    
+    var timer: Timer?
+    
     func requestMicrophoneUsage(completion: ((_ success: Bool) -> Void)?) {
         AVAudioSession.sharedInstance().requestRecordPermission { success in
             guard completion != nil else { return }
@@ -118,7 +125,15 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         
         let recordingFormat = audioEngine!.inputNode.outputFormat(forBus: 0)
         audioEngine!.inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-            NotificationCenter.default.post(name: NSNotification.Name.audioEngineBufferReceived, object: nil, userInfo: ["buffer" : buffer])
+            if !SpeechRecognitionManager.main.isRecognizerActive {
+                SpeechRecognitionManager.main.initiate(language: .russian) { success in
+                    if success {
+                        SpeechRecognitionManager.main.listen(to: buffer)
+                    }
+                }
+            }
+
+            SpeechRecognitionManager.main.recognitionRequest?.append(buffer)
         }
 
         audioEngine?.prepare()
@@ -128,8 +143,21 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
     }
     
     func startAudioEngine() {
+        guard audioEngine != nil,
+              !audioEngine!.isRunning
+        else { return }
+        
         do {
             try audioEngine?.start()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(audioEngineMaxAllowedTimeActive)) {
+                if let engine = self.audioEngine {
+                    if engine.isRunning {
+                        self.stopAudioEngine()
+                    }
+                }
+            }
+            
             print("starting audio engine")
         } catch let error {
             print(error.localizedDescription)
@@ -140,6 +168,8 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         audioEngine?.inputNode.removeTap(onBus: 0)
         audioEngine?.stop()
         
+        timer?.invalidate()
+        timer = nil
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback)
         } catch {
@@ -147,9 +177,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         }
         
         print("stopping audio engine")
-    }
-    
-    
+    }    
     
 }
 

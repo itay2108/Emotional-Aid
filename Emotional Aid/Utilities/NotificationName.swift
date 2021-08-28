@@ -31,5 +31,9 @@ extension Notification.Name {
     static var SystemVolumeDidChange: Notification.Name {
             return .init("systemVolume.DidChange")
     }
+    
+    static var SpeechRecognizerDidMatchTrigger: Notification.Name {
+            return .init("speechRecognizer.DidMatchTrigger")
+    }
 
 }

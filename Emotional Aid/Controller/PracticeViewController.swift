@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import PaddingLabel
+import AVKit
 
 class PracticeViewController: UIViewController {
     
@@ -488,6 +489,39 @@ class PracticeViewController: UIViewController {
         }
     }
     
+    func rewindExerciseLogic() {
+        
+        
+        let isPlayerInitiallyPaused = AudioManager.shared.playbackState == .paused || AudioManager.shared.playbackState == .ready ? true : false
+        
+        if AudioManager.shared.playerTime() < 2 && exerciseModel.currentExercise > 0 {
+            
+            if AudioManager.shared.playbackState == .playing {
+                AudioManager.shared.stopAudio()
+            }
+            
+            exerciseModel.currentExercise -= 1
+            setExercise(toExercise: exerciseModel.currentExercise)
+            
+        } else if AudioManager.shared.playerTime() < 2 && exerciseModel.currentExercise == 0 {
+             leavePractice()
+             return
+        } else {
+            AudioManager.shared.rewindAudio()
+        }
+        
+        print(isPlayerInitiallyPaused)
+        if !isPlayerInitiallyPaused { AudioManager.shared.playAudio() }
+    }
+    
+    func leavePractice() {
+        AudioManager.shared.stopAudio()
+        AudioManager.shared.stopAudioEngine()
+        SpeechRecognitionManager.main.invalidate()
+        
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     func checkForFinishCondition(with scores: [Int?]) -> FinishCondition? {
         if scores.contains(where: {$0 == nil}) { return nil }
         
@@ -565,24 +599,7 @@ class PracticeViewController: UIViewController {
     
     @objc func goBackwardsButtonPressed() {
         
-        let isPlayerInitiallyPaused = AudioManager.shared.playbackState == .paused || AudioManager.shared.playbackState == .ready ? true : false
-        
-        if AudioManager.shared.playerTime() < 2 && exerciseModel.currentExercise != 0 && exerciseModel.currentExercise > 0 {
-            
-            if AudioManager.shared.playbackState == .playing {
-                AudioManager.shared.stopAudio()
-            }
-            
-            exerciseModel.currentExercise -= 1
-            setExercise(toExercise: exerciseModel.currentExercise)
-            
-        } else {
-            AudioManager.shared.rewindAudio()
-        }
-        
-        print(isPlayerInitiallyPaused)
-        if !isPlayerInitiallyPaused { AudioManager.shared.playAudio() }
-        
+        rewindExerciseLogic()
     }
     
     @objc func playPauseButtonPressed(_ button: MediaButton) {
@@ -621,8 +638,7 @@ class PracticeViewController: UIViewController {
     @objc func handleRightSwipe(_ gr: UISwipeGestureRecognizer) {
         if gr.state == .ended && gr.state != .cancelled {
             Vibration.soft.vibrate()
-            exerciseModel.currentExercise -= 1
-            setExercise(toExercise: exerciseModel.currentExercise)
+            rewindExerciseLogic()
         }
     }
     
@@ -632,11 +648,49 @@ class PracticeViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStateChange), name: NSNotification.Name.audioManagerStateDidChange, object: nil)
         
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleAudioBuffer(_:)), name: NSNotification.Name.audioEngineBufferReceived, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleSpeechRecognitionTrigger(_:)), name: NSNotification.Name.SpeechRecognizerDidMatchTrigger, object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleExerciseSliderValueChange), name: NSNotification.Name.exerciseSliderValueHasChanged, object: nil)
+        
     }
     
     @objc private func handlePlaybackStateChange() {
         self.playPauseButton.playbackState = AudioManager.shared.playbackState
+        
+        //start listening to keywaords that will change current exercise (ie "next"/"rewind"/etc)
+        if AudioManager.shared.playbackState == .finished {
+
+            AudioManager.shared.prepareAudioEngine {
+
+                AudioManager.shared.startAudioEngine()
+            }
+        }
+    }
+    
+    @objc private func handleAudioBuffer(_ notification: NSNotification) {
+        //handle spoken words with speech recognizer
+        if let buffer = notification.userInfo?["buffer"] as? AVAudioPCMBuffer {
+            if !SpeechRecognitionManager.main.isRecognizerActive {
+                SpeechRecognitionManager.main.initiate(language: .russian) { success in
+                    if success {
+                        SpeechRecognitionManager.main.listen(to: buffer)
+                    }
+                }
+            }
+
+            SpeechRecognitionManager.main.recognitionRequest?.append(buffer)
+        }
+    }
+
+    
+    @objc private func handleSpeechRecognitionTrigger(_ notification: NSNotification) {
+        guard let action = notification.userInfo?["action"] as? TriggerWordType else { print("unexpectedly received nil as speech recognition trigger"); return }
+        print("received SR Trigger: \(action)")
+        Vibration.light.vibrate()
+        if action == .next { self.nextExerciseLogic() } else
+        if action == .rewind { self.rewindExerciseLogic(); AudioManager.shared.playAudio() }
     }
     
     @objc private func handleExerciseSliderValueChange(_ notification: NSNotification) {

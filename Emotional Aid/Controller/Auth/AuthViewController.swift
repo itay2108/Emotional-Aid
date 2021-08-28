@@ -39,7 +39,7 @@ class AuthViewController: UIViewController {
     
     private lazy var authDescription: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         label.textAlignment = .center
         label.text = K.text.authDescription
         label.font = FontTypes.shared.ubuntuLight.withSize(14 * heightModifier)
@@ -114,6 +114,7 @@ class AuthViewController: UIViewController {
         label.attributedText = K.text.privacyAndTermsDescription
         label.isEditable = false
         label.isScrollEnabled = false
+        label.sizeToFit()
         return label
     }()
 
@@ -175,13 +176,11 @@ class AuthViewController: UIViewController {
         }
         
         privacyDescription.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-(view.safeAreaSize(from: .bottom) + (16 * heightModifier)))
+            make.bottom.equalToSuperview().offset(-(view.safeAreaSize(from: .bottom) + (12 * heightModifier)))
             make.left.equalToSuperview().offset(64 * widthModifier)
             make.centerX.equalToSuperview()
             
-            if authState == .signUp {
-                make.height.equalTo(privacyDescription.font?.pointSize.percentage(400) ?? 48 * heightModifier)
-            } else {
+            if authState == .signIn {
                 make.height.equalTo(0)
             }
         
@@ -229,7 +228,6 @@ class AuthViewController: UIViewController {
                     make.bottom.equalToSuperview().offset(-(self.view.safeAreaSize(from: .bottom) + (16 * self.heightModifier)))
                     make.left.equalToSuperview().offset(64 * self.widthModifier)
                     make.centerX.equalToSuperview()
-                    make.height.equalTo(self.privacyDescription.font?.pointSize.percentage(400) ?? 48 * self.heightModifier)
                 }
                 
             } else if self.authState == .signIn {

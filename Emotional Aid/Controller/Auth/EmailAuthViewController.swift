@@ -139,6 +139,7 @@ class EmailAuthViewController: UIViewController {
         label.attributedText = K.text.privacyAndTermsDescription
         label.isEditable = false
         label.isScrollEnabled = false
+        label.sizeToFit()
         return label
     }()
     
@@ -269,7 +270,6 @@ class EmailAuthViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-(view.safeAreaSize(from: .bottom) + (16 * heightModifier)))
             make.left.equalToSuperview().offset(64 * widthModifier)
             make.centerX.equalToSuperview()
-            make.height.equalTo(privacyDescription.font?.pointSize.percentage(400) ?? 48 * heightModifier)
         }
         
         changeAuthStateButton.snp.makeConstraints { make in
@@ -298,10 +298,9 @@ class EmailAuthViewController: UIViewController {
                 self.authFormSV.addArrangedSubview(self.passwordTextField)
                 
                 self.privacyDescription.snp.remakeConstraints { make in
-                    make.bottom.equalToSuperview().offset(-(self.view.safeAreaSize(from: .bottom) + (16 * self.heightModifier)))
+                    make.bottom.equalToSuperview().offset(-(self.view.safeAreaSize(from: .bottom) + (12 * self.heightModifier)))
                     make.left.equalToSuperview().offset(64 * self.widthModifier)
                     make.centerX.equalToSuperview()
-                    make.height.equalTo(self.privacyDescription.font?.pointSize.percentage(400) ?? 48 * self.heightModifier)
                 }
                 
             } else if self.authState == .signIn {

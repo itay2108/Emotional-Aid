@@ -13,6 +13,7 @@
 		660AC5462688B61F003865D2 /* TheoryVideoDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660AC5452688B61F003865D2 /* TheoryVideoDB.swift */; };
 		6615C23426A2EF27009865E2 /* Personality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6615C23326A2EF27009865E2 /* Personality.swift */; };
 		6615C23626A30081009865E2 /* SpeechRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6615C23526A30081009865E2 /* SpeechRecognitionManager.swift */; };
+		662F91D626DA318F00F98684 /* TriggerWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662F91D526DA318F00F98684 /* TriggerWord.swift */; };
 		666445FD267670E5008A9545 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FC267670E5008A9545 /* AppDelegate.swift */; };
 		666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FE267670E5008A9545 /* SceneDelegate.swift */; };
 		66644601267670E5008A9545 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66644600267670E5008A9545 /* MainViewController.swift */; };
@@ -83,6 +84,7 @@
 		660AC5452688B61F003865D2 /* TheoryVideoDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoryVideoDB.swift; sourceTree = "<group>"; };
 		6615C23326A2EF27009865E2 /* Personality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Personality.swift; sourceTree = "<group>"; };
 		6615C23526A30081009865E2 /* SpeechRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionManager.swift; sourceTree = "<group>"; };
+		662F91D526DA318F00F98684 /* TriggerWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerWord.swift; sourceTree = "<group>"; };
 		666445F9267670E5008A9545 /* Emotional Aid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Emotional Aid.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		666445FC267670E5008A9545 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		666445FE267670E5008A9545 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				6615C23526A30081009865E2 /* SpeechRecognitionManager.swift */,
 				660AC54326886AD1003865D2 /* TheoryVideo.swift */,
 				660AC5452688B61F003865D2 /* TheoryVideoDB.swift */,
+				662F91D526DA318F00F98684 /* TriggerWord.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */,
 				66CDA0D126B1CEBD003FD85E /* FinishCondition.swift in Sources */,
 				668E315F26C06B6800CFE274 /* EmailAuthViewController.swift in Sources */,
+				662F91D626DA318F00F98684 /* TriggerWord.swift in Sources */,
 				66B9A04426921ADD005E827B /* CardView.swift in Sources */,
 				668E316426C15C7100CFE274 /* SignInTextField.swift in Sources */,
 				66B9A05C2698C49E005E827B /* AudioManager.swift in Sources */,

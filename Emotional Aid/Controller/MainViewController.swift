@@ -89,6 +89,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setUpUI()
+        //setUpObservers()
         
         SpeechRecognitionManager.main.authorizeSpeechRecognition { success in
             if success { print("speech recognition authorized") }
@@ -105,6 +106,7 @@ class MainViewController: UIViewController {
         
         addSubviews()
         setConstraints()
+        
     }
 
     private func addSubviews() {

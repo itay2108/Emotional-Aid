@@ -315,6 +315,57 @@ class ExerciseQueueController: UIViewController {
         
     }
     
+    //MARK: - exercise methods
+    
+    func nextExerciseLogic() {
+        guard exerciseModel != nil else { return }
+        
+        AudioManager.shared.stopAudio()
+        
+        exerciseModel!.currentExercise += 1
+        
+        setExercise(to: exerciseModel!.currentExercise)
+        queueTableView.reloadData()
+        queueTableView.selectRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), animated: true, scrollPosition: .middle)
+        
+        
+        AudioManager.shared.insert(audio: audioGuide) {
+
+            AudioManager.shared.playAudio()
+        }
+    }
+    
+    func rewindExerciseLogic() {
+        guard exerciseModel != nil else { return }
+        
+        let isPlayerInitiallyPaused = AudioManager.shared.playbackState == .paused ? true : false
+        
+        if AudioManager.shared.playerTime() < 2 {
+            
+            if exerciseModel?.currentExercise == 0 {
+                self.dismiss(animated: true) {
+                    if let parent = self.delegate as? PracticeViewController {
+                        parent.leavePractice()
+                    }
+                    return
+                }
+            }
+            
+            AudioManager.shared.stopAudio()
+            
+            exerciseModel!.currentExercise -= 1
+            setExercise(to: exerciseModel!.currentExercise)
+            queueTableView.reloadData()
+            queueTableView.selectRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), animated: true, scrollPosition: .middle)
+
+            AudioManager.shared.insert(audio: audioGuide)
+        } else {
+            AudioManager.shared.rewindAudio()
+        }
+        
+        if !isPlayerInitiallyPaused { AudioManager.shared.playAudio() }
+    }
+    
     //MARK: - media methods
     
     func updateAudioUIEvery(interval: TimeInterval) {
@@ -353,28 +404,8 @@ class ExerciseQueueController: UIViewController {
     //MARK: - button targets
     
     @objc func goBackwardsButtonPressed() {
-        guard exerciseModel != nil else { return }
-        
-        let isPlayerInitiallyPaused = AudioManager.shared.playbackState == .paused ? true : false
-        
-        if AudioManager.shared.playerTime() < 2 {
-            
-            AudioManager.shared.stopAudio()
-            
-            exerciseModel!.currentExercise -= 1
-            setExercise(to: exerciseModel!.currentExercise)
-            queueTableView.reloadData()
-            queueTableView.selectRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), animated: true, scrollPosition: .middle)
-            
-            delegate?.set(exerciseTo: exerciseModel!.currentExercise)
-
-            AudioManager.shared.insert(audio: audioGuide)
-        } else {
-            AudioManager.shared.rewindAudio()
-        }
-        
-        if !isPlayerInitiallyPaused { AudioManager.shared.playAudio() }
-        
+        rewindExerciseLogic()
+        delegate?.set(exerciseTo: exerciseModel!.currentExercise)
     }
     
     @objc func playPauseButtonPressed(_ button: MediaButton) {
@@ -404,23 +435,8 @@ class ExerciseQueueController: UIViewController {
     }
     
     @objc func goForwardButtonPressed() {
-        guard exerciseModel != nil else { return }
-        
-        AudioManager.shared.stopAudio()
-        
-        exerciseModel!.currentExercise += 1
-        
-        setExercise(to: exerciseModel!.currentExercise)
-        queueTableView.reloadData()
-        queueTableView.selectRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), animated: true, scrollPosition: .middle)
-        
-        
+        nextExerciseLogic()
         delegate?.set(exerciseTo: exerciseModel!.currentExercise)
-        
-        AudioManager.shared.insert(audio: audioGuide) {
-            AudioManager.shared.playAudio()
-        }
-
     }
     
     @objc func handleVolumeSliderValueChanged(_ slider: UISlider, _ event: UIEvent) {
@@ -468,39 +484,27 @@ class ExerciseQueueController: UIViewController {
     
     private func setUpObservers() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStateChange), name: NSNotification.Name.audioManagerStateDidChange, object: nil)
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(handleAudioBuffer(_:)), name: NSNotification.Name.audioEngineBufferReceived, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleSpeechRecognitionTrigger(_:)), name: NSNotification.Name.SpeechRecognizerDidMatchTrigger, object: nil)
     }
     
 
-    
-    @objc private func handlePlaybackStateChange() {
-        self.playPauseButton.playbackState = AudioManager.shared.playbackState
-        
-//        //start listening to keywaords that will change current exercise (ie "next"/"rewind"/etc
-//        if AudioManager.shared.playbackState == .finished {
-//
-//            AudioManager.shared.prepareAudioEngine {
-//
-//                AudioManager.shared.startAudioEngine()
-//            }
-//        }
+
+    @objc private func handleSpeechRecognitionTrigger(_ notification: NSNotification) {
+        guard let action = notification.userInfo?["action"] as? TriggerWordType else { print("unexpectedly received nil as speech recognition trigger"); return }
+        guard let delegate = delegate as? PracticeViewController else { return }
+
+            Vibration.light.vibrate()
+            setExercise(to: delegate.exerciseModel.currentExercise)
+            queueTableView.reloadData()
+            queueTableView.selectRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), animated: true, scrollPosition: .middle)
+            
+            
+            AudioManager.shared.insert(audio: audioGuide) {
+
+                AudioManager.shared.playAudio()
+            }
         
     }
-    
-//    @objc private func handleAudioBuffer(_ notification: NSNotification) {
-//        //handle spoken words with speech recognizer
-//        if let buffer = notification.userInfo?["buffer"] as? AVAudioPCMBuffer {
-//            SpeechRecognitionManager.main.initiate(language: .russian) { success in
-//                if success {
-//                    SpeechRecognitionManager.main.listen(to: buffer) { result in
-//                        print(result)
-//                    }
-//                }
-//            }
-//        }
-//    }
     
     //MARK: - deinit
     

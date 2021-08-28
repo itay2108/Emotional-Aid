@@ -16,12 +16,22 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
     var recognitionTask: SFSpeechRecognitionTask?
     var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     
+    var isRecognizerActive = false
+    var isRecognitionResultFinal = true {
+        didSet {
+            if isRecognitionResultFinal {
+                print("result is final")
+            }
+        }
+    }
+    
     func initiate(language: Language, completion: (_ success: Bool) -> Void) {
         recognizer = SFSpeechRecognizer(locale: Locale.init(identifier: language.rawValue))
         
         if let initiatedRecognizer = recognizer {
             guard initiatedRecognizer.isAvailable else { completion(false); return }
             initiatedRecognizer.delegate = self
+            isRecognizerActive = true
             completion(true)
         }
     }
@@ -42,7 +52,7 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         }
     }
     
-    func listen(to audio: AVAudioPCMBuffer, handler: @escaping (_ result: String) -> Void) {
+    func listen(to audio: AVAudioPCMBuffer) {
         guard recognizer != nil else { return }
         
         recognitionTask?.cancel()
@@ -50,44 +60,64 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
         
+        var SRResult: String? {
+            didSet {
+                if SRResult != nil && SRResult != oldValue {
+                    SpeechRecognitionManager.main.searchFor(trigger: K.speechTriggers.next + K.speechTriggers.rewind, in: SRResult!.capitalized) { found, action  in
+                        if found && action != nil {
+                            NotificationCenter.default.post(name: NSNotification.Name.SpeechRecognizerDidMatchTrigger, object: nil, userInfo: ["action" : action!])
+                        }
+                    }
+                }
+            }
+        }
+        
         guard let recognitionRequest = recognitionRequest else { fatalError("Unable to create a SFSpeechAudioBufferRecognitionRequest object") }
         recognitionRequest.shouldReportPartialResults = true
-        recognitionRequest.append(audio)
         
         if #available(iOS 13, *) {
             recognitionRequest.requiresOnDeviceRecognition = false
         }
         
         recognitionTask = recognizer!.recognitionTask(with: recognitionRequest) { result, error in
-            var isFinal = false
-            print("listening...")
             if result != nil {
                 if let result = result {
                     // handle results.
-                    let transcription = result.bestTranscription.formattedString
-                    //handler(transcription)
-                    print(transcription)
-                    
-                    isFinal = result.isFinal
+                    SRResult = result.bestTranscription.formattedString
+                    self.isRecognitionResultFinal = result.isFinal
                 }
             }
-            if error != nil || isFinal {
+            if ( error != nil && !error!.localizedDescription.contains("216") ) || self.isRecognitionResultFinal {
                 // Stop recognizing speech if there is a problem.
-                print(error?.localizedDescription as Any)
+                print(error != nil ? "SR error: \(error!.localizedDescription)" : "received final recognition result")
                 
                 self.recognitionTask?.cancel()
                 self.recognitionRequest?.endAudio()
                 
-                AudioManager.shared.stopAudioEngine()
-                
-                self.recognitionRequest = nil
-                self.recognitionTask = nil
+                self.invalidate()
             }
         }
         
     }
     
     
+    func searchFor(trigger words: [TriggerWord], in recognizedSpeechContent: String, completion: (_ success: Bool, _ action: TriggerWordType?) -> Void) {
+        print("searching in \(recognizedSpeechContent)...")
+        
+        for word in words {
+            if recognizedSpeechContent.contains(word.value) {
+                completion(true, word.type)
+            }
+        }
+        
+    }
+    
+    func invalidate() {
+        self.recognitionTask?.cancel()
+        self.recognitionTask?.finish()
+        self.recognitionRequest = nil
+        self.isRecognizerActive = false
+    }
     
     
 }

@@ -55,7 +55,7 @@ class EmailVerificationViewController: UIViewController {
     private lazy var mainTitle: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.text = "Check your inbox"
+        label.text = "Проверьте вашу почту"
         label.font = FontTypes.shared.h2.withSize(30 * heightModifier)
         label.textColor = K.colors.appText
         label.textAlignment = .center
