@@ -8,6 +8,10 @@
 import UIKit
 
 class NavigationController: UINavigationController {
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +25,10 @@ class NavigationController: UINavigationController {
         self.modalPresentationStyle = .fullScreen
         self.navigationItem.leftBarButtonItems = []
         self.navigationItem.hidesBackButton = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        setNeedsStatusBarAppearanceUpdate()
     }
 
     

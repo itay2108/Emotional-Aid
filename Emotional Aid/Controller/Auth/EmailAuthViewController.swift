@@ -12,6 +12,10 @@ import PaddingLabel
 
 class EmailAuthViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
+    
     let def = UserDefaults.standard
 
     var authState: AuthState = .signUp {
@@ -364,6 +368,7 @@ class EmailAuthViewController: UIViewController {
                                 print("email sent to: \(email)")
                                 self.def.setValue(email, forKey: K.def.email)
                                 self.def.setValue(password, forKey: K.def.password)
+                                self.def.setValue(self.nameTextField.textField.text, forKey: K.def.name)
                                 
                                 let destination = EmailVerificationViewController()
                                 destination.delegate = self
@@ -457,10 +462,6 @@ class EmailAuthViewController: UIViewController {
         if [nameTextField.validationError, emailTextField.validationError, passwordTextField.validationError].allElementsAreNil() {
             //SIGN IN HERE
             performAuth(withEmail: emailTextField.textField.text, password: passwordTextField.textField.text)
-            
-            if let userName = nameTextField.textField.text {
-                Personality.main.name = userName
-            }
         }
     }
     

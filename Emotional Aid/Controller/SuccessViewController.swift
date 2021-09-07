@@ -10,6 +10,10 @@ import SnapKit
 
 class SuccessViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     var firstScore: Int?
     var lastScore: Int?
     var finishCondition: FinishCondition
@@ -84,6 +88,7 @@ class SuccessViewController: UIViewController {
     func setUpUI() {
         addSubviews()
         addConstraintsToSubviews()
+        setContentAccordingToFinishCondition()
     }
     
     func addSubviews() {
@@ -122,7 +127,7 @@ class SuccessViewController: UIViewController {
         
         mainArtwork.snp.makeConstraints { make in
             make.width.equalToSuperview().multipliedBy(0.66)
-            make.height.equalTo(mainArtwork.snp.width).multipliedBy(0.9)
+            make.height.equalTo(mainArtwork.snp.width).multipliedBy(0.75)
             make.centerX.equalToSuperview()
             make.top.equalTo(mainTitle.snp.bottom).offset(48 * heightModifier)
         }
@@ -135,15 +140,18 @@ class SuccessViewController: UIViewController {
         }
         
         successDescription.snp.makeConstraints { make in
-            make.top.equalTo(mainArtwork.snp.bottom).offset(56 * heightModifier)
+            make.top.equalTo(mainArtwork.snp.bottom).offset(24 * heightModifier)
             make.width.equalTo(mainArtwork)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(consultButton.snp.top).offset(-56 * heightModifier)
+            make.bottom.equalTo(consultButton.snp.top).offset(-48 * heightModifier)
         }
         
     }
     
     func setContentAccordingToFinishCondition() {
+        guard firstScore != nil && lastScore != nil
+        else { print("unexpectedly gound nil while unwrapping exercise scores for success text."); return }
+        
         switch finishCondition {
         case .successBecamePositive:
             mainArtwork.image = K.uikit.successArt
@@ -153,7 +161,7 @@ class SuccessViewController: UIViewController {
             successDescription.text = K.text.successBecameNegativeDescription
         case .success:
             mainArtwork.image = K.uikit.successArt
-            successDescription.text = "\(K.text.successDescriptionA)\(String(describing: firstScore))\(K.text.successDescriptionB)\(String(describing: lastScore))\(K.text.successDescriptionC)"
+            successDescription.text = "\(K.text.successDescriptionA)\(firstScore!)\(K.text.successDescriptionB)\( lastScore!)\(K.text.successDescriptionC)"
         default:
             mainArtwork.image = K.uikit.successArt
             successDescription.text = ""

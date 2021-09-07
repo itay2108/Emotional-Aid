@@ -10,6 +10,10 @@ import SnapKit
 
 class MainViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
+    
     private var didLogPermissionResults: Bool = false
     
     private lazy var navContainer:  UIView      = {
@@ -19,10 +23,12 @@ class MainViewController: UIViewController {
     private lazy var profileButton: UIButton    = {
        let button = UIButton()
         button.backgroundColor = .clear
-        button.setImage(UIImage(named: "profile-button"), for: .normal)
+        button.setImage(UIImage(named: "profile-artwork"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
+        
+        button.addTarget(self, action: #selector(profileButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -88,8 +94,8 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        print(preferredStatusBarStyle.rawValue, childForStatusBarStyle)
         setUpUI()
-        //setUpObservers()
         
         SpeechRecognitionManager.main.authorizeSpeechRecognition { success in
             if success { print("speech recognition authorized") }
@@ -101,8 +107,13 @@ class MainViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
     private func setUpUI() {
-        self.view.backgroundColor = .white
+        //self.view.backgroundColor = .white
         
         addSubviews()
         setConstraints()
@@ -198,7 +209,11 @@ class MainViewController: UIViewController {
         self.present(ConsultationFormViewController(), animated: true)
     }
     
-    @objc func sosButtonPressed() {
+    @objc private func profileButtonTapped(_ button: UIButton) {
+        self.present(ProfileViewController(), animated: true)
+    }
+    
+    @objc private func sosButtonPressed() {
         Vibration.soft.vibrate()
         
         let destination = PracticeViewController()

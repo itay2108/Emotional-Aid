@@ -98,6 +98,7 @@ struct K {
     struct def {
         static let email = "userEmail"
         static let password = "userPassword"
+        static let name = "userName"
     }
     
     struct regEx {

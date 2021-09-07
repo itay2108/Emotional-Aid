@@ -9,6 +9,10 @@ import UIKit
 
 class FailViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     var finishCondition: FinishCondition
     
     private var audioUIUpdateTimer: Timer?

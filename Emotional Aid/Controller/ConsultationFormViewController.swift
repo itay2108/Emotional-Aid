@@ -10,6 +10,10 @@ import MessageUI
 
 class ConsultationFormViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     var emailSuccessfullySent: Bool = false
     var delegate: ConsultationFormViewControllerDelegate?
     
@@ -147,7 +151,7 @@ class ConsultationFormViewController: UIViewController {
         self.view.backgroundColor = .white
         setUpUI()
     }
-
+    
     override func viewDidLayoutSubviews() {
         if emailSuccessfullySent {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.66) {

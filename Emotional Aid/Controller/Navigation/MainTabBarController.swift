@@ -10,9 +10,9 @@ import SnapKit
 
 class MainTabBarController: UITabBarController {
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.viewControllers = tabBarVCs()
         
     }

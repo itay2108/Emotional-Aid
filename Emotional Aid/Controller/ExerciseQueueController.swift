@@ -11,6 +11,10 @@ import AVKit
 
 class ExerciseQueueController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     var exerciseModel: ExerciseModel?
     
     var currentExercise: Exercise? {
@@ -490,7 +494,7 @@ class ExerciseQueueController: UIViewController {
 
 
     @objc private func handleSpeechRecognitionTrigger(_ notification: NSNotification) {
-        guard let action = notification.userInfo?["action"] as? TriggerWordType else { print("unexpectedly received nil as speech recognition trigger"); return }
+        guard notification.userInfo?["action"] as? TriggerWordType != nil else { print("unexpectedly received nil as speech recognition trigger"); return }
         guard let delegate = delegate as? PracticeViewController else { return }
 
             Vibration.light.vibrate()

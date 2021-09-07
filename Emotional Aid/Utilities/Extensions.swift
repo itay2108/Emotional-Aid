@@ -126,6 +126,10 @@ extension Date {
 
 extension UIViewController {
     
+    var emotionalAid: UIApplication {
+        return UIApplication.shared
+    }
+    
     func setupToHideKeyboardOnTapOnView()
         {
             let tap: UITapGestureRecognizer = UITapGestureRecognizer(

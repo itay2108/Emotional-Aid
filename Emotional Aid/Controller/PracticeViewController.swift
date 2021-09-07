@@ -12,6 +12,10 @@ import AVKit
 
 class PracticeViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
+    
     var exerciseModel: ExerciseModel = ExerciseModel()
     
     var currentExercise: Exercise {
@@ -510,7 +514,6 @@ class PracticeViewController: UIViewController {
             AudioManager.shared.rewindAudio()
         }
         
-        print(isPlayerInitiallyPaused)
         if !isPlayerInitiallyPaused { AudioManager.shared.playAudio() }
     }
     

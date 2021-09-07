@@ -14,6 +14,10 @@ import GoogleSignIn
 
 class AuthViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
+    
     var authState: AuthState = .signUp {
         didSet {
             setSceneAccordingToState()

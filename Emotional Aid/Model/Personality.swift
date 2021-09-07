@@ -11,8 +11,6 @@ class Personality {
     
     static let main = Personality()
     
-    var name: String = ""
-    
     var emotionalState: EmotionalState = .neutral
     
     var practiceScores: [Int?] = [nil, nil, nil]

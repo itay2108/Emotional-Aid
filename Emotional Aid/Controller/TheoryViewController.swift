@@ -11,7 +11,9 @@ import FirebaseStorage
 
 class TheoryViewController: UIViewController {
     
-    let storage = Storage.storage().reference()
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
     
     var videoPlayer: AVPlayer?
     
@@ -22,10 +24,11 @@ class TheoryViewController: UIViewController {
     private lazy var profileButton: UIButton    = {
         let button = UIButton()
         button.backgroundColor = .clear
-        button.setImage(UIImage(named: "profile-button"), for: .normal)
+        button.setImage(UIImage(named: "profile-artwork"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
+        button.addTarget(self, action: #selector(profileButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -69,6 +72,7 @@ class TheoryViewController: UIViewController {
         self.view.backgroundColor = .white
         // Do any additional setup after loading the view.
         setUpUI()
+
         
     }
     
@@ -123,6 +127,12 @@ class TheoryViewController: UIViewController {
         }
         
         
+    }
+    
+    //MARK: - selectors
+    
+    @objc private func profileButtonTapped(_ button: UIButton) {
+        self.present(ProfileViewController(), animated: true)
     }
     
     //MARK: - video methods

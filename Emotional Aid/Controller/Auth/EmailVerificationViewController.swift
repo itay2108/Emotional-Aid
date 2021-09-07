@@ -10,6 +10,10 @@ import FirebaseAuth
 
 class EmailVerificationViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
+    
     var delegate: EmailVerificationDelegate?
     
     private var verificationTimer: Timer?
