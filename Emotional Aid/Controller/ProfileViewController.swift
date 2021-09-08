@@ -18,7 +18,7 @@ class ProfileViewController: UIViewController {
     
     let def = UserDefaults.standard
     
-    private var sharingMessage: String = "Ravioli, ravioli - give me the formuloli"
+    private var sharingMessage: String = K.text.socialMediaSharingMessage
     
     private lazy var headTitle: UILabel         = {
         let label = UILabel()
@@ -95,6 +95,21 @@ class ProfileViewController: UIViewController {
         return button
     }()
     
+    private lazy var line3: UIImageView = {
+        return Scribble().random()
+    }()
+    
+    private lazy var sendLogsButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        button.setTitle("Send Logs", for: .normal)
+        button.setTitleColor(K.colors.appRed, for: .normal)
+        button.titleLabel?.font = FontTypes.shared.h4.withSize(16 * heightModifier)
+        
+        button.addTarget(self, action: #selector(sendLogsButtonPressed(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var socialDescription: UILabel = {
        let label = UILabel()
         label.numberOfLines = 0
@@ -120,6 +135,8 @@ class ProfileViewController: UIViewController {
          button.imageView?.contentMode = .scaleAspectFit
          button.contentVerticalAlignment = .fill
          button.contentHorizontalAlignment = .fill
+        
+        button.addTarget(self, action: #selector(shareToMessenger(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -174,12 +191,14 @@ class ProfileViewController: UIViewController {
         view.addSubview(helpButton)
         view.addSubview(line2)
         view.addSubview(logoutButton)
+        view.addSubview(line3)
+        view.addSubview(sendLogsButton)
         
         view.addSubview(socialSV)
         if emotionalAid.canOpenURL(messengerSharingURL()) { socialSV.addArrangedSubview(messengerButton) }
-        if emotionalAid.canOpenURL(telegramSharingURL()) { socialSV.addArrangedSubview(telegramButton) }
         if emotionalAid.canOpenURL(whatsappSharingURL()) { socialSV.addArrangedSubview(whatsappButton) }
-        
+        if emotionalAid.canOpenURL(telegramSharingURL()) { socialSV.addArrangedSubview(telegramButton) }
+
         if socialSV.arrangedSubviews.count > 0 { view.addSubview(socialDescription) }
         
     }
@@ -202,6 +221,10 @@ class ProfileViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.top.equalTo(profileImage.snp.bottom).offset(18 * heightModifier)
             make.width.equalToSuperview().multipliedBy(0.75)
+            
+            if def.string(forKey: K.def.name) == nil && def.string(forKey: K.def.email) == nil {
+                make.height.equalTo(0)
+            }
         }
         
         consultationButton.snp.makeConstraints { make in
@@ -235,6 +258,20 @@ class ProfileViewController: UIViewController {
         logoutButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(line2.snp.bottom)
+            make.width.equalToSuperview().multipliedBy(0.75)
+            make.height.equalTo(48 * heightModifier)
+        }
+        
+        line3.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(logoutButton.snp.bottom)
+            make.width.equalToSuperview().multipliedBy(0.75)
+            make.height.equalTo(8 * heightModifier)
+        }
+        
+        sendLogsButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(line3.snp.bottom)
             make.width.equalToSuperview().multipliedBy(0.75)
             make.height.equalTo(48 * heightModifier)
         }
@@ -305,6 +342,9 @@ class ProfileViewController: UIViewController {
             if Auth.auth().currentUser != nil {
                 do {
                     try Auth.auth().signOut()
+                    self.def.removeObject(forKey: K.def.name)
+                    self.def.removeObject(forKey: K.def.email)
+                    self.def.removeObject(forKey: K.def.password)
                 } catch {
                     print("error signing out")
                     return
@@ -373,9 +413,36 @@ class ProfileViewController: UIViewController {
     @objc private func shareToWhatsapp(_ button: UIButton) {
         emotionalAid.open(whatsappSharingURL(with: sharingMessage))
     }
-
+    
+    //MARK: - logging functions
+    
+    @objc private func sendLogsButtonPressed(_ button: UIButton) {
+        sendLogs()
+    }
+    
+    private func sendLogs() {
+        if MFMailComposeViewController.canSendMail() {
+            guard textLog.path != nil else { print("error: unexpectedly found nil while fetching textlog URL"); return }
+            guard let logData = NSData(contentsOf: textLog.path!) else { print("error: error getting NSData from log.txt"); return }
+            
+            let emailRecepients = ["emotionalaidapp@gmail.com"]
+            
+            let mc = MFMailComposeViewController()
+            
+            mc.mailComposeDelegate = self
+            mc.setToRecipients(emailRecepients)
+            mc.setSubject("Emotional Aid Consultation Request")
+            mc.addAttachmentData(logData as Data, mimeType: "text/txt", fileName: "log.txt")
+            self.present(mc, animated: true)
+        } else {
+            //cant send mail handled here
+            print("error: cannot send emails")
+        }
+    }
 }
 
 extension ProfileViewController: MFMailComposeViewControllerDelegate {
-    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        self.dismiss(animated: true)
+    }
 }

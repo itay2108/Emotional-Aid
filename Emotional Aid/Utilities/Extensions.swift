@@ -276,6 +276,10 @@ extension Int {
         let r = self < 0 ? true : false
         return r
     }
+    
+    func positiveValue() -> Int {
+        return self > 0 ? self : self * -1
+    }
 
 }
 

@@ -16,14 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
-
-//        if Auth.auth().currentUser != nil {
-//            do {
-//                try Auth.auth().signOut()
-//            } catch {
-//                print("error signing out")
-//            }
-//        }
         
         return true
     }
@@ -46,7 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UIApplication.isFirstLaunch() {
             UserDefaults.standard.set(true, forKey: "hasBeenLaunchedBeforeFlag")
             UserDefaults.standard.synchronize()
+            
         }
+        
+        textLog.clean()
     }
     
     @available(iOS 9.0, *)
@@ -55,7 +50,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       -> Bool {
       return GIDSignIn.sharedInstance.handle(url)
     }
+    
 }
+
+var textLog = TextLog()
 
 extension UIApplication {
     class func isFirstLaunch() -> Bool {

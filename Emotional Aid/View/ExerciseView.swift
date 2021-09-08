@@ -11,7 +11,7 @@ import Gifu
 
 class ExerciseView: UIView {
     
-    var defaultAnimationHeight: CGFloat = 256
+    var defaultAnimationHeight: CGFloat = 196
     var defaultSliderHeight: CGFloat = 89
     
     var scrollView: UIScrollView = {
@@ -115,8 +115,8 @@ class ExerciseView: UIView {
         }
         
         accessoryAnimation.snp.makeConstraints { make in
-            make.width.equalToSuperview().multipliedBy(0.9)
-            make.height.equalTo(256 * heightModifier)
+            make.width.equalToSuperview().multipliedBy(0.8)
+            make.height.equalTo(defaultAnimationHeight * heightModifier)
         }
         
         accessorySlider.snp.makeConstraints { make in

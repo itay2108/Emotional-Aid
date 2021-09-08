@@ -451,13 +451,14 @@ class PracticeViewController: UIViewController {
     
     func nextExerciseLogic() {
         
-        //if current exercise has slider and user did not set any value, add 0 to the scores array.
-        if exerciseModel.dataBase[exerciseModel.currentExercise].isSliderPresent && !didSetSliderScoreInCurrentExercise {
-            guard let scoreIndex = exerciseModel.dataBase[exerciseModel.currentExercise].scoreIndex else { print("exercise score index is nil"); return }
-            
-            //if were on 2nd or 3rd slider - set score according to last score. if were on first slider - set 0
-            let scoreToSet = scoreIndex > 0 ? personality.practiceScores[scoreIndex - 1] : 0
-            personality.practiceScores[scoreIndex] = scoreToSet
+        if let scoreIndex = exerciseModel.dataBase[exerciseModel.currentExercise].scoreIndex {
+            //if current exercise has slider and user did not set any value, add 0 to the scores array.
+            if exerciseModel.dataBase[exerciseModel.currentExercise].isSliderPresent && personality.practiceScores[scoreIndex] == nil {
+                
+                //if were on 2nd or 3rd slider - set score according to last score. if were on first slider - set 0
+                let scoreToSet = scoreIndex > 0 ? personality.practiceScores[scoreIndex - 1] : 0
+                personality.practiceScores[scoreIndex] = scoreToSet
+            }
         }
         
         //dont let user do the practice if he's in a relatively calm state.
@@ -517,9 +518,11 @@ class PracticeViewController: UIViewController {
         if !isPlayerInitiallyPaused { AudioManager.shared.playAudio() }
     }
     
+    
     func leavePractice() {
         AudioManager.shared.stopAudio()
         AudioManager.shared.stopAudioEngine()
+        AudioManager.shared.invalidatePlayer()
         SpeechRecognitionManager.main.invalidate()
         
         self.navigationController?.popViewController(animated: true)
@@ -527,7 +530,7 @@ class PracticeViewController: UIViewController {
     
     func checkForFinishCondition(with scores: [Int?]) -> FinishCondition? {
         if scores.contains(where: {$0 == nil}) { return nil }
-        
+        print(scores)
         let firstScore: Int = scores.first!!
         let lastScore: Int = scores.last!!
         
@@ -535,7 +538,7 @@ class PracticeViewController: UIViewController {
         else if firstScore.isPositive() && lastScore.isNegative() && lastScore < -4 { return .warningBecameNegative }
         else if firstScore.isNegative() && lastScore.isPositive() && lastScore <= 4 { return .successBecamePositive }
         else if firstScore.isPositive() && lastScore.isNegative() && lastScore >= -4 { return .successBecameNegative }
-        else if lastScore * firstScore > 0 && lastScore.magnitude - firstScore.magnitude > 1 { return .failDidNotHelp }
+        else if lastScore * firstScore > 0 && lastScore.positiveValue() - firstScore.positiveValue() > 1 { return .failDidNotHelp }
         else { return .success }
         
     }
@@ -583,7 +586,23 @@ class PracticeViewController: UIViewController {
     //MARK: - Button/GR Targets & Selectors
     
     @objc func backButtonPressed() {
-        self.navigationController?.popViewController(animated: true)
+        
+        if exerciseModel.currentExercise > 0 {
+            let alertTitle = "Вы уверены, что хотите выйти?"
+            let exitAction = UIAlertAction(title: "Да", style: .destructive) { action in
+                self.leavePractice()
+            }
+            let cancelAction = UIAlertAction(title: "Нет", style: .cancel)
+            let alert = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+            alert.addAction(cancelAction)
+            alert.addAction(exitAction)
+            
+            present(alert, animated: true)
+        } else {
+            leavePractice()
+        }
+    
+
     }
     
     @objc func demoSwitchTapped(uiswitch: UISwitch) {
@@ -651,8 +670,6 @@ class PracticeViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStateChange), name: NSNotification.Name.audioManagerStateDidChange, object: nil)
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(handleAudioBuffer(_:)), name: NSNotification.Name.audioEngineBufferReceived, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(handleSpeechRecognitionTrigger(_:)), name: NSNotification.Name.SpeechRecognizerDidMatchTrigger, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleExerciseSliderValueChange), name: NSNotification.Name.exerciseSliderValueHasChanged, object: nil)
@@ -693,7 +710,7 @@ class PracticeViewController: UIViewController {
         print("received SR Trigger: \(action)")
         Vibration.light.vibrate()
         if action == .next { self.nextExerciseLogic() } else
-        if action == .rewind { self.rewindExerciseLogic(); AudioManager.shared.playAudio() }
+        if action == .rewind { AudioManager.shared.rewindAudio() }
     }
     
     @objc private func handleExerciseSliderValueChange(_ notification: NSNotification) {
@@ -702,9 +719,9 @@ class PracticeViewController: UIViewController {
             switch exerciseModel.currentExercise {
             case 1:
                 personality.practiceScores[0] = Int(score)
-            case 7:
+            case 8:
                 personality.practiceScores[1] = Int(score)
-            case 13:
+            case 15:
                 personality.practiceScores[2] = Int(score)
             default:
                 print(score, "couldn't set score from value - slider isn't on correct exercise.")

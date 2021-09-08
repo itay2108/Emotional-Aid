@@ -77,6 +77,8 @@ struct K {
             return attributedString
         }()
         
+        static let socialMediaSharingMessage = "Привет, посмотри, какое классное приложение, очень помогает справиться со стрессом и регулирует состояние нервной системы!"
+        
         struct errorDescriptions {
             static let blankError = "Please enter"
             static let tooShort = "too short"

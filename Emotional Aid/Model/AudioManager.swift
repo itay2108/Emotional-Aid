@@ -97,6 +97,11 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         playbackState = .finished
     }
     
+    func invalidatePlayer() {
+        player = nil
+        playbackState = .standby
+    }
+    
     //MARK: - Audio Recorder
     
     private var audioEngine: AVAudioEngine?

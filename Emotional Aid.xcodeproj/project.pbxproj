@@ -16,6 +16,10 @@
 		662F91D626DA318F00F98684 /* TriggerWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662F91D526DA318F00F98684 /* TriggerWord.swift */; };
 		662F91D826E36DC200F98684 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662F91D726E36DC200F98684 /* ProfileViewController.swift */; };
 		662F91DA26E37ABE00F98684 /* Scribble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662F91D926E37ABE00F98684 /* Scribble.swift */; };
+		662F91DE26E7F95D00F98684 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 662F91DD26E7F95D00F98684 /* GoogleService-Info.plist */; };
+		662F91E126E7FE7C00F98684 /* lessonNegative.wav in Resources */ = {isa = PBXBuildFile; fileRef = 662F91DF26E7FE7C00F98684 /* lessonNegative.wav */; };
+		662F91E226E7FE7C00F98684 /* lesson.wav in Resources */ = {isa = PBXBuildFile; fileRef = 662F91E026E7FE7C00F98684 /* lesson.wav */; };
+		662F91E426E8EB7800F98684 /* TextLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662F91E326E8EB7800F98684 /* TextLog.swift */; };
 		666445FD267670E5008A9545 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FC267670E5008A9545 /* AppDelegate.swift */; };
 		666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FE267670E5008A9545 /* SceneDelegate.swift */; };
 		66644601267670E5008A9545 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66644600267670E5008A9545 /* MainViewController.swift */; };
@@ -59,14 +63,11 @@
 		66B9A0542697822B005E827B /* Ubuntu-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66B9A0532697822B005E827B /* Ubuntu-Medium.ttf */; };
 		66B9A0562698AC08005E827B /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A0552698AC08005E827B /* Vibration.swift */; };
 		66B9A05C2698C49E005E827B /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A05B2698C49E005E827B /* AudioManager.swift */; };
-		66B9A05D2698D9AB005E827B /* lesson.wav in Resources */ = {isa = PBXBuildFile; fileRef = 66B9A0592698B0FB005E827B /* lesson.wav */; };
 		66B9A05F2699ABC8005E827B /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A05E2699ABC8005E827B /* NotificationName.swift */; };
 		66CDA0CD26AB0B11003FD85E /* SuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDA0CC26AB0B11003FD85E /* SuccessViewController.swift */; };
 		66CDA0CF26AC25D5003FD85E /* FailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDA0CE26AC25D5003FD85E /* FailViewController.swift */; };
 		66CDA0D126B1CEBD003FD85E /* FinishCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDA0D026B1CEBD003FD85E /* FinishCondition.swift */; };
 		66CDA0D326B48AF5003FD85E /* AudioGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CDA0D226B48AF5003FD85E /* AudioGuide.swift */; };
-		66CDA0D526B55524003FD85E /* lessonNegative.wav in Resources */ = {isa = PBXBuildFile; fileRef = 66CDA0D426B55524003FD85E /* lessonNegative.wav */; };
-		66CDA0D926B58B67003FD85E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66CDA0D826B58B67003FD85E /* GoogleService-Info.plist */; };
 		66DBAD9A26C7D0D9002817EA /* ConsultationFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DBAD9926C7D0D9002817EA /* ConsultationFormViewController.swift */; };
 		66DBAD9E26C806BB002817EA /* ConsultationFormViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DBAD9D26C806BB002817EA /* ConsultationFormViewControllerDelegate.swift */; };
 		66DBADA026CFE0A5002817EA /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DBAD9F26CFE0A5002817EA /* EmailVerificationViewController.swift */; };
@@ -89,6 +90,10 @@
 		662F91D526DA318F00F98684 /* TriggerWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerWord.swift; sourceTree = "<group>"; };
 		662F91D726E36DC200F98684 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		662F91D926E37ABE00F98684 /* Scribble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scribble.swift; sourceTree = "<group>"; };
+		662F91DD26E7F95D00F98684 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		662F91DF26E7FE7C00F98684 /* lessonNegative.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lessonNegative.wav; sourceTree = "<group>"; };
+		662F91E026E7FE7C00F98684 /* lesson.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lesson.wav; sourceTree = "<group>"; };
+		662F91E326E8EB7800F98684 /* TextLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLog.swift; sourceTree = "<group>"; };
 		666445F9267670E5008A9545 /* Emotional Aid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Emotional Aid.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		666445FC267670E5008A9545 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		666445FE267670E5008A9545 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -134,15 +139,12 @@
 		66B9A05126977606005E827B /* ExerciseSelectorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectorDelegate.swift; sourceTree = "<group>"; };
 		66B9A0532697822B005E827B /* Ubuntu-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Medium.ttf"; sourceTree = "<group>"; };
 		66B9A0552698AC08005E827B /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
-		66B9A0592698B0FB005E827B /* lesson.wav */ = {isa = PBXFileReference; explicitFileType = audio.wav; name = lesson.wav; path = "Emotional Aid/Assets/Sounds/lesson.wav"; sourceTree = SOURCE_ROOT; };
 		66B9A05B2698C49E005E827B /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		66B9A05E2699ABC8005E827B /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		66CDA0CC26AB0B11003FD85E /* SuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessViewController.swift; sourceTree = "<group>"; };
 		66CDA0CE26AC25D5003FD85E /* FailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailViewController.swift; sourceTree = "<group>"; };
 		66CDA0D026B1CEBD003FD85E /* FinishCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishCondition.swift; sourceTree = "<group>"; };
 		66CDA0D226B48AF5003FD85E /* AudioGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioGuide.swift; sourceTree = "<group>"; };
-		66CDA0D426B55524003FD85E /* lessonNegative.wav */ = {isa = PBXFileReference; explicitFileType = audio.wav; name = lessonNegative.wav; path = "Emotional Aid/Assets/Sounds/lessonNegative.wav"; sourceTree = SOURCE_ROOT; };
-		66CDA0D826B58B67003FD85E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		66DBAD9926C7D0D9002817EA /* ConsultationFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultationFormViewController.swift; sourceTree = "<group>"; };
 		66DBAD9D26C806BB002817EA /* ConsultationFormViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsultationFormViewControllerDelegate.swift; sourceTree = "<group>"; };
 		66DBAD9F26CFE0A5002817EA /* EmailVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewController.swift; sourceTree = "<group>"; };
@@ -204,8 +206,8 @@
 				6664461226767418008A9545 /* Utilities */,
 				66644605267670E8008A9545 /* Assets.xcassets */,
 				66644607267670E8008A9545 /* LaunchScreen.storyboard */,
+				662F91DD26E7F95D00F98684 /* GoogleService-Info.plist */,
 				6664460A267670E8008A9545 /* Info.plist */,
-				66CDA0D826B58B67003FD85E /* GoogleService-Info.plist */,
 			);
 			path = "Emotional Aid";
 			sourceTree = "<group>";
@@ -294,6 +296,7 @@
 				66CDA0D026B1CEBD003FD85E /* FinishCondition.swift */,
 				6615C23326A2EF27009865E2 /* Personality.swift */,
 				6615C23526A30081009865E2 /* SpeechRecognitionManager.swift */,
+				662F91E326E8EB7800F98684 /* TextLog.swift */,
 				660AC54326886AD1003865D2 /* TheoryVideo.swift */,
 				660AC5452688B61F003865D2 /* TheoryVideoDB.swift */,
 				662F91D526DA318F00F98684 /* TriggerWord.swift */,
@@ -335,8 +338,8 @@
 		66B9A0582698B0E9005E827B /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				66CDA0D426B55524003FD85E /* lessonNegative.wav */,
-				66B9A0592698B0FB005E827B /* lesson.wav */,
+				662F91E026E7FE7C00F98684 /* lesson.wav */,
+				662F91DF26E7FE7C00F98684 /* lessonNegative.wav */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -423,25 +426,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66CDA0D926B58B67003FD85E /* GoogleService-Info.plist in Resources */,
 				666DC77F26773A0A0074C6CB /* Ubuntu-Regular.ttf in Resources */,
 				66B9A03E268F697D005E827B /* relax.gif in Resources */,
-				66B9A05D2698D9AB005E827B /* lesson.wav in Resources */,
 				66B9A0542697822B005E827B /* Ubuntu-Medium.ttf in Resources */,
 				668E315326C0600C00CFE274 /* videoLesson2Thumb.png in Resources */,
 				668E315126C05FB400CFE274 /* videoLesson1Thumb.png in Resources */,
 				666DC7792676A1B60074C6CB /* Neucha-Regular.ttf in Resources */,
 				66E88B3A26874CD000412FB5 /* Ubuntu-Light.ttf in Resources */,
+				662F91E226E7FE7C00F98684 /* lesson.wav in Resources */,
 				668E315526C0604100CFE274 /* videoLesson3Thumb.png in Resources */,
 				66DBADA226D3A4BD002817EA /* 02.gif in Resources */,
 				66644609267670E8008A9545 /* LaunchScreen.storyboard in Resources */,
+				662F91DE26E7F95D00F98684 /* GoogleService-Info.plist in Resources */,
 				668E315926C060F300CFE274 /* videoLesson5Thumb.png in Resources */,
 				668E315726C060CB00CFE274 /* videoLesson4Thumb.png in Resources */,
 				668E315B26C0611500CFE274 /* videoLesson6Thumb.png in Resources */,
 				66DBADA426D3A4C2002817EA /* 03.gif in Resources */,
 				668E315D26C0613F00CFE274 /* videoLesson7Thumb.png in Resources */,
-				66CDA0D526B55524003FD85E /* lessonNegative.wav in Resources */,
 				66644606267670E8008A9545 /* Assets.xcassets in Resources */,
+				662F91E126E7FE7C00F98684 /* lessonNegative.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,6 +519,7 @@
 				66CDA0CF26AC25D5003FD85E /* FailViewController.swift in Sources */,
 				666DC78126773E7D0074C6CB /* SOSButton.swift in Sources */,
 				666DC775267693180074C6CB /* Container.swift in Sources */,
+				662F91E426E8EB7800F98684 /* TextLog.swift in Sources */,
 				668E316626C1681F00CFE274 /* AuthState.swift in Sources */,
 				66CDA0CD26AB0B11003FD85E /* SuccessViewController.swift in Sources */,
 				666DC78B2677C0320074C6CB /* Exercise.swift in Sources */,
@@ -684,9 +688,10 @@
 				CODE_SIGN_ENTITLEMENTS = "Emotional Aid/Emotional Aid.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 6A95UC5E5S;
 				INFOPLIST_FILE = "Emotional Aid/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -708,9 +713,10 @@
 				CODE_SIGN_ENTITLEMENTS = "Emotional Aid/Emotional Aid.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 6A95UC5E5S;
 				INFOPLIST_FILE = "Emotional Aid/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

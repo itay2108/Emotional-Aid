@@ -7,7 +7,9 @@
 
 import UIKit
 import Speech
+import os
 
+@available(iOS 14.0, *)
 class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
     
     static let main = SpeechRecognitionManager()
@@ -32,6 +34,7 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             guard initiatedRecognizer.isAvailable else { completion(false); return }
             initiatedRecognizer.delegate = self
             isRecognizerActive = true
+            textLog.write("speech recognizer initiated")
             completion(true)
         }
     }
@@ -43,8 +46,10 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
                 switch authStatus {
                 case .authorized:
                     completion(true)
+                    textLog.write("speech recognizer authorized")
                 default:
                     print("speech recognition denied")
+                    textLog.write("speech recognizer denied")
                     completion(false)
                 }
             }
@@ -66,6 +71,9 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
                     SpeechRecognitionManager.main.searchFor(trigger: K.speechTriggers.next + K.speechTriggers.rewind, in: SRResult!.capitalized) { found, action  in
                         if found && action != nil {
                             NotificationCenter.default.post(name: NSNotification.Name.SpeechRecognizerDidMatchTrigger, object: nil, userInfo: ["action" : action!])
+                            Vibration.success.vibrate()
+                            textLog.write("found *\(action!)* trigger in \"\(SRResult!)\"")
+                            self.invalidate()
                         }
                     }
                 }
@@ -75,9 +83,7 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         guard let recognitionRequest = recognitionRequest else { fatalError("Unable to create a SFSpeechAudioBufferRecognitionRequest object") }
         recognitionRequest.shouldReportPartialResults = true
         
-        if #available(iOS 13, *) {
-            recognitionRequest.requiresOnDeviceRecognition = false
-        }
+        recognitionRequest.requiresOnDeviceRecognition = false
         
         recognitionTask = recognizer!.recognitionTask(with: recognitionRequest) { result, error in
             if result != nil {
@@ -97,12 +103,14 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
                 self.invalidate()
             }
         }
+        textLog.write("speech recognizer is listening...")
         
     }
     
     
     func searchFor(trigger words: [TriggerWord], in recognizedSpeechContent: String, completion: (_ success: Bool, _ action: TriggerWordType?) -> Void) {
         print("searching in \(recognizedSpeechContent)...")
+        textLog.write("searching in \(recognizedSpeechContent)...")
         
         for word in words {
             if recognizedSpeechContent.contains(word.value) {
@@ -117,6 +125,7 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         self.recognitionTask?.finish()
         self.recognitionRequest = nil
         self.isRecognizerActive = false
+        textLog.write("speech recognizer invalidated")
     }
     
     

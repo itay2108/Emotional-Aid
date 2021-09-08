@@ -14,6 +14,8 @@ class ConsultationFormViewController: UIViewController {
         return .lightContent
     }
     
+    let def = UserDefaults.standard
+    
     var emailSuccessfullySent: Bool = false
     var delegate: ConsultationFormViewControllerDelegate?
     
@@ -286,6 +288,8 @@ class ConsultationFormViewController: UIViewController {
         
         if [nameTextField.validationError, emailTextField.validationError, phoneTextField.validationError].allElementsAreNil() {
            
+            def.setValue(nameTextField.textField.text, forKey: K.def.name)
+            
             if MFMailComposeViewController.canSendMail() {
                 var countryPhoneCode = ""
                 

@@ -94,7 +94,6 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print(preferredStatusBarStyle.rawValue, childForStatusBarStyle)
         setUpUI()
         
         SpeechRecognitionManager.main.authorizeSpeechRecognition { success in
@@ -113,7 +112,6 @@ class MainViewController: UIViewController {
     }
     
     private func setUpUI() {
-        //self.view.backgroundColor = .white
         
         addSubviews()
         setConstraints()
