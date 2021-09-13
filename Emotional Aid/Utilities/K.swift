@@ -36,8 +36,8 @@ struct K {
     }
     
     struct audio {
-        static let lesson1 = Bundle.main.url(forResource: "lesson", withExtension: "wav")
-        static let lesson1Negative = Bundle.main.url(forResource: "lessonNegative", withExtension: "wav")
+        static let lesson1 = Bundle.main.url(forResource: "lesson", withExtension: "mp3")
+        static let lesson1Negative = Bundle.main.url(forResource: "lessonNegative", withExtension: "mp3")
     }
     
     struct text {

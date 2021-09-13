@@ -17,9 +17,10 @@
 		662F91D826E36DC200F98684 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662F91D726E36DC200F98684 /* ProfileViewController.swift */; };
 		662F91DA26E37ABE00F98684 /* Scribble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662F91D926E37ABE00F98684 /* Scribble.swift */; };
 		662F91DE26E7F95D00F98684 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 662F91DD26E7F95D00F98684 /* GoogleService-Info.plist */; };
-		662F91E126E7FE7C00F98684 /* lessonNegative.wav in Resources */ = {isa = PBXBuildFile; fileRef = 662F91DF26E7FE7C00F98684 /* lessonNegative.wav */; };
-		662F91E226E7FE7C00F98684 /* lesson.wav in Resources */ = {isa = PBXBuildFile; fileRef = 662F91E026E7FE7C00F98684 /* lesson.wav */; };
 		662F91E426E8EB7800F98684 /* TextLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662F91E326E8EB7800F98684 /* TextLog.swift */; };
+		662F91E626E94E9D00F98684 /* lesson.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 662F91E526E94E9D00F98684 /* lesson.mp3 */; };
+		662F91E826E94EA400F98684 /* lessonNegative.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 662F91E726E94EA400F98684 /* lessonNegative.mp3 */; };
+		662F91EA26EA69D600F98684 /* SoundResultsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662F91E926EA69D600F98684 /* SoundResultsObserver.swift */; };
 		666445FD267670E5008A9545 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FC267670E5008A9545 /* AppDelegate.swift */; };
 		666445FF267670E5008A9545 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666445FE267670E5008A9545 /* SceneDelegate.swift */; };
 		66644601267670E5008A9545 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66644600267670E5008A9545 /* MainViewController.swift */; };
@@ -56,7 +57,6 @@
 		66B9A03E268F697D005E827B /* relax.gif in Resources */ = {isa = PBXBuildFile; fileRef = 66B9A03D268F697D005E827B /* relax.gif */; };
 		66B9A040268F73D7005E827B /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A03F268F73D7005E827B /* ExerciseModel.swift */; };
 		66B9A04226921544005E827B /* ExerciseQueueController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A04126921544005E827B /* ExerciseQueueController.swift */; };
-		66B9A04426921ADD005E827B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A04326921ADD005E827B /* CardView.swift */; };
 		66B9A04A26938708005E827B /* ExerciseQueueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A04926938708005E827B /* ExerciseQueueTableViewCell.swift */; };
 		66B9A050269770DB005E827B /* MediaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A04F269770DB005E827B /* MediaButton.swift */; };
 		66B9A05226977606005E827B /* ExerciseSelectorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9A05126977606005E827B /* ExerciseSelectorDelegate.swift */; };
@@ -91,9 +91,10 @@
 		662F91D726E36DC200F98684 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		662F91D926E37ABE00F98684 /* Scribble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scribble.swift; sourceTree = "<group>"; };
 		662F91DD26E7F95D00F98684 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		662F91DF26E7FE7C00F98684 /* lessonNegative.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lessonNegative.wav; sourceTree = "<group>"; };
-		662F91E026E7FE7C00F98684 /* lesson.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lesson.wav; sourceTree = "<group>"; };
 		662F91E326E8EB7800F98684 /* TextLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLog.swift; sourceTree = "<group>"; };
+		662F91E526E94E9D00F98684 /* lesson.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lesson.mp3; sourceTree = "<group>"; };
+		662F91E726E94EA400F98684 /* lessonNegative.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lessonNegative.mp3; sourceTree = "<group>"; };
+		662F91E926EA69D600F98684 /* SoundResultsObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundResultsObserver.swift; sourceTree = "<group>"; };
 		666445F9267670E5008A9545 /* Emotional Aid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Emotional Aid.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		666445FC267670E5008A9545 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		666445FE267670E5008A9545 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -133,7 +134,6 @@
 		66B9A03D268F697D005E827B /* relax.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = relax.gif; sourceTree = "<group>"; };
 		66B9A03F268F73D7005E827B /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
 		66B9A04126921544005E827B /* ExerciseQueueController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseQueueController.swift; sourceTree = "<group>"; };
-		66B9A04326921ADD005E827B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		66B9A04926938708005E827B /* ExerciseQueueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseQueueTableViewCell.swift; sourceTree = "<group>"; };
 		66B9A04F269770DB005E827B /* MediaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaButton.swift; sourceTree = "<group>"; };
 		66B9A05126977606005E827B /* ExerciseSelectorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectorDelegate.swift; sourceTree = "<group>"; };
@@ -215,7 +215,6 @@
 		6664461226767418008A9545 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				66B9A04326921ADD005E827B /* CardView.swift */,
 				666DC774267693180074C6CB /* Container.swift */,
 				66644610267672A2008A9545 /* Extensions.swift */,
 				666DC77C2676A89B0074C6CB /* FontTypes.swift */,
@@ -300,6 +299,7 @@
 				660AC54326886AD1003865D2 /* TheoryVideo.swift */,
 				660AC5452688B61F003865D2 /* TheoryVideoDB.swift */,
 				662F91D526DA318F00F98684 /* TriggerWord.swift */,
+				662F91E926EA69D600F98684 /* SoundResultsObserver.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -338,8 +338,8 @@
 		66B9A0582698B0E9005E827B /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				662F91E026E7FE7C00F98684 /* lesson.wav */,
-				662F91DF26E7FE7C00F98684 /* lessonNegative.wav */,
+				662F91E526E94E9D00F98684 /* lesson.mp3 */,
+				662F91E726E94EA400F98684 /* lessonNegative.mp3 */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -426,14 +426,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				662F91E626E94E9D00F98684 /* lesson.mp3 in Resources */,
 				666DC77F26773A0A0074C6CB /* Ubuntu-Regular.ttf in Resources */,
 				66B9A03E268F697D005E827B /* relax.gif in Resources */,
 				66B9A0542697822B005E827B /* Ubuntu-Medium.ttf in Resources */,
 				668E315326C0600C00CFE274 /* videoLesson2Thumb.png in Resources */,
 				668E315126C05FB400CFE274 /* videoLesson1Thumb.png in Resources */,
 				666DC7792676A1B60074C6CB /* Neucha-Regular.ttf in Resources */,
+				662F91E826E94EA400F98684 /* lessonNegative.mp3 in Resources */,
 				66E88B3A26874CD000412FB5 /* Ubuntu-Light.ttf in Resources */,
-				662F91E226E7FE7C00F98684 /* lesson.wav in Resources */,
 				668E315526C0604100CFE274 /* videoLesson3Thumb.png in Resources */,
 				66DBADA226D3A4BD002817EA /* 02.gif in Resources */,
 				66644609267670E8008A9545 /* LaunchScreen.storyboard in Resources */,
@@ -444,7 +445,6 @@
 				66DBADA426D3A4C2002817EA /* 03.gif in Resources */,
 				668E315D26C0613F00CFE274 /* videoLesson7Thumb.png in Resources */,
 				66644606267670E8008A9545 /* Assets.xcassets in Resources */,
-				662F91E126E7FE7C00F98684 /* lessonNegative.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,7 +537,6 @@
 				66CDA0D126B1CEBD003FD85E /* FinishCondition.swift in Sources */,
 				668E315F26C06B6800CFE274 /* EmailAuthViewController.swift in Sources */,
 				662F91D626DA318F00F98684 /* TriggerWord.swift in Sources */,
-				66B9A04426921ADD005E827B /* CardView.swift in Sources */,
 				668E316426C15C7100CFE274 /* SignInTextField.swift in Sources */,
 				66B9A05C2698C49E005E827B /* AudioManager.swift in Sources */,
 				66B9A0562698AC08005E827B /* Vibration.swift in Sources */,
@@ -546,6 +545,7 @@
 				668E316226C103C300CFE274 /* EAValidationView.swift in Sources */,
 				66DBADA026CFE0A5002817EA /* EmailVerificationViewController.swift in Sources */,
 				6683B4F426BE8D8D00225BF6 /* AuthViewController.swift in Sources */,
+				662F91EA26EA69D600F98684 /* SoundResultsObserver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,7 +688,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Emotional Aid/Emotional Aid.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 6A95UC5E5S;
 				INFOPLIST_FILE = "Emotional Aid/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -713,7 +713,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Emotional Aid/Emotional Aid.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 6A95UC5E5S;
 				INFOPLIST_FILE = "Emotional Aid/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;

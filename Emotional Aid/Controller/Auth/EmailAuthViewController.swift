@@ -376,6 +376,7 @@ class EmailAuthViewController: UIViewController {
                                 self.present(destination, animated: true)
                             } else {
                                 print("error: ", error as Any)
+                                textLog.write("error: \(String(describing: error?.localizedDescription))")
                             }
                         }
                     } else {
@@ -391,6 +392,7 @@ class EmailAuthViewController: UIViewController {
                             self.presentErrorToast(message: K.text.errorDescriptions.signUpGeneric)
                         }
                         print(authError)
+                        textLog.write("\(authError)")
                     }
                 }
             }
@@ -401,7 +403,7 @@ class EmailAuthViewController: UIViewController {
                         print("email isnt verified")
                         user.sendEmailVerification { error in
                             if error == nil {
-                                print("email sent to: \(email)")
+                                textLog.write("email sent to: \(email)")
                                 self.def.setValue(email, forKey: K.def.email)
                                 self.def.setValue(password, forKey: K.def.password)
                                 
@@ -411,6 +413,7 @@ class EmailAuthViewController: UIViewController {
                                 self.present(destination, animated: true)
                             } else {
                                 print("error: ", error as Any)
+                                textLog.write("error: \(String(describing: error?.localizedDescription))")
                             }
                         }
                     } else {
@@ -428,6 +431,7 @@ class EmailAuthViewController: UIViewController {
                             self.presentErrorToast(message: K.text.errorDescriptions.signUpGeneric)
                         }
                         print(signInError)
+                        textLog.write("error: \(String(describing: error?.localizedDescription))")
                     }
                 }
             }

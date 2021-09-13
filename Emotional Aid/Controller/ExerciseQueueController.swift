@@ -23,6 +23,7 @@ class ExerciseQueueController: UIViewController {
         }
     }
     var personality: Personality?
+
     
     var audioGuide: URL? {
         get {
@@ -324,6 +325,16 @@ class ExerciseQueueController: UIViewController {
     func nextExerciseLogic() {
         guard exerciseModel != nil else { return }
         
+        //if user didn't set first score - dismiss and show error message in delegate
+        if let delegate = self.delegate as? PracticeViewController {
+            if !delegate.didSetSliderScoreInCurrentExercise {
+                self.dismiss(animated: true) {
+                    delegate.presentErrorToast(message: "please set a score before proceeding")
+                }
+                return
+            }
+        }
+        
         AudioManager.shared.stopAudio()
         
         exerciseModel!.currentExercise += 1
@@ -440,7 +451,13 @@ class ExerciseQueueController: UIViewController {
     
     @objc func goForwardButtonPressed() {
         nextExerciseLogic()
-        delegate?.set(exerciseTo: exerciseModel!.currentExercise)
+        if personality?.practiceScores[0] != 0 && personality?.practiceScores[0] != nil {
+            if let delegate = delegate as? PracticeViewController {
+                if delegate.didSetSliderScoreInCurrentExercise {
+                    delegate.set(exerciseTo: exerciseModel!.currentExercise)
+                }
+            }
+        }
     }
     
     @objc func handleVolumeSliderValueChanged(_ slider: UISlider, _ event: UIEvent) {
@@ -494,7 +511,7 @@ class ExerciseQueueController: UIViewController {
 
 
     @objc private func handleSpeechRecognitionTrigger(_ notification: NSNotification) {
-        guard notification.userInfo?["action"] as? TriggerWordType != nil else { print("unexpectedly received nil as speech recognition trigger"); return }
+        guard notification.userInfo?["action"] as? TriggerWordType != nil else { textLog.write("unexpectedly received nil as speech recognition trigger"); return }
         guard let delegate = delegate as? PracticeViewController else { return }
 
             Vibration.light.vibrate()

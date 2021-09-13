@@ -330,7 +330,7 @@ class ProfileViewController: UIViewController {
             self.present(mc, animated: true)
         } else {
             //cant send mail handled here
-            print("cannot send email")
+            textLog.write("cannot send email")
             
         }
     }
@@ -347,6 +347,7 @@ class ProfileViewController: UIViewController {
                     self.def.removeObject(forKey: K.def.password)
                 } catch {
                     print("error signing out")
+                    textLog.write("error signing out")
                     return
                 }
                 

@@ -16,6 +16,12 @@ class PracticeViewController: UIViewController {
         return .darkContent
     }
     
+    var isInDemoMode: Bool {
+        get {
+            return demoSwitch.isOn
+        }
+    }
+    
     var exerciseModel: ExerciseModel = ExerciseModel()
     
     var currentExercise: Exercise {
@@ -30,9 +36,15 @@ class PracticeViewController: UIViewController {
     
     var audioGuide: URL? {
         get {
-            return personality.emotionalState == .negative && currentExercise.audioGuide?.negative != nil ? currentExercise.audioGuide?.negative : currentExercise.audioGuide?.positive
+            if isInDemoMode {
+                return personality.emotionalState == .negative && currentExercise.audioGuide?.negative != nil ? currentExercise.audioGuide?.negative : currentExercise.audioGuide?.positive
+            } else {
+                return personality.emotionalState == .negative && currentExercise.audioGuide?.negative != nil ? currentExercise.audioGuide?.negativeShort : currentExercise.audioGuide?.positiveShort
+            }
+
         }
     }
+    
     
     private lazy var navContainer: UIView = {
         return Container()
@@ -347,7 +359,7 @@ class PracticeViewController: UIViewController {
         
     }
     
-    private func presentErrorToast(message: String, fadeOutAfter: Double? = nil) {
+    func presentErrorToast(message: String, fadeOutAfter: Double? = nil) {
         
         Vibration.error.vibrate()
         
@@ -407,6 +419,15 @@ class PracticeViewController: UIViewController {
         if newExercise.isSliderPresent {
             exerciseView.changeviewState(of: exerciseView.accessorySlider, to: .expanded, with: exerciseView.defaultSliderHeight)
             exerciseView.accessorySlider.isHidden = false
+            exerciseView.accessorySlider.value = 0
+            
+            //by default we set the slider back to 0 for next times, but to we also want to remember user input
+            //in past exercises. so - if we have data for an emotional score in the current exercise, we set it to the slider.
+            if let scoreIndex = newExercise.scoreIndex {
+                if let emotionalScore = personality.practiceScores[scoreIndex] {
+                    exerciseView.accessorySlider.value = Float(emotionalScore)
+                }
+            }
         } else {
             exerciseView.changeviewState(of: exerciseView.accessorySlider, to: .collapsed)
             exerciseView.accessorySlider.isHidden = true
@@ -463,8 +484,8 @@ class PracticeViewController: UIViewController {
         
         //dont let user do the practice if he's in a relatively calm state.
         if let firstScore = personality.practiceScores[0] {
-            if -3 <= firstScore && firstScore <= 3 {
-                presentErrorToast(message: "It seems that you are not in such a bad mood, as your score is \(firstScore). try using this section when you are higher that 5 or lower than -5")
+            if firstScore == 0 {
+                presentErrorToast(message: "It seems that you are not in such a bad mood, as your score is 0. try using this section when you feel stressed")
                 return
             }
         }
@@ -489,8 +510,10 @@ class PracticeViewController: UIViewController {
                 }
             } else {
                 print("couldnt get finish condition, try checking scores array.")
+                textLog.write("couldnt get finish condition, try checking scores array.")
             }
             print("scores:", personality.practiceScores)
+            textLog.write("scores: \(personality.practiceScores)")
         }
     }
     
@@ -530,7 +553,7 @@ class PracticeViewController: UIViewController {
     
     func checkForFinishCondition(with scores: [Int?]) -> FinishCondition? {
         if scores.contains(where: {$0 == nil}) { return nil }
-        print(scores)
+
         let firstScore: Int = scores.first!!
         let lastScore: Int = scores.last!!
         
@@ -706,7 +729,7 @@ class PracticeViewController: UIViewController {
 
     
     @objc private func handleSpeechRecognitionTrigger(_ notification: NSNotification) {
-        guard let action = notification.userInfo?["action"] as? TriggerWordType else { print("unexpectedly received nil as speech recognition trigger"); return }
+        guard let action = notification.userInfo?["action"] as? TriggerWordType else { textLog.write("unexpectedly received nil as speech recognition trigger"); return }
         print("received SR Trigger: \(action)")
         Vibration.light.vibrate()
         if action == .next { self.nextExerciseLogic() } else
@@ -724,7 +747,7 @@ class PracticeViewController: UIViewController {
             case 15:
                 personality.practiceScores[2] = Int(score)
             default:
-                print(score, "couldn't set score from value - slider isn't on correct exercise.")
+                textLog.write("\(score), couldn't set score from value - slider isn't on correct exercise.")
                 
             }
             

@@ -150,7 +150,7 @@ class SuccessViewController: UIViewController {
     
     func setContentAccordingToFinishCondition() {
         guard firstScore != nil && lastScore != nil
-        else { print("unexpectedly gound nil while unwrapping exercise scores for success text."); return }
+        else { textLog.write("unexpectedly gound nil while unwrapping exercise scores for success text."); return }
         
         switch finishCondition {
         case .successBecamePositive:

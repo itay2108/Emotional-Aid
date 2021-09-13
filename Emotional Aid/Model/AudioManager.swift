@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import AVFoundation
+import AVKit
+import SoundAnalysis
 
 class AudioManager: NSObject, AVAudioPlayerDelegate {
     
@@ -21,6 +22,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             if playbackState == .finished { NotificationCenter.default.post(name: NSNotification.Name.audioManagerDidFinishPlayback, object: nil)}
             
             NotificationCenter.default.post(name: NSNotification.Name.audioManagerStateDidChange, object: nil)
+            textLog.write("AudioManager state chaged to: \(playbackState)")
         }
     }
     
@@ -30,6 +32,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             try AVAudioSession.sharedInstance().setActive(true)
         } catch let error {
             print(error.localizedDescription)
+            textLog.write("AVAudioSession error: \(error.localizedDescription)")
         }
     }
     
@@ -45,40 +48,41 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             if completion != nil { completion!() }
         } catch let error {
             print(error.localizedDescription)
+            textLog.write("AVAudioSession error: couldnt prepare audio player. \(error.localizedDescription)")
         }
         
     }
     
     func playAudio() {
-        guard player != nil && player?.url != nil else { print("can't play audio - player is nil"); return }
+        guard player != nil && player?.url != nil else { textLog.write("can't play audio - player is nil"); return }
         if playbackState == .playing { print("player is already playing"); return }
         player!.play()
         playbackState = .playing
     }
     
     func playAudioAt(time: Double) {
-        guard player != nil && player?.url != nil else { print("can't play audio - player is nil"); return }
+        guard player != nil && player?.url != nil else { textLog.write("can't play audio - player is nil"); return }
         player!.currentTime = time
         player?.play()
         playbackState = .playing
     }
     
     func pauseAudio() {
-        guard player != nil && player?.url != nil else { print("can't pause audio - player is nil"); return }
+        guard player != nil && player?.url != nil else { textLog.write("can't pause audio - player is nil"); return }
         if playbackState == .paused { print("player is already paused"); return }
         player!.pause()
         playbackState = .paused
     }
     
     func stopAudio() {
-        guard player != nil && player?.url != nil else { print("can't stop audio - player is nil"); return }
+        guard player != nil && player?.url != nil else { textLog.write("can't stop audio - player is nil"); return }
         if playbackState == .standby { print("player is already stopped"); return }
         player!.stop()
         playbackState = .standby
     }
     
     func rewindAudio() {
-        guard player != nil && player?.url != nil else { print("can't rewind audio - player is nil"); return }
+        guard player != nil && player?.url != nil else { textLog.write("can't rewind audio - player is nil"); return }
         player!.currentTime = 0
         playbackState = .ready
     }
@@ -98,15 +102,17 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
     }
     
     func invalidatePlayer() {
+        guard player != nil else { return }
         player = nil
         playbackState = .standby
+        textLog.write("player invalidated")
     }
     
     //MARK: - Audio Recorder
     
     private var audioEngine: AVAudioEngine?
     
-    var audioEngineMaxAllowedTimeActive = 10
+    var audioEngineMaxAllowedTimeActive = 180
     
     var timer: Timer?
     
@@ -126,18 +132,21 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
         } catch let error {
             print(error.localizedDescription)
+            textLog.write("Error: couldn't prepare audio engine - \(error.localizedDescription)")
         }
         
         let recordingFormat = audioEngine!.inputNode.outputFormat(forBus: 0)
         audioEngine!.inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-            if !SpeechRecognitionManager.main.isRecognizerActive {
-                SpeechRecognitionManager.main.initiate(language: .russian) { success in
-                    if success {
-                        SpeechRecognitionManager.main.listen(to: buffer)
+            if self.volume(of: buffer, bufferSize: 1024) > 0.01 {
+                print(self.volume(of: buffer, bufferSize: 1024))
+                if !SpeechRecognitionManager.main.isRecognizerActive {
+                    SpeechRecognitionManager.main.initiate(language: .russian) { success in
+                        if success {
+                            SpeechRecognitionManager.main.listen(to: buffer)
+                        }
                     }
                 }
             }
-
             SpeechRecognitionManager.main.recognitionRequest?.append(buffer)
         }
 
@@ -166,6 +175,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             print("starting audio engine")
         } catch let error {
             print(error.localizedDescription)
+            textLog.write("Error: couldn't start audio engine - \(error.localizedDescription)")
         }
     }
     
@@ -178,11 +188,44 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback)
         } catch {
-            print("error setting session category to playback when stopping audio engine.")
+            textLog.write("error setting session category to playback when stopping audio engine.")
         }
         
-        print("stopping audio engine")
-    }    
+        textLog.write("stopping audio engine")
+    }
+    
+    private func volume(of buffer: AVAudioPCMBuffer, bufferSize: Int) -> Float {
+        guard let channelData = buffer.floatChannelData?[0] else {
+            return 0
+        }
+
+        let channelDataArray = Array(UnsafeBufferPointer(start:channelData, count: bufferSize))
+
+        var outEnvelope = [Float]()
+        var envelopeState:Float = 0
+        let envConstantAtk:Float = 0.16
+        let envConstantDec:Float = 0.003
+
+        for sample in channelDataArray {
+            let rectified = abs(sample)
+
+            if envelopeState < rectified {
+                envelopeState += envConstantAtk * (rectified - envelopeState)
+            } else {
+                envelopeState += envConstantDec * (rectified - envelopeState)
+            }
+            outEnvelope.append(envelopeState)
+        }
+
+        // 0.007 is the low pass filter to prevent
+        // getting the noise entering from the microphone
+        if let maxVolume = outEnvelope.max(),
+            maxVolume > Float(0.015) {
+            return maxVolume
+        } else {
+            return 0.0
+        }
+    }
     
 }
 

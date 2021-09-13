@@ -96,7 +96,7 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             if ( error != nil && !error!.localizedDescription.contains("216") ) || self.isRecognitionResultFinal {
                 // Stop recognizing speech if there is a problem.
                 print(error != nil ? "SR error: \(error!.localizedDescription)" : "received final recognition result")
-                
+                textLog.write(error?.localizedDescription ?? "error: nil")
                 self.recognitionTask?.cancel()
                 self.recognitionRequest?.endAudio()
                 
@@ -104,6 +104,7 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             }
         }
         textLog.write("speech recognizer is listening...")
+        Vibration.light.vibrate()
         
     }
     

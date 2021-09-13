@@ -138,7 +138,7 @@ class TheoryViewController: UIViewController {
     //MARK: - video methods
     
     func videoPlayerVC(with url: URL?) -> AVPlayerViewController? {
-        guard let videoURL = url else { print("url is nil"); return nil }
+        guard let videoURL = url else { textLog.write("video url is nil"); return nil }
         
         let vc = AVPlayerViewController()
         videoPlayer = AVPlayer(url: videoURL)

@@ -8,17 +8,29 @@
 import Foundation
 
 class AudioGuide {
-    var positive: URL?
-    var negative: URL?
+    
+    var positive: URL? //intro + guide for default state
+    var positiveShort: URL? //only guide for default state
+    
+    var negative: URL? //intro + guide for when hypo has differend guide
+    var negativeShort: URL? //only guide for when hypo has differend guide
     
     var part2: URL? = nil
-    var part3: URL? = nil
     
-    init(positive: URL?, negative: URL? = nil, part2: URL? = nil, part3: URL? = nil) {
+    init(positive: URL?, positiveShort: URL?, negative: URL? = nil, negativeShort: URL? = nil, part2: URL? = nil) {
+        
         self.positive = positive
+        self.positiveShort = positiveShort
+        
         self.negative = negative
+        self.negativeShort = negativeShort
         
         self.part2 = part2
-        self.part3 = part3
     }
+}
+
+enum AudioGuidePlaybackPart {
+    case intro
+    case main
+    case extra
 }

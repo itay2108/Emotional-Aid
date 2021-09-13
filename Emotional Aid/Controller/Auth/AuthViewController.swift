@@ -390,7 +390,7 @@ class AuthViewController: UIViewController {
         // Start the sign in flow!
         GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { /*[unowned self]*/ user, error in
 
-            if let error = error { print(error.localizedDescription); return }
+            if let error = error { print(error.localizedDescription); textLog.write(error.localizedDescription); return }
 
           guard let authentication = user?.authentication,
                 let idToken = authentication.idToken

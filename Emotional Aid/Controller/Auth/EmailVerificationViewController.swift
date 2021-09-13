@@ -219,6 +219,7 @@ class EmailVerificationViewController: UIViewController {
         Auth.auth().currentUser?.sendEmailVerification(completion: nil)
         
         sender.setTitle("Send Again", for: .normal)
+        textLog.write("verification email has been sent again")
     }
     
     @objc func backButtonPressed() {
