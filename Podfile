@@ -16,7 +16,7 @@ target 'Emotional Aid' do
   
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'
-  pod 'GoogleSignIn'
+  pod 'GoogleSignIn', '~> 6.0.2'
   pod 'Firebase/Storage'
 
   

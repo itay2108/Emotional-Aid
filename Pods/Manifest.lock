@@ -84,7 +84,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (~> 1.2)
-  - GoogleSignIn (6.0.1):
+  - GoogleSignIn (6.0.2):
     - AppAuth (~> 1.4)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
@@ -128,7 +128,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Storage
   - Gifu
-  - GoogleSignIn
+  - GoogleSignIn (~> 6.0.2)
   - IQKeyboardManager
   - IQKeyboardManagerSwift
   - PaddingLabel
@@ -172,7 +172,7 @@ SPEC CHECKSUMS:
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   GoogleAppMeasurement: 31c7d7655818784b7dd34bdf6884f75b465d5f6c
   GoogleDataTransport: 04c3e9a480bbcaa2ec3f5d27f1cdeb6a92f20c8d
-  GoogleSignIn: 1b0c4ec33a6fe282f4fa35d8ac64263230ddaf36
+  GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
   GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
@@ -184,6 +184,6 @@ SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SwiftFontName: 08aaa0143dadc7753587c4317d9e8a5f2c2418b5
 
-PODFILE CHECKSUM: 319e906d27a7b00b159deeda32aceef92dfd3c64
+PODFILE CHECKSUM: a4a811972b8ef6ee8e0920bb205aa574e0a30bed
 
 COCOAPODS: 1.10.1

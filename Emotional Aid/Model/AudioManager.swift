@@ -167,6 +167,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(audioEngineMaxAllowedTimeActive)) {
                 if let engine = self.audioEngine {
                     if engine.isRunning {
+                        
                         self.stopAudioEngine()
                     }
                 }

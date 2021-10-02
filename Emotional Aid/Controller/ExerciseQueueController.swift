@@ -554,21 +554,37 @@ extension ExerciseQueueController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard exerciseModel != nil else { return }
         
-        setExercise(to: indexPath.row)
-        
-        tableView.reloadData()
-        
-        tableView.scrollToRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), at: .middle, animated: true)
-        
-        //update selected exercise also in practiceVC
-        delegate?.set(exerciseTo: indexPath.row)
-        
-        //stop current exerciser audio and play selected one
-        AudioManager.shared.stopAudio()
-        
-        AudioManager.shared.insert(audio: audioGuide) {
-            AudioManager.shared.playAudio()
+        //if user didn't set first score - dismiss and show error message in delegate
+        if let delegate = self.delegate as? PracticeViewController {
+            if !delegate.didSetSliderScoreInCurrentExercise {
+                self.dismiss(animated: true) {
+                    delegate.presentErrorToast(message: "please set a score before proceeding")
+                }
+                return
+            } else if personality?.practiceScores[0] != 0 && personality?.practiceScores[0] != nil {
+                setExercise(to: indexPath.row)
+                
+                tableView.reloadData()
+                
+                tableView.scrollToRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), at: .middle, animated: true)
+                
+                //update selected exercise also in practiceVC
+                delegate.set(exerciseTo: indexPath.row)
+                
+                if let delegate = self.delegate as? PracticeViewController {
+                    delegate.exerciseView.scrollView.setContentOffset(.zero, animated: true)
+                }
+                //stop current exerciser audio and play selected one
+                AudioManager.shared.stopAudio()
+                
+                AudioManager.shared.insert(audio: audioGuide) {
+                    AudioManager.shared.playAudio()
+                }
+            }
         }
+        
+
+        
     }
     
     //set header title design in tableview

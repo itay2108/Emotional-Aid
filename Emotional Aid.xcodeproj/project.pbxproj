@@ -688,7 +688,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Emotional Aid/Emotional Aid.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 6A95UC5E5S;
 				INFOPLIST_FILE = "Emotional Aid/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -713,7 +713,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Emotional Aid/Emotional Aid.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 6A95UC5E5S;
 				INFOPLIST_FILE = "Emotional Aid/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;

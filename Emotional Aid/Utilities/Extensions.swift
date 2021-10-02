@@ -283,6 +283,14 @@ extension Int {
 
 }
 
+extension Double {
+    /// Rounds the double to decimal places value
+    func rounded(toPlaces places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
+
 extension Array {
     func allElementsAreNil() -> Bool {
         var allNil: Bool = true
@@ -294,6 +302,31 @@ extension Array {
         }
         
         return allNil
+    }
+    
+    func withoutNilElements() -> [Any] {
+        let optionalSelf = self as [Any?]
+        var safeSelf: [Any] = []
+        
+        for element in optionalSelf {
+            if let safeElement = element {
+                safeSelf.append(safeElement)
+            }
+        }
+        
+        return safeSelf
+    }
+    
+}
+
+extension Array where Element == Int {
+    func median() -> Double {
+        let sortedArray = sorted()
+        if count % 2 != 0 {
+            return Double(sortedArray[count / 2])
+        } else {
+            return Double(sortedArray[count / 2] + sortedArray[count / 2 - 1]) / 2.0
+        }
     }
 }
 

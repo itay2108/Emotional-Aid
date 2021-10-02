@@ -26,8 +26,9 @@ class Exercise {
     var audioGuide: AudioGuide?
     
     var isCurrentlySelected: Bool = false
+    var doesHaveSpecialLogic = false
     
-    init(title: String = "Exercise Title", isAnimationPresent: Bool = false, animationURLName: String? = nil, isSliderPresent: Bool = false, scoreIndex: Int? = nil,  theWhat: String = "The what description", theWhy: String = "The why desc", theWhatNegative: String? = nil, theWhyNegative: String? = nil, audioGuide: AudioGuide? = nil) {
+    init(title: String = "Exercise Title", isAnimationPresent: Bool = false, animationURLName: String? = nil, isSliderPresent: Bool = false, scoreIndex: Int? = nil,  theWhat: String = "The what description", theWhy: String = "The why desc", theWhatNegative: String? = nil, theWhyNegative: String? = nil, audioGuide: AudioGuide? = nil, doesHaveSpecialLogic: Bool = false) {
         self.title = title
         
         self.isAnimationPresent = isAnimationPresent
@@ -43,6 +44,8 @@ class Exercise {
         self.theWhyNegative = theWhyNegative
         
         self.audioGuide = audioGuide
+        
+        self.doesHaveSpecialLogic = doesHaveSpecialLogic
     }
     
 }

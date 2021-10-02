@@ -35,5 +35,9 @@ extension Notification.Name {
     static var SpeechRecognizerDidMatchTrigger: Notification.Name {
             return .init("speechRecognizer.DidMatchTrigger")
     }
+    
+    static var AudioEngineDidTimeout: Notification.Name {
+            return .init("audioManager.DidTimeout")
+    }
 
 }

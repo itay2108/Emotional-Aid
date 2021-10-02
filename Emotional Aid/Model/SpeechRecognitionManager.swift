@@ -68,7 +68,7 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         var SRResult: String? {
             didSet {
                 if SRResult != nil && SRResult != oldValue {
-                    SpeechRecognitionManager.main.searchFor(trigger: K.speechTriggers.next + K.speechTriggers.rewind, in: SRResult!.capitalized) { found, action  in
+                    SpeechRecognitionManager.main.searchFor(trigger: K.speechTriggers.all, in: SRResult!.capitalized) { found, action  in
                         if found && action != nil {
                             NotificationCenter.default.post(name: NSNotification.Name.SpeechRecognizerDidMatchTrigger, object: nil, userInfo: ["action" : action!])
                             Vibration.success.vibrate()

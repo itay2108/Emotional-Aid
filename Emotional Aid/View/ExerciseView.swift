@@ -38,6 +38,8 @@ class ExerciseView: UIView {
         view.axis = .vertical
         view.alignment = .center
         view.backgroundColor = .clear
+        view.isLayoutMarginsRelativeArrangement = true
+        //view.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 48, leading: 0, bottom: 0, trailing: 0)
         return view
     }()
     
@@ -48,11 +50,7 @@ class ExerciseView: UIView {
     }()
     
     lazy var accessorySlider: UISlider = {
-       let slider = UISlider()
-        slider.maximumValue = 10
-        slider.minimumValue = -10
-        slider.value = 0
-        slider.isContinuous = false
+        let slider = EASlider()
         slider.addTarget(self, action: #selector(sliderValueHasChanged(_:)), for: .valueChanged)
        return slider
     }()

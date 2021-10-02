@@ -13,6 +13,8 @@ struct TextLog: TextOutputStream {
     
     /// Appends the given string to the stream.
     mutating func write(_ string: String) {
+        print(string)
+        
         let paths = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask)
         let documentDirectoryPath = paths.first!
         let log = documentDirectoryPath.appendingPathComponent("log.txt")

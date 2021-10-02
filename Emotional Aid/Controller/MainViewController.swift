@@ -90,6 +90,10 @@ class MainViewController: UIViewController {
         label.textColor = K.colors.appText
         return label
     }()
+    
+//    private lazy var testSlider: EASlider = {
+//        return EASlider()
+//    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,6 +108,7 @@ class MainViewController: UIViewController {
             if success { print("microphone usage authorized") }
             else { print("microphone usage denied") }
         }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -130,7 +135,7 @@ class MainViewController: UIViewController {
         view.addSubview(ctaContainer)
         ctaContainer.addSubview(sosButton)
         ctaContainer.addSubview(ctaTitle)
-
+//        ctaContainer.addSubview(testSlider)
     }
     
     private func setConstraints() {
@@ -198,6 +203,13 @@ class MainViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.width.equalTo(sosButton)
         }
+        
+//        testSlider.snp.makeConstraints { make in
+//            make.top.equalTo(mainTitle.snp.bottom).offset(24 * heightModifier)
+//            make.width.equalToSuperview().multipliedBy(0.7)
+//            make.centerX.equalToSuperview()
+//            make.height.equalTo(64 * heightModifier)
+//        }
         
     }
     

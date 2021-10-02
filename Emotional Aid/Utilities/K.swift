@@ -115,6 +115,9 @@ struct K {
     }
     
     struct speechTriggers {
+        
+        static let all: [TriggerWord] = next + rewind + yes + no
+        
         static let next: [TriggerWord] = [TriggerWord("Дальше", type: .next),
                                           TriggerWord("Дар Дар", type: .next),
                                           TriggerWord("Да Да", type: .next),
@@ -151,6 +154,10 @@ struct K {
                                             TriggerWord("Вернуться", type: .rewind),
                                             TriggerWord("Вернут", type: .rewind),
                                             TriggerWord("Выбери", type: .rewind)]
+        
+        static let yes: [TriggerWord] = [TriggerWord("Да", type: .yes)]
+        
+        static let no: [TriggerWord] = [TriggerWord("Нет", type: .no)]
     }
     
 }

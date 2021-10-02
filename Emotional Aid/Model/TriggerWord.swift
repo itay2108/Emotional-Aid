@@ -21,4 +21,6 @@ class TriggerWord {
 enum TriggerWordType {
     case next
     case rewind
+    case yes
+    case no
 }
