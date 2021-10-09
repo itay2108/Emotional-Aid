@@ -24,7 +24,7 @@ class TheoryViewController: UIViewController {
     private lazy var profileButton: UIButton    = {
         let button = UIButton()
         button.backgroundColor = .clear
-        button.setImage(UIImage(named: "profile-artwork"), for: .normal)
+        button.setImage(K.uikit.profileFemale, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
@@ -100,11 +100,12 @@ class TheoryViewController: UIViewController {
         }
         
         profileButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-24 * widthModifier)
-            make.centerY.equalToSuperview()
-            make.height.equalToSuperview().multipliedBy(0.65)
-            make.width.equalTo(navContainer.snp.height).multipliedBy(0.65)
+            make.right.equalToSuperview().offset(-16 * widthModifier)
+            make.centerY.equalTo(navContainer)
+            make.height.equalToSuperview().multipliedBy(0.9)
+            make.width.equalTo(navContainer.snp.height).multipliedBy(0.9)
         }
+        
         
         logo.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(16 * widthModifier)

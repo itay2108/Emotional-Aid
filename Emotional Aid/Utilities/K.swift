@@ -23,6 +23,8 @@ struct K {
         static let backButton = UIImage(named: "back_button")
         static let xButton = UIImage(named: "x_button")
         static let logo = UIImage(named: "logo")
+        static let profileFemale = UIImage(named: "pr-1.jpg")?.withHorizontallyFlippedOrientation()
+        static let profileMale = UIImage(named: "pr-2.jpg")?.withHorizontallyFlippedOrientation()
         static let demobar = UIImage(named: "bar_1")
         static let successArt = UIImage(named: "success-art")
         static let failArt = UIImage(named: "fail-art")

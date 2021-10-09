@@ -219,8 +219,11 @@ class PracticeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         self.navigationController?.isNavigationBarHidden = true
     }
+
     
     private func setUpUI() {
         self.view.backgroundColor = .white
@@ -419,6 +422,7 @@ class PracticeViewController: UIViewController {
             exerciseView.changeviewState(of: exerciseView.accessorySlider, to: .expanded, with: exerciseView.defaultSliderHeight)
             exerciseView.accessorySlider.isHidden = false
             exerciseView.accessorySlider.value = 0
+            exerciseView.accessorySlider.handleValueChange()
             exerciseView.accessoryContainer.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 64, leading: 0, bottom: 0, trailing: 0)
             //by default we set the slider back to 0 for next times, but to we also want to remember user input
             //in past exercises. so - if we have data for an emotional score in the current exercise, we set it to the slider.
@@ -751,6 +755,14 @@ class PracticeViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleExerciseSliderValueChange), name: NSNotification.Name.exerciseSliderValueHasChanged, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUserReturnToApp), name: NSNotification.Name.ApplicationDidEnterForeground, object: nil)
+        
+    }
+    
+    @objc private func handleUserReturnToApp() {
+        print("user returned")
+        //fixes a weird bug where EASlider's min. track image would become plain white making the slider look dumb
+        self.exerciseView.accessorySlider.setMinimumTrackImage(UIImage(named: "slider-track"), for: .normal)
     }
     
     @objc private func handlePlaybackStateChange() {

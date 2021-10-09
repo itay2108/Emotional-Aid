@@ -33,7 +33,7 @@ class ProfileViewController: UIViewController {
     
     private lazy var profileImage: UIImageView    = {
         let view = UIImageView()
-        view.image = UIImage(named: "profile-artwork")
+        view.image = K.uikit.profileFemale
         view.contentMode = .scaleAspectFit
         return view
     }()
@@ -211,9 +211,9 @@ class ProfileViewController: UIViewController {
         }
         
         profileImage.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(headTitle.snp.bottom).offset(42 * heightModifier)
-            make.height.equalTo(128 * heightModifier)
+            make.centerX.equalToSuperview().offset(-9 * widthModifier)
+            make.top.equalTo(headTitle.snp.bottom).offset(24 * heightModifier)
+            make.height.equalTo(184 * heightModifier)
             make.width.equalTo(profileImage.snp.height)
         }
         

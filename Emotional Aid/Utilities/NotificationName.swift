@@ -8,6 +8,11 @@
 import UIKit
 
 extension Notification.Name {
+    
+    static var ApplicationDidEnterForeground: Notification.Name {
+            return .init("application.DidEnterForeground")
+    }
+    
     static var audioManagerDidFinishPlayback: Notification.Name {
             return .init(rawValue: "audioManager.didFinichPlayback")
         }

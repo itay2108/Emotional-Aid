@@ -86,7 +86,7 @@ class EASlider: UISlider {
         self.setMaximumTrackImage(UIImage(named: "slider-track"), for: .normal)
         self.minimumTrackTintColor = .clear
         self.setMinimumTrackImage(UIImage(named: "slider-track"), for: .normal)
-        
+    
         self.setThumbImage(thumbImage(), for: .normal)
         
         self.addTarget(self, action: #selector(handleValueChange), for: .valueChanged)

@@ -49,7 +49,7 @@ class ExerciseView: UIView {
         return view
     }()
     
-    lazy var accessorySlider: UISlider = {
+    lazy var accessorySlider: EASlider = {
         let slider = EASlider()
         slider.addTarget(self, action: #selector(sliderValueHasChanged(_:)), for: .valueChanged)
        return slider

@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
     private lazy var profileButton: UIButton    = {
        let button = UIButton()
         button.backgroundColor = .clear
-        button.setImage(UIImage(named: "profile-artwork"), for: .normal)
+        button.setImage(K.uikit.profileFemale, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
@@ -147,18 +147,18 @@ class MainViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
-        profileButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-24 * widthModifier)
-            make.centerY.equalToSuperview()
-            make.height.equalToSuperview().multipliedBy(0.65)
-            make.width.equalTo(navContainer.snp.height).multipliedBy(0.65)
-        }
-        
         consultButton.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(30 * widthModifier)
             make.centerY.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.55)
             make.right.equalTo(profileButton.snp.left).offset(-20 * widthModifier)
+        }
+        
+        profileButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-16 * widthModifier)
+            make.centerY.equalTo(navContainer)
+            make.height.equalToSuperview().multipliedBy(0.9)
+            make.width.equalTo(navContainer.snp.height).multipliedBy(0.9)
         }
         
         logoContainer.snp.makeConstraints { make in
