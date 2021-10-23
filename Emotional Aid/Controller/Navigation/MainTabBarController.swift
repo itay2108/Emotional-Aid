@@ -15,10 +15,25 @@ class MainTabBarController: UITabBarController {
         super.viewDidLoad()
         self.viewControllers = tabBarVCs()
         
+        self.navigationItem.leftBarButtonItems = []
+        self.navigationItem.hidesBackButton = true
+        
+
     }
     
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
         setTabBarPreferences()
+        
+        if let _ = self.navigationController?.viewControllers[0] as? OnboardingViewController {
+            self.navigationController?.viewControllers.remove(at: 0)
+
+        }
+        
+        if let _ = self.navigationController?.viewControllers[0] as? AuthViewController {
+            self.navigationController?.viewControllers.remove(at: 0)
+        }
     }
     
 

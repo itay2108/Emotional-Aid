@@ -132,6 +132,8 @@ class AuthViewController: UIViewController {
     
     private func setUpUI() {
         self.view.backgroundColor = .white
+        self.navigationItem.leftBarButtonItems = []
+        self.navigationItem.hidesBackButton = true
         
         addSubviews()
         setConstraints()
@@ -291,7 +293,7 @@ class AuthViewController: UIViewController {
         destination.modalPresentationStyle = .fullScreen
         destination.modalTransitionStyle = .coverVertical
 
-        self.present(destination, animated: animated)
+        self.navigationController?.pushViewController(destination, animated: true)
     }
     
     //Apple
@@ -427,7 +429,7 @@ extension AuthViewController: ASAuthorizationControllerDelegate, ASAuthorization
                     let destination = MainTabBarController()
                     destination.modalPresentationStyle = .fullScreen
                     destination.modalTransitionStyle = .coverVertical
-                    self.present(destination, animated: true)
+                    self.navigationController?.pushViewController(destination, animated: true)
                 }
             }
         }

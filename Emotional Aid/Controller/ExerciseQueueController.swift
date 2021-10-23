@@ -518,12 +518,8 @@ class ExerciseQueueController: UIViewController {
             setExercise(to: delegate.exerciseModel.currentExercise)
             queueTableView.reloadData()
             queueTableView.selectRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), animated: true, scrollPosition: .middle)
-            
-            
-            AudioManager.shared.insert(audio: audioGuide) {
-
-                AudioManager.shared.playAudio()
-            }
+        
+            delegate.handleSpeechRecognitionTrigger(notification)
         
     }
     

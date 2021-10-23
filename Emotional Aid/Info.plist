@@ -34,6 +34,14 @@
 				<string>com.gervash.Emotional-Aid</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.517525659735-8vp4bfmn8pd131anl348cjksvl4o7mvt</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
@@ -48,9 +56,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>we are listening even when you sleep</string>
+	<string>Мы используем функцию распознавания речи, чтобы вам было удобнее выполнять упражнения</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>We are selling your data to the CIA.</string>
+	<string>Мы используем функцию распознавания речи, чтобы вам было удобнее выполнять упражнения</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Ubuntu-Medium.ttf</string>

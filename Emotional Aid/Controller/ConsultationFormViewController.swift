@@ -311,8 +311,7 @@ class ConsultationFormViewController: UIViewController {
                 self.present(mc, animated: true)
             } else {
                 //cant send mail handled here
-                
-                
+                textLog.write("cannot send mail.")
             }
 
         }
@@ -334,6 +333,7 @@ extension ConsultationFormViewController: UITextFieldDelegate {
                 return false
             }
         }
+
         return true
     }
 }

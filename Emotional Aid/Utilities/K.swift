@@ -40,9 +40,84 @@ struct K {
     struct audio {
         static let lesson1 = Bundle.main.url(forResource: "lesson", withExtension: "mp3")
         static let lesson1Negative = Bundle.main.url(forResource: "lessonNegative", withExtension: "mp3")
+        
+        
+        static let lesson1Short = Bundle.main.url(forResource: "1s", withExtension: "mp3")
+        static let lesson1Long = Bundle.main.url(forResource: "1l", withExtension: "mp3")
+        
+        static let lesson2Short = Bundle.main.url(forResource: "2s", withExtension: "mp3")
+        static let lesson2Long = Bundle.main.url(forResource: "2l", withExtension: "mp3")
+        
+        static let lesson3Short = Bundle.main.url(forResource: "3s", withExtension: "mp3")
+        static let lesson3Long = Bundle.main.url(forResource: "3l", withExtension: "mp3")
+        
+        static let lesson4Short = Bundle.main.url(forResource: "4s+", withExtension: "mp3")
+        static let lesson4ShortNegative = Bundle.main.url(forResource: "4s-", withExtension: "mp3")
+        static let lesson4Long = Bundle.main.url(forResource: "4l+", withExtension: "mp3")
+        static let lesson4LongNegative = Bundle.main.url(forResource: "4l-", withExtension: "mp3")
+        
+        static let lesson5Short = Bundle.main.url(forResource: "5s+", withExtension: "mp3")
+        static let lesson5ShortNegative = Bundle.main.url(forResource: "5s-", withExtension: "mp3")
+        static let lesson5Long = Bundle.main.url(forResource: "5l+", withExtension: "mp3")
+        static let lesson5LongNegative = Bundle.main.url(forResource: "5l-", withExtension: "mp3")
+        
+        static let lesson6 = Bundle.main.url(forResource: "6s", withExtension: "mp3")
+        
+        static let lesson7Short = Bundle.main.url(forResource: "7s+", withExtension: "mp3")
+        static let lesson7ShortNegative = Bundle.main.url(forResource: "7s-", withExtension: "mp3")
+        static let lesson7Long = Bundle.main.url(forResource: "7l+", withExtension: "mp3")
+        static let lesson7LongNegative = Bundle.main.url(forResource: "7l-", withExtension: "mp3")
+        
+        static let lesson8Short = Bundle.main.url(forResource: "8s", withExtension: "mp3")
+        static let lesson8Long = Bundle.main.url(forResource: "8l", withExtension: "mp3")
+        
+        static let lesson9Short = Bundle.main.url(forResource: "9s", withExtension: "mp3")
+        static let lesson9Long = Bundle.main.url(forResource: "9l", withExtension: "mp3")
+        
+        static let lesson10Short = Bundle.main.url(forResource: "10s", withExtension: "mp3")
+        static let lesson10Long = Bundle.main.url(forResource: "10l", withExtension: "mp3")
+        
+        static let lesson11Short = Bundle.main.url(forResource: "11s", withExtension: "mp3")
+        static let lesson11Long = Bundle.main.url(forResource: "11l", withExtension: "mp3")
+        static let lesson11Part2 = Bundle.main.url(forResource: "11_2", withExtension: "mp3")
+        static let lesson11Part3 = Bundle.main.url(forResource: "11_3", withExtension: "mp3")
+        static let lesson11Part4 = Bundle.main.url(forResource: "11_4", withExtension: "mp3")
+        static let lesson11Part5 = Bundle.main.url(forResource: "11_5", withExtension: "mp3")
+        
+        static let lesson12Short = Bundle.main.url(forResource: "12s", withExtension: "mp3")
+        static let lesson12Long = Bundle.main.url(forResource: "12l", withExtension: "mp3")
+        static let lesson12Part2 = Bundle.main.url(forResource: "12_2", withExtension: "mp3")
+        static let lesson12Part3 = Bundle.main.url(forResource: "12_3", withExtension: "mp3")
+        static let lesson12Part4 = Bundle.main.url(forResource: "12_4", withExtension: "mp3")
+        static let lesson12Part5 = Bundle.main.url(forResource: "12_5", withExtension: "mp3")
+        static let lesson12Part6 = Bundle.main.url(forResource: "12_6", withExtension: "mp3")
+        static let lesson12Part7 = Bundle.main.url(forResource: "12_7", withExtension: "mp3")
+        
+        static let lesson13Short = Bundle.main.url(forResource: "13s", withExtension: "mp3")
+        static let lesson13Long = Bundle.main.url(forResource: "13l", withExtension: "mp3")
+        
+        static let lesson14Short = Bundle.main.url(forResource: "14s", withExtension: "mp3")
+        static let lesson14Long = Bundle.main.url(forResource: "14l", withExtension: "mp3")
+        static let lesson14Part2 = Bundle.main.url(forResource: "14_2", withExtension: "mp3")
+        
+        static let lesson15Short = Bundle.main.url(forResource: "15s", withExtension: "mp3")
+        static let lesson15Long = Bundle.main.url(forResource: "15l", withExtension: "mp3")
+        static let lesson15Part2 = Bundle.main.url(forResource: "15_2", withExtension: "mp3")
+        static let lesson15Part3 = Bundle.main.url(forResource: "15_3", withExtension: "mp3")
+        
+        static let lesson16Short = Bundle.main.url(forResource: "16s", withExtension: "mp3")
+        static let lesson16Long = Bundle.main.url(forResource: "16l", withExtension: "mp3")
     }
     
     struct text {
+        
+        static let onboard1 = "Дорогой друг, если вы решили научиться восстанавливаться от стрессов без потерь для нервной системы и скачали это приложение, то вы на верном пути. Мы не можем избегать стрессов, но можем научиться экологично справляться с ними. Существует бесчисленное количество медитативных практик, все они так или иначе нацелены на то, чтобы помочь человеку обрести баланс и успокоиться. Однако многие люди чувствуют себя некомфортно во время медитации, и в результате уровень их тревоги снижается незначительно или не снижается вовсе."
+        
+        static let onboard2 = "Для того, чтобы комплексно воздействовать на нервную систему во время стресса, нужны глубокие научные знания о её устройстве. Тогда мы можем научить её восстанавливаться правильно. В этом приложении мы дадим вам теорию и практику, которые основываются на передовых достижениях израильских ученых в области нейробиологии. Теоретический видеокурс даст вам знания об устройстве нервной системы и головного мозга, а цикл интерактивных упражнений научит техникам грамотного снятия стресса."
+        
+        static let onboard3 = "Техники и знания, которые мы предлагаем - это не психотерапия. Это снятие стресса и тренинг нервной системы. Это ваша красная тревожная кнопка. Вы можете нажать её в любой момент, когда столкнётесь со стрессом, и по завершению работы вы вернётесь в состояние ясных мыслей и принятия оптимальных решений."
+        
+        static let onboard4 = "Мы очень дорожим вашим доверием, поэтому можете быть уверены, что никакие ваши данные не передаются третьим лицам. Мы работаем с тревожностью с 2008 года и хорошо понимаем, как это важно для вас.\n\nНам необходим доступ к микрофону и динамику только в целях терапии и удобства пользования приложения, потому что в него встроена функция распознавания речи: так вы сможете как можно меньше отвлекаться во время работы над стрессом."
         
         static let failDidNotHelpDescription = "Вы прошли весь цикл упражнений и проделали большую работу. Мы видим, что состояние вашей нервной системы не улучшилось: видимо, на этот раз, стресс оказался сильнее. Если вы не уверены в том, что выполняли все упражнения с целью позаботиться о себе и помочь себе, ругали себя в процессе или выполнили не все упражнения, попробуйте начать заново. Если вы все сделали, но состояние не изменилось, вполне вероятно, вам мешает психотравма, которая активируется во время стресса и не дает с ним справиться. Больше информации о психотравме и наш видеокурс можно посмотреть здесь"
         
@@ -59,6 +134,8 @@ struct K {
         static let authDescription = "Зарегистрируйтесь, чтобы получить возможность просматривать видеоматериалы, выполнять упражнения, редактировать личную информацию или назначать консультации."
         
         static let verificationDescription = "Мы отправили вам письмо на \(UserDefaults.standard.string(forKey: K.def.email) ?? "NaN@mail.co"), чтобы подтвердить ваш e-mail и активировать аккаунт."
+        
+        static let recommendationDescription = "Перед тем, как вы первый раз пройдете цикл упражнений, мы хотим дать вам несколько советов:\n\n1. Вам может показаться, что упражнения, которые мы предлагаем, странные, смешные, неловкие. Но вы уже многое знаете об устройстве нервной системы, поэтому переключившись на деморежим, вы всегда сможете прочитать или прослушать подробное научное объяснение тому, как работает каждое из них. Это поможет вам разобраться, насколько глубокие познания в области нейробиологии за ними стоят.\n\n2. Мы рекомендуем пользоваться наушниками, разрешить приложению отключить все уведомления на время сессии и уединиться так, чтобы 10-20 минут вас ничто не отвлекало. На случай, если обстоятельства не позволяют слушать, мы продублировали все упражнения текстом.\n\n3. Мы сделали практическую часть так, чтобы вы могли как можно реже открывать глаза и отвлекаться на экран. Наше приложение умеет распознавать речь, поэтому переключаться между упражнениями вы сможете при помощи команд \"дальше\", \"повторить\" или \"назад\", а прервать сессию вы в любой момент можете, сказав, \"стоп\" или \"пауза\". Если обстоятельства не позволяют, все то же самое можно сделать на экране.\n\n4. Уважайте себя и свою нервную систему. Вам может быть тяжело в процессе, если становится невыносимо - прервитесь и вернитесь к упражнениям позднее. Однако какой-то уровень дискомфорта допустим, no pain - no gain. Вы всегда можете сказать \"стоп\" или \"пауза\" и прерваться, вернувшись к сессии позднее.\n\n5. Если что-то не будет получаться сразу, не ударяйтесь в критику, не ругайте себя, не заставляйте обязательно выполнять все правильно. Со временем будет получаться легче, вы никому ничего не должны. Пробуйте, дорогу осилит идущий!"
         
         static let consultationFormDescription = "Заполните форму, если вы хотели бы записаться на консультацию в наш центр - и мы вам перезвоним"
         
@@ -103,6 +180,7 @@ struct K {
         static let email = "userEmail"
         static let password = "userPassword"
         static let name = "userName"
+        static let recommendationsHaveBeenShown = "hasShownRecommendationsVC"
     }
     
     struct regEx {
@@ -122,7 +200,7 @@ struct K {
         
         static let next: [TriggerWord] = [TriggerWord("Дальше", type: .next),
                                           TriggerWord("Дар Дар", type: .next),
-                                          TriggerWord("Да Да", type: .next),
+                                          //TriggerWord("Да Да", type: .next),
                                           TriggerWord("Дорогая", type: .next),
                                           TriggerWord("Дорогуша", type: .next),
                                           TriggerWord("Да Алишер", type: .next),

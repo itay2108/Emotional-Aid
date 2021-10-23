@@ -25,6 +25,7 @@ class NavigationController: UINavigationController {
         self.modalPresentationStyle = .fullScreen
         self.navigationItem.leftBarButtonItems = []
         self.navigationItem.hidesBackButton = true
+        self.setNavigationBarHidden(true, animated: false)
     }
     
     override func viewDidAppear(_ animated: Bool) {

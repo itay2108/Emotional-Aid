@@ -29,16 +29,16 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
     func setAudioSessionState(to category: AVAudioSession.Category) {
         do {
             try AVAudioSession.sharedInstance().setCategory(category)
-            try AVAudioSession.sharedInstance().setActive(true)
+            try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
         } catch let error {
             print(error.localizedDescription)
             textLog.write("AVAudioSession error: \(error.localizedDescription)")
         }
     }
     
-    func insert(audio url: URL?, completion: (() -> Void)? = nil) {
+    func insert(audio url: URL?, completion: (() -> Void)? = nil, file: String = #file, line: Int = #line, function: String = #function) {
         guard let URL = url else { print("couldn't parse audio url"); return }
-        
+        print("\(file):\(line) : \(function)")
         do {
             setAudioSessionState(to: .playback)
             
@@ -58,6 +58,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         if playbackState == .playing { print("player is already playing"); return }
         player!.play()
         playbackState = .playing
+        print("playing: ", player?.url)
     }
     
     func playAudioAt(time: Double) {
@@ -124,11 +125,15 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    func isMicrophoneAllowed() -> Bool {
+        return AVAudioSession.sharedInstance().recordPermission == .granted ? true : false
+    }
+    
     func prepareAudioEngine(_ completion: (() -> Void)?) {
         audioEngine = AVAudioEngine()
         
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .measurement, options: .duckOthers)
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: .duckOthers)
             try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
         } catch let error {
             print(error.localizedDescription)
@@ -162,6 +167,9 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         else { return }
         
         do {
+            
+            
+            
             try audioEngine?.start()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(audioEngineMaxAllowedTimeActive)) {

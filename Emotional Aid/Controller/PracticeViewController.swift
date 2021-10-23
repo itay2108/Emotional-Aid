@@ -222,6 +222,13 @@ class PracticeViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.navigationController?.isNavigationBarHidden = true
+        
+        UIApplication.shared.isIdleTimerDisabled = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        UIApplication.shared.isIdleTimerDisabled = false
     }
 
     
@@ -409,7 +416,11 @@ class PracticeViewController: UIViewController {
         if newExercise.isAnimationPresent && newExercise.animationURLName != nil {
             //here we set the animation that we want to show
             exerciseView.accessoryAnimation.animate(withGIFNamed: newExercise.animationURLName!)
-            exerciseView.accessoryAnimation.isHidden = false
+            
+            if isInDemoMode {
+                exerciseView.accessoryAnimation.isHidden = false
+            }
+            
             exerciseView.changeviewState(of: exerciseView.accessoryAnimation, to: .expanded, with: exerciseView.defaultAnimationHeight)
         } else {
             exerciseView.changeviewState(of: exerciseView.accessoryAnimation, to: .collapsed)
@@ -472,10 +483,11 @@ class PracticeViewController: UIViewController {
         
         //if errorlabel is still shown when user fixes first slider score - hide it immediately
         errorLabel.alpha = 0
+
     }
     
-    func nextExerciseLogic() {
-        
+    func nextExerciseLogic(wasTriggeredBySpeech: Bool = false) {
+        print("nextExerciseLogic called")
         if let scoreIndex = exerciseModel.dataBase[exerciseModel.currentExercise].scoreIndex {
             //if current exercise has slider and user did not set any value, add 0 to the scores array.
             if exerciseModel.dataBase[exerciseModel.currentExercise].isSliderPresent && personality.practiceScores[scoreIndex] == nil {
@@ -497,16 +509,31 @@ class PracticeViewController: UIViewController {
         if exerciseModel.currentExercise < exerciseModel.dataBase.count - 1 {
             //move to next exercise
             setNextExercise()
+            
+            //only autoplay guides if proceeded by speech
+            if wasTriggeredBySpeech {
+                AudioManager.shared.playAudio()
+            }
+            
+            //reset current part index to 0 for next custom logic
+            currentExercise.audioGuide?.currentPartIndex = 0
+            
             self.exerciseView.scrollView.setContentOffset(.zero, animated: true)
             //reset did set slider score bool value
             didSetSliderScoreInCurrentExercise = false
             
         } else /* If it is the last exercise - show success or fail according to scores */{
-                        
+            
+            if Int(exerciseView.accessorySlider.value) == 0 {
+                personality.practiceScores[2] = 0
+            }
+            
+            print("last score is: ", personality.practiceScores[2])
             let firstScore = personality.practiceScores.first
             let lastScore = personality.practiceScores.last
             
             if let finishCondition = checkForFinishCondition(with: personality.practiceScores) {
+                
                 if isFinishWithSuccess(with: finishCondition) {
                     self.navigationController?.pushViewController(SuccessViewController(success: finishCondition, first: firstScore ?? nil, lastScore: lastScore ?? nil), animated: true)
                 } else {
@@ -548,16 +575,17 @@ class PracticeViewController: UIViewController {
     func setNextAudioGuidePartAccordingTo(trigger: TriggerWordType, inExercise exercise: Int) {
         guard currentExercise.audioGuide != nil else { return }
         guard currentExercise.audioGuide!.hasAdditionalParts else { textLog.write("other part is not available for audio guide"); return }
-        
+        print("set next audio guide part called")
         let currentAudioGuidePart = currentExercise.audioGuide!.currentPartIndex
         var partToPlay: URL?
         
         if exercise == 10 {
             if trigger == .next {
+                print(currentExercise.audioGuide!.isNextPartAvailable)
                 if currentExercise.audioGuide!.isNextPartAvailable {
                     partToPlay = currentExercise.audioGuide!.nextPart()
                 } else {
-                    self.nextExerciseLogic()
+                    self.nextExerciseLogic(wasTriggeredBySpeech: true)
                     return
                 }
             }
@@ -586,12 +614,34 @@ class PracticeViewController: UIViewController {
             default:
                 textLog.write("action not defined for current audio guide part")
             }
+        } else if exercise == 13 {
+            switch currentAudioGuidePart {
+            case 0:
+                if trigger == .next { partToPlay = currentExercise.audioGuide!.part(1) }
+            case 1:
+                if trigger == .next { self.nextExerciseLogic(); return }
+                if trigger == .rewind { partToPlay = mainAudioGuide; currentExercise.audioGuide!.currentPartIndex = 0 }
+            default:
+                textLog.write("action not defined for current audio guide part")
+            }
+        } else if exercise == 14 {
+            switch currentAudioGuidePart {
+            case 0:
+                if trigger == .yes { partToPlay = currentExercise.audioGuide!.part(1) }
+                if trigger == .no { partToPlay = currentExercise.audioGuide!.part(2) }
+            case 1...2:
+                if trigger == .next { self.nextExerciseLogic(); return }
+                if trigger == .rewind { partToPlay = mainAudioGuide; currentExercise.audioGuide!.currentPartIndex = 0 }
+            default:
+                textLog.write("action not defined for current audio guide part")
+            }
         } else {
             textLog.write("action not defined for current exercise")
         }
         
         if partToPlay != nil {
             AudioManager.shared.insert(audio: partToPlay) {
+                print("aaa")
                 AudioManager.shared.playAudio()
             }
         } else {
@@ -619,7 +669,7 @@ class PracticeViewController: UIViewController {
         else if firstScore.isPositive() && lastScore.isNegative() && lastScore < -4 { return .warningBecameNegative }
         else if firstScore.isNegative() && lastScore.isPositive() && lastScore <= 4 { return .successBecamePositive }
         else if firstScore.isPositive() && lastScore.isNegative() && lastScore >= -4 { return .successBecameNegative }
-        else if lastScore * firstScore > 0 && lastScore.positiveValue() - firstScore.positiveValue() > 1 { return .failDidNotHelp }
+        else if lastScore * firstScore > 0 && lastScore.positiveValue() - firstScore.positiveValue() >= 0 { return .failDidNotHelp }
         else { return .success }
         
     }
@@ -711,6 +761,7 @@ class PracticeViewController: UIViewController {
         case .standby:
             
             AudioManager.shared.insert(audio: mainAudioGuide) {
+                print("bbb")
                 AudioManager.shared.playAudio()
             }
         case .ready:
@@ -794,7 +845,7 @@ class PracticeViewController: UIViewController {
     }
 
     
-    @objc private func handleSpeechRecognitionTrigger(_ notification: NSNotification) {
+    @objc func handleSpeechRecognitionTrigger(_ notification: NSNotification) {
         guard let action = notification.userInfo?["action"] as? TriggerWordType else { textLog.write("unexpectedly received nil as speech recognition trigger"); return }
         print("received SR Trigger: \(action)")
         print("current exercise: ", exerciseModel.currentExercise)
@@ -803,7 +854,7 @@ class PracticeViewController: UIViewController {
         if currentExercise.doesHaveSpecialLogic {
             setNextAudioGuidePartAccordingTo(trigger: action, inExercise: exerciseModel.currentExercise)
         } else {
-            if action == .next { self.nextExerciseLogic() } else
+            if action == .next { self.nextExerciseLogic(wasTriggeredBySpeech: true) } else
             if action == .rewind { AudioManager.shared.rewindAudio() }
         }
     

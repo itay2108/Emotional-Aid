@@ -16,7 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
-
+        
+        if UserDefaults.standard.value(forKey: K.def.recommendationsHaveBeenShown) == nil {
+            UserDefaults.standard.set(false, forKey: K.def.recommendationsHaveBeenShown)
+        }
+        
         return true
     }
 

@@ -57,6 +57,10 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         }
     }
     
+    func isRecognitionAllowed() -> Bool {
+        return SFSpeechRecognizer.authorizationStatus() == .authorized ? true : false
+    }
+    
     func listen(to audio: AVAudioPCMBuffer) {
         guard recognizer != nil else { return }
         
@@ -95,7 +99,7 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             }
             if ( error != nil && !error!.localizedDescription.contains("216") ) || self.isRecognitionResultFinal {
                 // Stop recognizing speech if there is a problem.
-                print(error != nil ? "SR error: \(error!.localizedDescription)" : "received final recognition result")
+                print(error != nil ? "SR error: \(error!.localizedDescription), \(String(describing: error))" : "received final recognition result")
                 textLog.write(error?.localizedDescription ?? "error: nil")
                 self.recognitionTask?.cancel()
                 self.recognitionRequest?.endAudio()
@@ -116,16 +120,23 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         for word in words {
             if recognizedSpeechContent.contains(word.value) {
                 completion(true, word.type)
+                print("completion called")
+                invalidate()
+                return
             }
         }
         
     }
     
     func invalidate() {
+        guard self.recognitionRequest != nil else { return }
         self.recognitionTask?.cancel()
         self.recognitionTask?.finish()
         self.recognitionRequest = nil
         self.isRecognizerActive = false
+        
+        AudioManager.shared.setAudioSessionState(to: .playback)
+        
         textLog.write("speech recognizer invalidated")
     }
     

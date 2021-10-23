@@ -502,6 +502,7 @@ extension EmailAuthViewController: UITextFieldDelegate {
         } else if textField.returnKeyType == .done {
             textField.resignFirstResponder()
         }
+            
         return true
     }
 }

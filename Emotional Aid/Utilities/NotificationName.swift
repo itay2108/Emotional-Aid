@@ -44,5 +44,9 @@ extension Notification.Name {
     static var AudioEngineDidTimeout: Notification.Name {
             return .init("audioManager.DidTimeout")
     }
+    
+    static var SpeechRecognitionDidInvalidate: Notification.Name {
+            return .init("speechRecognition.DidInvalidate")
+    }
 
 }

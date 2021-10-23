@@ -173,6 +173,16 @@ class ProfileViewController: UIViewController {
 
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        if let username = def.string(forKey: K.def.name) {
+            userNameLabel.text = username
+        } else if let email = def.string(forKey: K.def.email) {
+            userNameLabel.text = email
+        }
+    }
+    
     private func setUpUI() {
         self.view.backgroundColor = .white
         

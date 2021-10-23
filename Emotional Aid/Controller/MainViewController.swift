@@ -7,8 +7,12 @@
 
 import UIKit
 import SnapKit
+import CryptoKit
+import Speech
 
 class MainViewController: UIViewController {
+    
+    private let def = UserDefaults.standard
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .darkContent
@@ -99,15 +103,6 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setUpUI()
-        
-        SpeechRecognitionManager.main.authorizeSpeechRecognition { success in
-            if success { print("speech recognition authorized") }
-        }
-        
-        AudioManager.shared.requestMicrophoneUsage { success in
-            if success { print("microphone usage authorized") }
-            else { print("microphone usage denied") }
-        }
         
     }
     
@@ -225,10 +220,63 @@ class MainViewController: UIViewController {
     
     @objc private func sosButtonPressed() {
         Vibration.soft.vibrate()
+        //check if all permissions are set
+        if AudioManager.shared.isMicrophoneAllowed() && SpeechRecognitionManager.main.isRecognitionAllowed() {
+            //if user did not see recommendations yet - show them
+            if def.bool(forKey: K.def.recommendationsHaveBeenShown) {
+                let destination = PracticeViewController()
+                destination.hidesBottomBarWhenPushed = true
+                
+                self.navigationController?.pushViewController(destination, animated: true)
+            } else {
+                //if they already have - show Practice
+                let destination = RecommendationViewController()
+                destination.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(destination, animated: true)
+            }
+        } else {
+            print("poo")
+            
+            var alertMessage = ""
+            
+            if !AudioManager.shared.isMicrophoneAllowed() {
+                alertMessage.append("Чтобы разрешить использование микрофона, перейдите в Настройки -> Конфиденциальность -> микрофон и разрешите его использование для этого приложения.")
+            }
+            
+            if !AudioManager.shared.isMicrophoneAllowed() && !SpeechRecognitionManager.main.isRecognitionAllowed() {
+                alertMessage.append("\n\n")
+            }
+            
+            if !SpeechRecognitionManager.main.isRecognitionAllowed() {
+                alertMessage.append("Чтобы разрешить распознавание речи, перейдите в Настройки -> Конфиденциальность -> Распознавание речи и включите")
+            }
+            
+            
+            let alert = UIAlertController(title: "Требуются дополнительные разрешения", message: alertMessage, preferredStyle: .alert)
+            
+            let settingsAction = UIAlertAction(title: "Настройки", style: .default) { action in
+                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                    return
+                }
+
+                if UIApplication.shared.canOpenURL(settingsUrl) {
+                    UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                        print("Settings opened: \(success)") // Prints true
+                    })
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+            
+            alert.addAction(cancelAction)
+            alert.addAction(settingsAction)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
         
-        let destination = PracticeViewController()
-        destination.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(destination, animated: true)
+
+
+        
     }
 
 }

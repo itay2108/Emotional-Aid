@@ -24,15 +24,15 @@ class AudioGuide {
     
     var isNextPartAvailable: Bool {
         get {
-            return currentPartIndex < (additionalGuides?.count ?? 0) + 1 ? true : false
+            return currentPartIndex < (additionalGuides?.count ?? 0) ? true : false
         }
     }
     
     func nextPart() -> URL? {
-        guard let guideToPlay = additionalGuides?[currentPartIndex + 1] else { return nil }
+        guard let extraParts = additionalGuides, extraParts.count > currentPartIndex else { return nil }
         currentPartIndex += 1
         textLog.write("setting audioguide to part \(currentPartIndex)")
-        return guideToPlay
+        return extraParts[currentPartIndex - 1]
     }
     
     func part(_ partNumber: Int) -> URL? {
