@@ -8,6 +8,8 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import FirebaseAuth
+import FirebaseFirestore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +21,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if UserDefaults.standard.value(forKey: K.def.recommendationsHaveBeenShown) == nil {
             UserDefaults.standard.set(false, forKey: K.def.recommendationsHaveBeenShown)
+        }
+        if UIApplication.isFirstLaunch() || UserDefaults.standard.value(forKey: K.def.isDemoPreffered) == nil {
+            UserDefaults.standard.set(true, forKey: K.def.isDemoPreffered)
+        }
+        
+        if UIApplication.isFirstLaunch() || UserDefaults.standard.value(forKey: "premium") == nil {
+            UserDefaults.standard.set(false, forKey: "premium")
+        }
+        
+        if UIApplication.isFirstLaunch() || UserDefaults.standard.value(forKey: "isFemale") == nil {
+            UserDefaults.standard.set(true, forKey: "isFemale")
+        }
+        
+        if UIApplication.isFirstLaunch() {
+            UserDefaults.standard.register(defaults: [String : Any]())
         }
         
         return true
@@ -67,5 +84,20 @@ extension UIApplication {
         }
         return false
     }
+    
+    class func isPremiumAvailable() -> Bool {
+        if UserDefaults.standard.bool(forKey: "premium") {
+            return true
+        }
+        return false
+    }
+    
+    class func isDeveloperModeEnabled() -> Bool {
+        if UserDefaults.standard.bool(forKey: "dev_mode") {
+            return true
+        }
+        return false
+    }
+    
 }
 

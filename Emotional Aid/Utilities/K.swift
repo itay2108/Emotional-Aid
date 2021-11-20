@@ -23,11 +23,16 @@ struct K {
         static let backButton = UIImage(named: "back_button")
         static let xButton = UIImage(named: "x_button")
         static let logo = UIImage(named: "logo")
+        static let premiumIcon = UIImage(named: "premium-icon")
+        static let premiumIconCircle = UIImage(named: "premium-icon-circle")
         static let profileFemale = UIImage(named: "pr-1.jpg")?.withHorizontallyFlippedOrientation()
+        static let profileFemalePremium = UIImage(named: "pr-1p.png")?.withHorizontallyFlippedOrientation()
         static let profileMale = UIImage(named: "pr-2.jpg")?.withHorizontallyFlippedOrientation()
+        static let profileMalePremium = UIImage(named: "pr-2p.png")?.withHorizontallyFlippedOrientation()
         static let demobar = UIImage(named: "bar_1")
-        static let successArt = UIImage(named: "success-art")
-        static let failArt = UIImage(named: "fail-art")
+        static let successArt = UIImage(named: "fin-1")
+        static let failArt = UIImage(named: "fin-2")
+        static let switchArt = UIImage(named: "fin-3")
         
         static let lineScribble1 = UIImage(named: "line-scribble-1")
         static let lineScribble2 = UIImage(named: "line-scribble-2")
@@ -111,7 +116,7 @@ struct K {
     
     struct text {
         
-        static let onboard1 = "Дорогой друг, если вы решили научиться восстанавливаться от стрессов без потерь для нервной системы и скачали это приложение, то вы на верном пути. Мы не можем избегать стрессов, но можем научиться экологично справляться с ними. Существует бесчисленное количество медитативных практик, все они так или иначе нацелены на то, чтобы помочь человеку обрести баланс и успокоиться. Однако многие люди чувствуют себя некомфортно во время медитации, и в результате уровень их тревоги снижается незначительно или не снижается вовсе."
+        static let onboard1 = "Если вы решили научиться восстанавливаться от стрессов без потерь для нервной системы и скачали это приложение, то вы на верном пути. Мы не можем избегать стрессов, но можем научиться экологично справляться с ними. Существует бесчисленное количество медитативных практик, все они так или иначе нацелены на то, чтобы помочь человеку обрести баланс и успокоиться. Однако многие люди чувствуют себя некомфортно во время медитации, и в результате уровень их тревоги снижается незначительно или не снижается вовсе."
         
         static let onboard2 = "Для того, чтобы комплексно воздействовать на нервную систему во время стресса, нужны глубокие научные знания о её устройстве. Тогда мы можем научить её восстанавливаться правильно. В этом приложении мы дадим вам теорию и практику, которые основываются на передовых достижениях израильских ученых в области нейробиологии. Теоретический видеокурс даст вам знания об устройстве нервной системы и головного мозга, а цикл интерактивных упражнений научит техникам грамотного снятия стресса."
         
@@ -139,6 +144,8 @@ struct K {
         
         static let consultationFormDescription = "Заполните форму, если вы хотели бы записаться на консультацию в наш центр - и мы вам перезвоним"
         
+        static let proVersionID = "ru.letaem_bez_straha.emotional_aid.premium"
+        
         static let privacyAndTermsDescription: NSMutableAttributedString = {
             let style = NSMutableParagraphStyle()
             style.alignment = .center
@@ -147,10 +154,10 @@ struct K {
             
             attributedString.addAttribute(.font, value: FontTypes.shared.ubuntuLight.withSize(11 * UIViewController().heightModifier), range: NSRange(location: 0, length: attributedString.length))
             
-            attributedString.addAttribute(.link, value: "https://www.hackingwithswift.com", range: NSRange(location: 33, length: 38))
+            attributedString.addAttribute(.link, value: "https://www.termsfeed.com/live/bea204aa-97d8-4c50-9212-9729152fdeac", range: NSRange(location: 33, length: 38))
             attributedString.addAttribute(.font, value: FontTypes.shared.ubuntu.withSize(11 * UIViewController().heightModifier), range: NSRange(location: 33, length: 38))
             
-            attributedString.addAttribute(.link, value: "https://www.hackingwithswift.com", range: NSRange(location: 74, length: 28))
+            attributedString.addAttribute(.link, value: "https://www.termsfeed.com/live/ccde8341-7f81-4a68-ae1f-badf6420695d", range: NSRange(location: 74, length: 28))
             attributedString.addAttribute(.font, value: FontTypes.shared.ubuntu.withSize(11 * UIViewController().heightModifier), range: NSRange(location: 74, length: 28))
             
             return attributedString
@@ -181,6 +188,7 @@ struct K {
         static let password = "userPassword"
         static let name = "userName"
         static let recommendationsHaveBeenShown = "hasShownRecommendationsVC"
+        static let isDemoPreffered = "isDemoPreffered"
     }
     
     struct regEx {
@@ -200,7 +208,7 @@ struct K {
         
         static let next: [TriggerWord] = [TriggerWord("Дальше", type: .next),
                                           TriggerWord("Дар Дар", type: .next),
-                                          //TriggerWord("Да Да", type: .next),
+                                          TriggerWord("Так Что", type: .next),
                                           TriggerWord("Дорогая", type: .next),
                                           TriggerWord("Дорогуша", type: .next),
                                           TriggerWord("Да Алишер", type: .next),

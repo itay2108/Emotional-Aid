@@ -31,6 +31,7 @@ class EASlider: UISlider {
         label.textAlignment = .center
         label.text = "0"
         label.isHidden = true
+        label.tag = 3
         return label
     }()
     
@@ -96,6 +97,16 @@ class EASlider: UISlider {
         
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        
+        let sliderValue = Int(self.value)
+        if sliderValue != 0 && sliderValue != 10 && sliderValue != -10 {
+            refreshCurrentValueLabel()
+        }
+    }
+    
     private func thumbImage() -> UIImage {
 
         thumbView.frame = CGRect(x: 0, y: 0, width: 33, height: 80)
@@ -111,11 +122,12 @@ class EASlider: UISlider {
         }
         
     }
+
     
     @objc func handleValueChange() {
         roundValue()
         
-        currentValueLabel.text = "\(Int(self.value))"
+        currentValueLabel.text = self.value > 0 ? "+\(Int(self.value))" : "\(Int(self.value))"
         
         currentValueLabel.snp.remakeConstraints { make in
             //make.width.equalTo(44)
@@ -196,6 +208,18 @@ class EASlider: UISlider {
         let roundedOffset = Double(offset).rounded(toPlaces: 2)
 
         return roundedOffset
+    }
+    
+    func refreshCurrentValueLabel() {
+        
+        self.currentValueLabel.text = self.value > 0 ? "+\(Int(self.value))" : "\(Int(self.value))"
+        self.currentValueLabel.isHidden = false
+        
+        currentValueLabel.snp.remakeConstraints { make in
+            make.centerY.equalTo(medianValueLabel)
+            make.centerX.equalTo(medianValueLabel).offset(sliderValueOffsetFromCenter())
+        }
+        
     }
     
     override init(frame: CGRect) {

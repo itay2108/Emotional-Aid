@@ -31,7 +31,13 @@ class ExerciseQueueController: UIViewController {
         }
     }
     
-    var delegate: ExerciseSelectorDelegate?
+    var delegate: ExerciseSelectorDelegate? {
+        didSet {
+            if delegate != nil {
+                print("exercise selector delegate has been set to : \(String(describing: delegate))")
+            }
+        }
+    }
     
     var audioUIUpdateTimer: Timer?
     
@@ -186,12 +192,16 @@ class ExerciseQueueController: UIViewController {
         super.viewDidLoad()
         
         setUpUI()
-        setUpObservers()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         queueTableView.scrollToRow(at: IndexPath(row: exerciseModel?.currentExercise ?? 0, section: 0), at: .top, animated: false)
         super.viewDidAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
     
     private func setUpUI() {
@@ -327,7 +337,7 @@ class ExerciseQueueController: UIViewController {
         
         //if user didn't set first score - dismiss and show error message in delegate
         if let delegate = self.delegate as? PracticeViewController {
-            if !delegate.didSetSliderScoreInCurrentExercise {
+            if !delegate.didSetSliderScoreInCurrentExercise && exerciseModel?.currentExercise == 1 {
                 self.dismiss(animated: true) {
                     delegate.presentErrorToast(message: "please set a score before proceeding")
                 }
@@ -421,6 +431,8 @@ class ExerciseQueueController: UIViewController {
     @objc func goBackwardsButtonPressed() {
         rewindExerciseLogic()
         delegate?.set(exerciseTo: exerciseModel!.currentExercise)
+        
+        AudioManager.shared.playAudio()
     }
     
     @objc func playPauseButtonPressed(_ button: MediaButton) {
@@ -457,7 +469,13 @@ class ExerciseQueueController: UIViewController {
                     delegate.set(exerciseTo: exerciseModel!.currentExercise)
                 }
             }
+        } else if exerciseModel?.currentExercise == 1 {
+            if let delegate = delegate as? PracticeViewController {
+                    delegate.set(exerciseTo: exerciseModel!.currentExercise)
+            }
         }
+        
+        AudioManager.shared.playAudio()
     }
     
     @objc func handleVolumeSliderValueChanged(_ slider: UISlider, _ event: UIEvent) {
@@ -482,6 +500,37 @@ class ExerciseQueueController: UIViewController {
                 }
             }
         
+        }
+    }
+    
+    private func changeExerciseLogic(to index: Int) {
+        //if user didn't set first score - dismiss and show error message in delegate
+        if let delegate = self.delegate as? PracticeViewController {
+            if !delegate.didSetSliderScoreInCurrentExercise && exerciseModel?.currentExercise == 1 {
+                self.dismiss(animated: true) {
+                    delegate.presentErrorToast(message: "please set a score before proceeding")
+                }
+                return
+            } else if (personality?.practiceScores[0] != 0 && personality?.practiceScores[0] != nil) || (exerciseModel?.currentExercise == 0 && index == 1) {
+                setExercise(to: index)
+                
+                queueTableView.reloadData()
+                
+                queueTableView.scrollToRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), at: .middle, animated: true)
+                
+                //update selected exercise also in practiceVC
+                delegate.set(exerciseTo: index)
+                
+                if let delegate = self.delegate as? PracticeViewController {
+                    delegate.exerciseView.scrollView.setContentOffset(.zero, animated: true)
+                }
+                //stop current exerciser audio and play selected one
+                AudioManager.shared.stopAudio()
+                
+                AudioManager.shared.insert(audio: audioGuide) {
+                    AudioManager.shared.playAudio()
+                }
+            }
         }
     }
     
@@ -519,7 +568,7 @@ class ExerciseQueueController: UIViewController {
             queueTableView.reloadData()
             queueTableView.selectRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), animated: true, scrollPosition: .middle)
         
-            delegate.handleSpeechRecognitionTrigger(notification)
+            //delegate.handleSpeechRecognitionTrigger(notification)
         
     }
     
@@ -530,6 +579,26 @@ class ExerciseQueueController: UIViewController {
     }
 
     
+}
+
+//extension ExerciseQueueController: SpeechRecognitionTriggerDelegate {
+//    func didReceiveTrigger(ofType type: TriggerWordType) {
+//        guard let delegate = delegate as? PracticeViewController else { return }
+//
+//            Vibration.light.vibrate()
+//            setExercise(to: delegate.exerciseModel.currentExercise)
+//            queueTableView.reloadData()
+//            queueTableView.selectRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), animated: true, scrollPosition: .middle)
+//    }
+//}
+
+extension ExerciseQueueController: PracticeControllerDelegate {
+    func DidChangeExerciseTo(exercise: Int) {
+        Vibration.light.vibrate()
+        setExercise(to: exercise)
+        queueTableView.reloadData()
+        queueTableView.selectRow(at: IndexPath(row: exerciseModel!.currentExercise, section: 0), animated: true, scrollPosition: .middle)
+    }
 }
 
 extension ExerciseQueueController: UITableViewDelegate, UITableViewDataSource {
@@ -549,15 +618,16 @@ extension ExerciseQueueController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard exerciseModel != nil else { return }
-        
+
         //if user didn't set first score - dismiss and show error message in delegate
         if let delegate = self.delegate as? PracticeViewController {
-            if !delegate.didSetSliderScoreInCurrentExercise {
+            if !delegate.didSetSliderScoreInCurrentExercise && exerciseModel?.currentExercise == 1 {
                 self.dismiss(animated: true) {
                     delegate.presentErrorToast(message: "please set a score before proceeding")
                 }
                 return
-            } else if personality?.practiceScores[0] != 0 && personality?.practiceScores[0] != nil {
+            } else if (personality?.practiceScores[0] != 0 && personality?.practiceScores[0] != nil) || (exerciseModel?.currentExercise == 0 && indexPath.row == 1) {
+                
                 setExercise(to: indexPath.row)
                 
                 tableView.reloadData()
@@ -578,7 +648,6 @@ extension ExerciseQueueController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
         }
-        
 
         
     }
@@ -599,7 +668,7 @@ extension ExerciseQueueController: UITableViewDelegate, UITableViewDataSource {
         let view = UITableViewHeaderFooterView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.bounds.width, height: tableView.sectionHeaderHeight))
         view.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         view.contentView.backgroundColor = K.colors.appOffWhite
-        view.textLabel?.text = "Exercises"
+        view.textLabel?.text = "упражнения"
         return view
     }
     

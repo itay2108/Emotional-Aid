@@ -9,6 +9,8 @@ import UIKit
 import SnapKit
 import CryptoKit
 import Speech
+import FirebaseAuth
+
 
 class MainViewController: UIViewController {
     
@@ -27,7 +29,7 @@ class MainViewController: UIViewController {
     private lazy var profileButton: UIButton    = {
        let button = UIButton()
         button.backgroundColor = .clear
-        button.setImage(K.uikit.profileFemale, for: .normal)
+        button.setImage(getProfilePic(), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
@@ -53,11 +55,8 @@ class MainViewController: UIViewController {
     
     private lazy var logoView:      UIImageView = {
         let view = UIImageView()
-        let image = UIImage(named: "logo")
         
-        guard image != nil else { return UIImageView() }
-        
-        view.image = image
+        view.image = K.uikit.logo
         view.contentMode = .scaleAspectFit
         return view
     }()
@@ -85,6 +84,14 @@ class MainViewController: UIViewController {
         return button
     }()
     
+    private lazy var premiumIcon:   UIImageView    = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFit
+        view.image = K.uikit.premiumIconCircle
+        view.isHidden = UIApplication.isPremiumAvailable() ? true : false
+        return view
+    }()
+    
     private lazy var ctaTitle:      UILabel     = {
         let label = UILabel()
         label.text = "Начать практику"
@@ -103,12 +110,16 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setUpUI()
+        setUpObservers()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
+        
+        premiumIcon.isHidden = UIApplication.isPremiumAvailable() ? true : false
+        profileButton.setImage(getProfilePic(), for: .normal)
     }
     
     private func setUpUI() {
@@ -129,6 +140,7 @@ class MainViewController: UIViewController {
         
         view.addSubview(ctaContainer)
         ctaContainer.addSubview(sosButton)
+        ctaContainer.addSubview(premiumIcon)
         ctaContainer.addSubview(ctaTitle)
 //        ctaContainer.addSubview(testSlider)
     }
@@ -193,6 +205,13 @@ class MainViewController: UIViewController {
             sosButton.contentEdgeInsets.left = 10
         }
         
+        premiumIcon.snp.makeConstraints { make in
+            make.centerX.equalTo(sosButton.snp.right)
+            make.centerY.equalTo(sosButton.snp.top)
+            make.height.equalTo(48 * heightModifier)
+            make.width.equalTo(premiumIcon.snp.height)
+        }
+        
         ctaTitle.snp.makeConstraints { make in
             make.bottom.equalTo(sosButton.snp.top).offset(-16)
             make.centerX.equalToSuperview()
@@ -208,6 +227,27 @@ class MainViewController: UIViewController {
         
     }
     
+    func getProfilePic() -> UIImage? {
+        let image: UIImage?
+        
+        if Personality.main.gender == .female {
+            image = UIApplication.isPremiumAvailable() ? K.uikit.profileFemalePremium : K.uikit.profileFemale
+        } else {
+            image = UIApplication.isPremiumAvailable() ? K.uikit.profileMalePremium : K.uikit.profileMale
+        }
+        
+        return image
+    }
+    
+    override func premiumViewShouldDismiss(withSuccess transactionSuccess: Bool) {
+        super.premiumViewShouldDismiss(withSuccess: transactionSuccess)
+        
+        if transactionSuccess {
+            premiumIcon.isHidden = true
+            profileButton.setImage(getProfilePic(), for: .normal)
+        }
+    }
+    
     //MARK: - selectors
     
     @objc private func consultButtonPressed(_ button: UIButton) {
@@ -221,62 +261,80 @@ class MainViewController: UIViewController {
     @objc private func sosButtonPressed() {
         Vibration.soft.vibrate()
         //check if all permissions are set
-        if AudioManager.shared.isMicrophoneAllowed() && SpeechRecognitionManager.main.isRecognitionAllowed() {
-            //if user did not see recommendations yet - show them
-            if def.bool(forKey: K.def.recommendationsHaveBeenShown) {
-                let destination = PracticeViewController()
-                destination.hidesBottomBarWhenPushed = true
-                
-                self.navigationController?.pushViewController(destination, animated: true)
+        if UIApplication.isPremiumAvailable() {
+            if AudioManager.shared.isMicrophoneAllowed() && SpeechRecognitionManager.main.isRecognitionAllowed() {
+                //if user did not see recommendations yet - show them
+                if def.bool(forKey: K.def.recommendationsHaveBeenShown) {
+                    let destination = PracticeViewController()
+                    destination.hidesBottomBarWhenPushed = true
+                    
+                    self.navigationController?.pushViewController(destination, animated: true)
+                } else {
+                    //if they already have - show Practice
+                    let destination = RecommendationViewController()
+                    destination.hidesBottomBarWhenPushed = true
+                    self.navigationController?.pushViewController(destination, animated: true)
+                }
             } else {
-                //if they already have - show Practice
-                let destination = RecommendationViewController()
-                destination.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(destination, animated: true)
+                
+                var alertMessage = ""
+                
+                if !AudioManager.shared.isMicrophoneAllowed() {
+                    alertMessage.append("Чтобы разрешить использование микрофона, перейдите в Настройки -> Конфиденциальность -> микрофон и разрешите его использование для этого приложения.")
+                }
+                
+                if !AudioManager.shared.isMicrophoneAllowed() && !SpeechRecognitionManager.main.isRecognitionAllowed() {
+                    alertMessage.append("\n\n")
+                }
+                
+                if !SpeechRecognitionManager.main.isRecognitionAllowed() {
+                    alertMessage.append("Чтобы разрешить распознавание речи, перейдите в Настройки -> Конфиденциальность -> Распознавание речи и включите")
+                }
+                
+                
+                let alert = UIAlertController(title: "Требуются дополнительные разрешения", message: alertMessage, preferredStyle: .alert)
+                
+                let settingsAction = UIAlertAction(title: "Настройки", style: .default) { action in
+                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                        return
+                    }
+
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                            print("Settings opened: \(success)") // Prints true
+                        })
+                    }
+                }
+                
+                let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+                
+                alert.addAction(cancelAction)
+                alert.addAction(settingsAction)
+                
+                self.present(alert, animated: true, completion: nil)
             }
         } else {
-            print("poo")
-            
-            var alertMessage = ""
-            
-            if !AudioManager.shared.isMicrophoneAllowed() {
-                alertMessage.append("Чтобы разрешить использование микрофона, перейдите в Настройки -> Конфиденциальность -> микрофон и разрешите его использование для этого приложения.")
-            }
-            
-            if !AudioManager.shared.isMicrophoneAllowed() && !SpeechRecognitionManager.main.isRecognitionAllowed() {
-                alertMessage.append("\n\n")
-            }
-            
-            if !SpeechRecognitionManager.main.isRecognitionAllowed() {
-                alertMessage.append("Чтобы разрешить распознавание речи, перейдите в Настройки -> Конфиденциальность -> Распознавание речи и включите")
-            }
-            
-            
-            let alert = UIAlertController(title: "Требуются дополнительные разрешения", message: alertMessage, preferredStyle: .alert)
-            
-            let settingsAction = UIAlertAction(title: "Настройки", style: .default) { action in
-                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                    return
-                }
-
-                if UIApplication.shared.canOpenURL(settingsUrl) {
-                    UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                        print("Settings opened: \(success)") // Prints true
-                    })
-                }
-            }
-            
-            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
-            
-            alert.addAction(cancelAction)
-            alert.addAction(settingsAction)
-            
-            self.present(alert, animated: true, completion: nil)
+            //premium not available
+            premiumDisplay()
         }
         
 
 
         
+    }
+    
+    //MARK: - observers
+    
+    private func setUpObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleGenderDidChange), name: NSNotification.Name.GenderDidChange, object: nil)
+    }
+    
+    @objc private func handleGenderDidChange() {
+        profileButton.setImage(getProfilePic(), for: .normal)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
 }

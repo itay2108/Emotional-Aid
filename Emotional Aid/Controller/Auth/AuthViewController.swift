@@ -62,6 +62,8 @@ class AuthViewController: UIViewController {
         button.setTitleColor(K.colors.appText, for: .normal)
 
         button.addTarget(self, action: #selector(handleGoogleAuthButtonTapped(_:)), for: .touchUpInside)
+        
+        button.isHidden = true
         return button
     }()
     

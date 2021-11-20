@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StoreKit
 import SnapKit
 import MessageUI
 import FirebaseAuth
@@ -31,15 +32,20 @@ class ProfileViewController: UIViewController {
         return label
     }()
     
-    private lazy var profileImage: UIImageView    = {
-        let view = UIImageView()
-        view.image = K.uikit.profileFemale
-        view.contentMode = .scaleAspectFit
-        return view
+    private lazy var profileButton: UIButton    = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        
+        button.setImage(getProfilePic(), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
+        button.addTarget(self, action: #selector(profileButtonTapped(_:)), for: .touchUpInside)
+        return button
     }()
     
     private lazy var userNameLabel: UILabel         = {
-       let label = UILabel()
+        let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
         label.font = FontTypes.shared.ubuntuMedium.withSize(20 * heightModifier)
@@ -84,6 +90,21 @@ class ProfileViewController: UIViewController {
         return Scribble().random()
     }()
     
+    private lazy var restorePurchasesButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        button.setTitle("Восстановить покупки", for: .normal)
+        button.setTitleColor(K.colors.appText, for: .normal)
+        button.titleLabel?.font = FontTypes.shared.h4.withSize(16 * heightModifier)
+        
+        button.addTarget(self, action: #selector(restorePurchasesButtonPressed(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var line3: UIImageView = {
+        return Scribble().random()
+    }()
+    
     private lazy var logoutButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
@@ -95,7 +116,7 @@ class ProfileViewController: UIViewController {
         return button
     }()
     
-    private lazy var line3: UIImageView = {
+    private lazy var line4: UIImageView = {
         return Scribble().random()
     }()
     
@@ -111,17 +132,17 @@ class ProfileViewController: UIViewController {
     }()
     
     private lazy var socialDescription: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
         label.font = FontTypes.shared.ubuntuLight.withSize(14 * heightModifier)
-        label.text = "расскажите вашим друзьям"
+        label.text = "расскажите вашим друзьям о нашем приложении"
         label.textColor = K.colors.appText
         return label
     }()
     
     private lazy var socialSV: UIStackView = {
-       let sv = UIStackView()
+        let sv = UIStackView()
         sv.axis = .horizontal
         sv.distribution = .fillEqually
         sv.spacing = 22 * widthModifier
@@ -130,11 +151,11 @@ class ProfileViewController: UIViewController {
     
     private lazy var messengerButton: UIButton = {
         let button = UIButton()
-         button.backgroundColor = .clear
-         button.setImage(UIImage(named: "i-messenger"), for: .normal)
-         button.imageView?.contentMode = .scaleAspectFit
-         button.contentVerticalAlignment = .fill
-         button.contentHorizontalAlignment = .fill
+        button.backgroundColor = .clear
+        button.setImage(UIImage(named: "i-messenger"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
         
         button.addTarget(self, action: #selector(shareToMessenger(_:)), for: .touchUpInside)
         return button
@@ -142,11 +163,11 @@ class ProfileViewController: UIViewController {
     
     private lazy var telegramButton: UIButton = {
         let button = UIButton()
-         button.backgroundColor = .clear
-         button.setImage(UIImage(named: "i-telegram"), for: .normal)
-         button.imageView?.contentMode = .scaleAspectFit
-         button.contentVerticalAlignment = .fill
-         button.contentHorizontalAlignment = .fill
+        button.backgroundColor = .clear
+        button.setImage(UIImage(named: "i-telegram"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
         
         button.addTarget(self, action: #selector(shareToTelegram(_:)), for: .touchUpInside)
         return button
@@ -154,23 +175,24 @@ class ProfileViewController: UIViewController {
     
     private lazy var whatsappButton: UIButton = {
         let button = UIButton()
-         button.backgroundColor = .clear
-         button.setImage(UIImage(named: "i-whatsapp"), for: .normal)
-         button.imageView?.contentMode = .scaleAspectFit
-         button.contentVerticalAlignment = .fill
-         button.contentHorizontalAlignment = .fill
+        button.backgroundColor = .clear
+        button.setImage(UIImage(named: "i-whatsapp"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
         
         button.addTarget(self, action: #selector(shareToWhatsapp(_:)), for: .touchUpInside)
         return button
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         setUpUI()
+        setUpObservers()
         setNeedsStatusBarAppearanceUpdate()
-
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -180,6 +202,11 @@ class ProfileViewController: UIViewController {
             userNameLabel.text = username
         } else if let email = def.string(forKey: K.def.email) {
             userNameLabel.text = email
+        }
+        
+        if !UIApplication.isDeveloperModeEnabled() {
+            line4.isHidden = true
+            sendLogsButton.isHidden = true
         }
     }
     
@@ -193,22 +220,24 @@ class ProfileViewController: UIViewController {
     private func addSubviews() {
         view.addSubview(headTitle)
         
-        view.addSubview(profileImage)
+        view.addSubview(profileButton)
         view.addSubview(userNameLabel)
         
         view.addSubview(consultationButton)
         view.addSubview(line1)
         view.addSubview(helpButton)
         view.addSubview(line2)
-        view.addSubview(logoutButton)
+        view.addSubview(restorePurchasesButton)
         view.addSubview(line3)
+        view.addSubview(logoutButton)
+        view.addSubview(line4)
         view.addSubview(sendLogsButton)
         
         view.addSubview(socialSV)
         if emotionalAid.canOpenURL(messengerSharingURL()) { socialSV.addArrangedSubview(messengerButton) }
         if emotionalAid.canOpenURL(whatsappSharingURL()) { socialSV.addArrangedSubview(whatsappButton) }
         if emotionalAid.canOpenURL(telegramSharingURL()) { socialSV.addArrangedSubview(telegramButton) }
-
+        
         if socialSV.arrangedSubviews.count > 0 { view.addSubview(socialDescription) }
         
     }
@@ -220,16 +249,16 @@ class ProfileViewController: UIViewController {
             make.width.equalToSuperview().multipliedBy(0.4)
         }
         
-        profileImage.snp.makeConstraints { make in
+        profileButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview().offset(-9 * widthModifier)
-            make.top.equalTo(headTitle.snp.bottom).offset(24 * heightModifier)
-            make.height.equalTo(184 * heightModifier)
-            make.width.equalTo(profileImage.snp.height)
+            make.top.equalTo(headTitle.snp.bottom).offset(18 * heightModifier)
+            make.height.equalTo(172 * heightModifier)
+            make.width.equalTo(profileButton.snp.height)
         }
         
         userNameLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(profileImage.snp.bottom).offset(18 * heightModifier)
+            make.top.equalTo(profileButton.snp.bottom).offset(16 * heightModifier)
             make.width.equalToSuperview().multipliedBy(0.75)
             
             if def.string(forKey: K.def.name) == nil && def.string(forKey: K.def.email) == nil {
@@ -239,7 +268,7 @@ class ProfileViewController: UIViewController {
         
         consultationButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(userNameLabel.snp.bottom).offset(56 * heightModifier)
+            make.top.equalTo(userNameLabel.snp.bottom).offset(32 * heightModifier)
             make.width.equalToSuperview().multipliedBy(0.75)
             make.height.equalTo(48 * heightModifier)
         }
@@ -265,7 +294,7 @@ class ProfileViewController: UIViewController {
             make.height.equalTo(8 * heightModifier)
         }
         
-        logoutButton.snp.makeConstraints { make in
+        restorePurchasesButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(line2.snp.bottom)
             make.width.equalToSuperview().multipliedBy(0.75)
@@ -274,6 +303,21 @@ class ProfileViewController: UIViewController {
         
         line3.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.top.equalTo(restorePurchasesButton.snp.bottom)
+            make.width.equalToSuperview().multipliedBy(0.75)
+            make.height.equalTo(8 * heightModifier)
+        }
+        
+        
+        logoutButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(line3.snp.bottom)
+            make.width.equalToSuperview().multipliedBy(0.75)
+            make.height.equalTo(48 * heightModifier)
+        }
+        
+        line4.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
             make.top.equalTo(logoutButton.snp.bottom)
             make.width.equalToSuperview().multipliedBy(0.75)
             make.height.equalTo(8 * heightModifier)
@@ -281,7 +325,7 @@ class ProfileViewController: UIViewController {
         
         sendLogsButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(line3.snp.bottom)
+            make.top.equalTo(line4.snp.bottom)
             make.width.equalToSuperview().multipliedBy(0.75)
             make.height.equalTo(48 * heightModifier)
         }
@@ -317,8 +361,24 @@ class ProfileViewController: UIViewController {
         }
     }
     
-  
+    func getProfilePic() -> UIImage? {
+        let image: UIImage?
+        print("premium: \(UIApplication.isPremiumAvailable())")
+        if Personality.main.gender == .female {
+            image = UIApplication.isPremiumAvailable() ? K.uikit.profileFemalePremium : K.uikit.profileFemale
+        } else {
+            image = UIApplication.isPremiumAvailable() ? K.uikit.profileMalePremium : K.uikit.profileMale
+        }
+        
+        return image
+    }
+    
+    
     //MARK: - selectors
+    
+    @objc private func profileButtonTapped(_ button: UIButton) {
+        Personality.main.gender = Personality.main.gender == .female ? .male : .female
+    }
     
     @objc private func consultButtonPressed(_ button: UIButton) {
         self.present(ConsultationFormViewController(), animated: true)
@@ -375,6 +435,10 @@ class ProfileViewController: UIViewController {
         
     }
     
+    @objc private func restorePurchasesButtonPressed(_ button: UIButton) {
+        SKPaymentQueue.default().restoreCompletedTransactions()
+    }
+    
     //MARK: - sharing functions
     
     private func messengerSharingURL(with message: String? = nil) -> URL {
@@ -425,6 +489,20 @@ class ProfileViewController: UIViewController {
         emotionalAid.open(whatsappSharingURL(with: sharingMessage))
     }
     
+    //MARK: - observers
+    
+    private func setUpObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleGenderDidChange), name: NSNotification.Name.GenderDidChange, object: nil)
+    }
+    
+    @objc private func handleGenderDidChange() {
+        profileButton.setImage(getProfilePic(), for: .normal)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     //MARK: - logging functions
     
     @objc private func sendLogsButtonPressed(_ button: UIButton) {
@@ -456,4 +534,23 @@ extension ProfileViewController: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         self.dismiss(animated: true)
     }
+}
+
+extension ProfileViewController: SKPaymentTransactionObserver {
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        textLog.write(String(describing: transactions))
+    }
+    
+    
+    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+        
+        let successAlert = UIAlertController(title: "Покупка успешно восстановлена", message: "Теперь у вас есть доступ ко всем частям приложения", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Пропустить", style: .cancel) { (action) in
+        }
+        
+        successAlert.addAction(action)
+        self.present(successAlert, animated: true)
+        
+    }
+    
 }

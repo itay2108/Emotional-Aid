@@ -24,7 +24,8 @@ class TheoryViewController: UIViewController {
     private lazy var profileButton: UIButton    = {
         let button = UIButton()
         button.backgroundColor = .clear
-        button.setImage(K.uikit.profileFemale, for: .normal)
+    
+        button.setImage(getProfilePic(), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
@@ -72,8 +73,16 @@ class TheoryViewController: UIViewController {
         self.view.backgroundColor = .white
         // Do any additional setup after loading the view.
         setUpUI()
-
+        setUpObservers()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        videoTableView.reloadData()
+        profileButton.setImage(getProfilePic(), for: .normal)
+
     }
     
     func setUpUI() {
@@ -88,6 +97,7 @@ class TheoryViewController: UIViewController {
         navContainer.addSubview(logoTitle)
         
         view.addSubview(videoTableView)
+        
     }
     
     func addConstraintsToSubviews() {
@@ -121,12 +131,33 @@ class TheoryViewController: UIViewController {
         }
         
         videoTableView.snp.makeConstraints { make in
-            make.top.equalTo(navContainer.snp.bottom).offset(16 * heightModifier)
+            make.top.equalTo(navContainer.snp.bottom)//.offset(16 * heightModifier)
             make.left.equalToSuperview().offset(16 * widthModifier)
             make.right.equalToSuperview().offset(-16 * widthModifier)
             make.bottom.equalToSuperview()
         }
         
+    }
+    
+    func getProfilePic() -> UIImage? {
+        let image: UIImage?
+        if Personality.main.gender == .female {
+            image = UIApplication.isPremiumAvailable() ? K.uikit.profileFemalePremium : K.uikit.profileFemale
+        } else {
+            image = UIApplication.isPremiumAvailable() ? K.uikit.profileMalePremium : K.uikit.profileMale
+        }
+        
+        return image
+    }
+    
+    override func premiumViewShouldDismiss(withSuccess transactionSuccess: Bool) {
+        super.premiumViewShouldDismiss(withSuccess: transactionSuccess)
+        
+        if transactionSuccess {
+
+            videoTableView.reloadData()
+            profileButton.setImage(getProfilePic(), for: .normal)
+        }
         
     }
     
@@ -142,12 +173,29 @@ class TheoryViewController: UIViewController {
         guard let videoURL = url else { textLog.write("video url is nil"); return nil }
         
         let vc = AVPlayerViewController()
-        videoPlayer = AVPlayer(url: videoURL)
         
+        videoPlayer = AVPlayer(url: videoURL)
+        videoPlayer?.playImmediately(atRate: 256)
+        videoPlayer?.automaticallyWaitsToMinimizeStalling = true
         vc.player = videoPlayer
         
         return vc
     }
+    
+    //MARK: - observers
+    
+    private func setUpObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleGenderDidChange), name: NSNotification.Name.GenderDidChange, object: nil)
+    }
+    
+    @objc private func handleGenderDidChange() {
+        profileButton.setImage(getProfilePic(), for: .normal)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
 }
 
 extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
@@ -160,6 +208,7 @@ extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.setCell(with: videoDatabase.database[indexPath.row], index: indexPath.row)
         
+
 //        if indexPath.row == videoDatabase.database.count - 1 {
 //            print(indexPath.row, videoDatabase.database.count - 1)
 //            cell.cellSeparator.isHidden = true
@@ -184,24 +233,29 @@ extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
         let view = UITableViewHeaderFooterView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.bounds.width, height: tableView.sectionHeaderHeight))
         view.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         view.contentView.backgroundColor = .white
-        view.textLabel?.text = "Видео уроки"
+        view.textLabel?.text = "Видеоуроки"
         return view
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard let url = videoDatabase.database[indexPath.row].url else { return }
-        print(url)
-        if let destination = videoPlayerVC(with: url) {
-            present(destination, animated: true) {
-                destination.player?.play()
+        if videoDatabase.database[indexPath.row].isFree || UIApplication.isPremiumAvailable() {
+            
+            guard let url = videoDatabase.database[indexPath.row].url else { return }
+            print(url)
+            if let destination = videoPlayerVC(with: url) {
+                present(destination, animated: true) {
+                    destination.player?.play()
+                }
             }
+            
+        } else {
+            premiumDisplay()
         }
         
         
     }
-    
     
     
 }

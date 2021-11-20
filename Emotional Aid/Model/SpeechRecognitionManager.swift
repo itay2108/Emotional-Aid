@@ -9,10 +9,16 @@ import UIKit
 import Speech
 import os
 
+protocol SpeechRecognitionTriggerDelegate {
+    func didReceiveTrigger(ofType type: TriggerWordType)
+}
+
 @available(iOS 14.0, *)
 class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
     
     static let main = SpeechRecognitionManager()
+    
+    var delegate: SpeechRecognitionTriggerDelegate?
     
     var recognizer: SFSpeechRecognizer?
     var recognitionTask: SFSpeechRecognitionTask?
@@ -75,6 +81,8 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
                     SpeechRecognitionManager.main.searchFor(trigger: K.speechTriggers.all, in: SRResult!.capitalized) { found, action  in
                         if found && action != nil {
                             NotificationCenter.default.post(name: NSNotification.Name.SpeechRecognizerDidMatchTrigger, object: nil, userInfo: ["action" : action!])
+                            delegate?.didReceiveTrigger(ofType: action!)
+                            AudioManager.shared.stopAudioEngine()
                             Vibration.success.vibrate()
                             textLog.write("found *\(action!)* trigger in \"\(SRResult!)\"")
                             self.invalidate()

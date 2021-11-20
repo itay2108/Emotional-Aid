@@ -30,6 +30,19 @@ class SuccessViewController: UIViewController {
         return button
     }()
     
+    private lazy var backButton: UIButton = {
+        let button = UIButton()
+        
+        button.setImage(UIImage(systemName: "chevron.left")?.withTintColor(.white), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
+        
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(backButtonPressed(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var mainTitle: UILabel    = {
        let label = UILabel()
         label.font = FontTypes.shared.h1.withSize(56 * heightModifier)
@@ -48,23 +61,25 @@ class SuccessViewController: UIViewController {
         return view
     }()
     
-    private lazy var successDescription: UILabel = {
-       let label = UILabel()
-        label.font = FontTypes.shared.ubuntu.withSize(13 * heightModifier)
-        label.textColor = .white
-        label.numberOfLines = 0
-        label.contentMode = .topLeft
-        label.textAlignment = .center
-        label.sizeToFit()
-        label.text = K.text.successDescriptionA
-        return label
+    private lazy var successDescription: UITextView = {
+        let textView = UITextView()
+        textView.font = FontTypes.shared.ubuntu.withSize(13 * heightModifier)
+        textView.textColor = .white
+        textView.backgroundColor = .clear
+        textView.backgroundColor = .black.withAlphaComponent(0.12)
+        textView.roundCorners(.allCorners, radius: 15)
+        textView.textAlignment = .center
+        textView.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
+        textView.isScrollEnabled = true
+        textView.text = K.text.failDidNotHelpDescription
+        return textView
     }()
     
     private lazy var consultButton: UIButton    = {
         let button = UIButton()
         button.setBackgroundImage(UIImage(named: "button-md")?.withTintColor(.white), for: .normal)
         
-        button.setTitle("Записаться на консультацию", for: .normal)
+        button.setTitle("Завершить практику", for: .normal)
         button.titleLabel?.font = FontTypes.shared.h3.withSize(18 * heightModifier)
         button.titleLabel?.textSpacing(of: 1.3)
         button.setTitleColor(K.colors.appText, for: .normal)
@@ -94,6 +109,7 @@ class SuccessViewController: UIViewController {
     func addSubviews() {
         view.addSubview(navContainer)
         navContainer.addSubview(closeButton)
+        navContainer.addSubview(backButton)
         
         view.addSubview(mainTitle)
         view.addSubview(mainArtwork)
@@ -118,6 +134,13 @@ class SuccessViewController: UIViewController {
             make.width.equalTo(20 * heightModifier)
         }
         
+        backButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalTo(closeButton.snp.right).offset(32)
+            make.height.equalTo(22 * heightModifier)
+            make.width.equalTo(20 * heightModifier)
+        }
+        
         mainTitle.snp.makeConstraints { make in
             make.top.equalTo(navContainer.snp.bottom).offset(16 * heightModifier)
             make.centerX.equalToSuperview()
@@ -126,10 +149,10 @@ class SuccessViewController: UIViewController {
         }
         
         mainArtwork.snp.makeConstraints { make in
-            make.width.equalToSuperview().multipliedBy(0.66)
+            make.width.equalToSuperview().multipliedBy(0.63)
             make.height.equalTo(mainArtwork.snp.width).multipliedBy(0.75)
             make.centerX.equalToSuperview()
-            make.top.equalTo(mainTitle.snp.bottom).offset(48 * heightModifier)
+            make.top.equalTo(mainTitle.snp.bottom).offset(36 * heightModifier)
         }
         
         consultButton.snp.makeConstraints { make in
@@ -140,8 +163,8 @@ class SuccessViewController: UIViewController {
         }
         
         successDescription.snp.makeConstraints { make in
-            make.top.equalTo(mainArtwork.snp.bottom).offset(24 * heightModifier)
-            make.width.equalTo(mainArtwork)
+            make.top.equalTo(mainArtwork.snp.bottom).offset(36 * heightModifier)
+            make.width.equalTo(consultButton)
             make.centerX.equalToSuperview()
             make.bottom.equalTo(consultButton.snp.top).offset(-48 * heightModifier)
         }
@@ -152,18 +175,16 @@ class SuccessViewController: UIViewController {
         guard firstScore != nil && lastScore != nil
         else { textLog.write("unexpectedly gound nil while unwrapping exercise scores for success text."); return }
         
+        mainArtwork.image = K.uikit.successArt
+        
         switch finishCondition {
         case .successBecamePositive:
-            mainArtwork.image = K.uikit.successArt
             successDescription.text = K.text.successBecamePositiveDescription
         case .successBecameNegative:
-            mainArtwork.image = K.uikit.successArt
             successDescription.text = K.text.successBecameNegativeDescription
         case .success:
-            mainArtwork.image = K.uikit.successArt
             successDescription.text = "\(K.text.successDescriptionA)\(firstScore!)\(K.text.successDescriptionB)\( lastScore!)\(K.text.successDescriptionC)"
         default:
-            mainArtwork.image = K.uikit.successArt
             successDescription.text = ""
         }
     }
@@ -174,10 +195,16 @@ class SuccessViewController: UIViewController {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
+    @objc func backButtonPressed(_ button: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     @objc private func consultButtonPressed(_ button: UIButton) {
-        let destination = ConsultationFormViewController()
-        destination.delegate = self
-        self.present(destination, animated: true)
+//        let destination = ConsultationFormViewController()
+//        destination.delegate = self
+//        self.present(destination, animated: true)
+        
+        self.navigationController?.popToRootViewController(animated: true)
     }
     //MARK: - inits
     

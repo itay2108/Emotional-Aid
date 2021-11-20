@@ -22,6 +22,13 @@ class OnboardingViewController: UIViewController {
     
     private var onboardingPages: Int?
     
+    private lazy var logoView: UIImageView = {
+        let view = UIImageView()
+        view.image = K.uikit.logo
+        view.contentMode = .scaleAspectFit
+        return view
+    }()
+    
     private lazy var finishButton: UIButton = {
         let button = UIButton()
         button.setTitle("Давайте Начнем", for: .normal)
@@ -39,9 +46,11 @@ class OnboardingViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
-        initOnboardingObject()
-        layoutFinishButton()
         
+        initOnboardingObject()
+        layoutLogo()
+        layoutFinishButton()
+
     }
 
     
@@ -54,12 +63,22 @@ class OnboardingViewController: UIViewController {
         view.addSubview(onboarding!)
         
         onboarding!.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(safeAreaSize(from: .top))
+            make.top.equalToSuperview().offset(safeAreaSize(from: .top) + 24 * heightModifier)
             make.left.equalToSuperview().offset(16 * widthModifier)
             make.right.equalToSuperview().offset(-16 * widthModifier)
             make.bottom.equalToSuperview().offset(-safeAreaSize(from: .bottom))
         }
         
+    }
+    
+    func layoutLogo() {
+        view.addSubview(logoView)
+        logoView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(81 * heightModifier)
+            make.width.equalTo(40 * widthModifier)
+            make.height.equalTo(logoView.snp.width)
+            make.centerX.equalToSuperview()
+        }
     }
     
     func layoutFinishButton() {
@@ -119,11 +138,11 @@ extension OnboardingViewController: PaperOnboardingDataSource {
                                color: .white,
                                titleColor: K.colors.appText ?? .darkGray,
                                descriptionColor: K.colors.appText ?? .darkGray,
-                               titleFont: FontTypes.shared.h2.withSize(24 * heightModifier),
+                               titleFont: FontTypes.shared.h2.withSize(36 * heightModifier),
                                descriptionFont: FontTypes.shared.ubuntu.withSize(14 * heightModifier)),
             
             OnboardingItemInfo(informationImage: UIImage.gifImageWithName("001") ?? UIImage(),
-                               title: "Добро пожаловать!",
+                               title: /*"Добро пожаловать!"*/"Дорогой друг",
                                description: K.text.onboard1,
                                pageIcon: UIImage(systemName: "arrow.right.circle.fill") ?? UIImage(),
                                color: .white,

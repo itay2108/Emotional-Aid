@@ -48,5 +48,9 @@ extension Notification.Name {
     static var SpeechRecognitionDidInvalidate: Notification.Name {
             return .init("speechRecognition.DidInvalidate")
     }
+    
+    static var GenderDidChange: Notification.Name {
+            return .init("gender.didChange")
+    }
 
 }

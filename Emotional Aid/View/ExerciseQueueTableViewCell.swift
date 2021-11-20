@@ -84,7 +84,7 @@ class ExerciseQueueTableViewCell: UITableViewCell {
     
     func setCell(with data: Exercise, index: Int) {
         
-        headTitle.text = "Exercise \(index + 1)"
+        headTitle.text = "упражнение \(index + 1)"
         mainTitle.text = data.title.capitalized
         
         if data.isCurrentlySelected { selectorView.isHidden = false }

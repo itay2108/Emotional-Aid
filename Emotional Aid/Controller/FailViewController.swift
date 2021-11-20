@@ -29,6 +29,19 @@ class FailViewController: UIViewController {
         return button
     }()
     
+    private lazy var backButton: UIButton = {
+        let button = UIButton()
+        
+        button.setImage(UIImage(systemName: "chevron.left")?.withTintColor(.white), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
+        
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(backButtonPressed(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var mainTitle: UILabel    = {
         let label = UILabel()
         label.font = FontTypes.shared.h1.withSize(44 * heightModifier)
@@ -43,61 +56,61 @@ class FailViewController: UIViewController {
     private lazy var mainArtwork: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
-        view.image = K.uikit.successArt
+        view.image = finishCondition == .failDidNotHelp ? K.uikit.failArt : K.uikit.switchArt
         return view
     }()
     
-    lazy var playPauseButton: MediaButton = {
-        let button = MediaButton()
-        button.playbackState = AudioManager.shared.playbackState
-        button.contentMode = .scaleAspectFit
-        button.graphicsTint = .white
-        button.imageView?.contentMode = .scaleAspectFit
-        button.contentVerticalAlignment = .fill
-        button.contentHorizontalAlignment = .fill
-        button.addTarget(self, action: #selector(playPauseButtonPressed(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var audioProgressSlider: UISlider = {
-        let slider = UISlider()
-        slider.setThumbImage(UIImage(named: "slider-thumb-half-opaque-blue")?.withTintColor(.white), for: .normal)
-        slider.minimumTrackTintColor = .white
-        slider.maximumTrackTintColor = K.colors.appOffWhite?.withAlphaComponent(0.66)
-        
-        if AudioManager.shared.playbackState != .standby {
-            slider.maximumValue = Float(AudioManager.shared.player?.duration ?? 0)
-        }
-        
-        slider.value = Float(AudioManager.shared.playerTime())
-        slider.addTarget(self, action: #selector(handleSliderValueChanged(_:_:)), for: .valueChanged)
-        
-        return slider
-    }()
-    
-    lazy var currentAudioTimeLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 2
-        label.font = FontTypes.shared.ubuntu.withSize(11 * heightModifier)
-        label.textAlignment = .left
-        label.textColor = .white.withAlphaComponent(0.3)
-        
-        label.text = "0:00"
-        
-        return label
-    }()
-    
-    lazy var timeLeftForAudioLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 2
-        label.font = FontTypes.shared.ubuntu.withSize(11 * heightModifier)
-        label.textAlignment = .right
-        label.textColor = .white.withAlphaComponent(0.3)
-        
-        label.text = "0:00"
-        
-        return label
-    }()
+//    lazy var playPauseButton: MediaButton = {
+//        let button = MediaButton()
+//        button.playbackState = AudioManager.shared.playbackState
+//        button.contentMode = .scaleAspectFit
+//        button.graphicsTint = .white
+//        button.imageView?.contentMode = .scaleAspectFit
+//        button.contentVerticalAlignment = .fill
+//        button.contentHorizontalAlignment = .fill
+//        button.addTarget(self, action: #selector(playPauseButtonPressed(_:)), for: .touchUpInside)
+//        return button
+//    }()
+//
+//    lazy var audioProgressSlider: UISlider = {
+//        let slider = UISlider()
+//        slider.setThumbImage(UIImage(named: "slider-thumb-half-opaque-blue")?.withTintColor(.white), for: .normal)
+//        slider.minimumTrackTintColor = .white
+//        slider.maximumTrackTintColor = K.colors.appOffWhite?.withAlphaComponent(0.66)
+//
+//        if AudioManager.shared.playbackState != .standby {
+//            slider.maximumValue = Float(AudioManager.shared.player?.duration ?? 0)
+//        }
+//
+//        slider.value = Float(AudioManager.shared.playerTime())
+//        slider.addTarget(self, action: #selector(handleSliderValueChanged(_:_:)), for: .valueChanged)
+//
+//        return slider
+//    }()
+//
+//    lazy var currentAudioTimeLabel: UILabel = {
+//        let label = UILabel()
+//        label.numberOfLines = 2
+//        label.font = FontTypes.shared.ubuntu.withSize(11 * heightModifier)
+//        label.textAlignment = .left
+//        label.textColor = .white.withAlphaComponent(0.3)
+//
+//        label.text = "0:00"
+//
+//        return label
+//    }()
+//
+//    lazy var timeLeftForAudioLabel: UILabel = {
+//        let label = UILabel()
+//        label.numberOfLines = 2
+//        label.font = FontTypes.shared.ubuntu.withSize(11 * heightModifier)
+//        label.textAlignment = .right
+//        label.textColor = .white.withAlphaComponent(0.3)
+//
+//        label.text = "0:00"
+//
+//        return label
+//    }()
     
     private lazy var failDescription: UITextView = {
         let textView = UITextView()
@@ -111,6 +124,19 @@ class FailViewController: UIViewController {
         textView.isScrollEnabled = true
         textView.text = K.text.failDidNotHelpDescription
         return textView
+    }()
+    
+    private lazy var purchaseCourseButton: UIButton    = {
+        let button = UIButton()
+        button.setBackgroundImage(UIImage(named: "button-md")?.withTintColor(.white), for: .normal)
+        
+        button.setTitle("купить курс по психотравме", for: .normal)
+        button.titleLabel?.font = FontTypes.shared.h3.withSize(18 * heightModifier)
+        button.titleLabel?.textSpacing(of: 1.3)
+        button.setTitleColor(K.colors.appText, for: .normal)
+        
+        button.addTarget(self, action: #selector(purchaseCourseButtonPressed(_:)), for: .touchUpInside)
+        return button
     }()
     
     private lazy var consultButton: UIButton    = {
@@ -148,17 +174,14 @@ class FailViewController: UIViewController {
     func addSubviews() {
         view.addSubview(navContainer)
         navContainer.addSubview(closeButton)
+        navContainer.addSubview(backButton)
         navContainer.addSubview(mainTitle)
         
         view.addSubview(mainArtwork)
         
-        view.addSubview(playPauseButton)
-        view.addSubview(audioProgressSlider)
-        view.addSubview(currentAudioTimeLabel)
-        view.addSubview(timeLeftForAudioLabel)
-        
         view.addSubview(failDescription)
         
+        view.addSubview(purchaseCourseButton)
         view.addSubview(consultButton)
     }
     
@@ -178,46 +201,25 @@ class FailViewController: UIViewController {
             make.width.equalTo(20 * heightModifier)
         }
         
+        backButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalTo(closeButton.snp.right).offset(32)
+            make.height.equalTo(22 * heightModifier)
+            make.width.equalTo(20 * heightModifier)
+        }
+        
         mainTitle.snp.makeConstraints { make in
-            make.left.equalTo(closeButton.snp.right).offset(16 * widthModifier)
-            make.height.equalToSuperview()
-            make.centerY.equalToSuperview().offset(5 * heightModifier)
-            make.width.equalToSuperview().multipliedBy(0.33)
+            make.top.equalTo(navContainer.snp.bottom)
+            make.centerX.equalToSuperview()
+            //make.left.equalTo(backButton.snp.right).offset(36 * widthModifier)
+            //make.height.equalTo(72 * heightModifier)
         }
         
         mainArtwork.snp.makeConstraints { make in
-            make.width.equalTo(160 * widthModifier)
-            make.height.equalTo(148 * heightModifier)
+            make.width.equalToSuperview().multipliedBy(0.5)
+            make.height.equalTo(mainArtwork.snp.width).multipliedBy(0.75)
             make.centerX.equalToSuperview()
-            make.top.equalTo(navContainer.snp.bottom).offset(48 * heightModifier)
-        }
-        
-        playPauseButton.snp.makeConstraints { make in
-            make.width.equalTo(32 * widthModifier)
-            make.height.equalTo(32 * widthModifier)
-            make.top.equalTo(mainArtwork.snp.bottom).offset(64)
-            make.left.equalToSuperview().offset(56 * widthModifier)
-        }
-        
-        audioProgressSlider.snp.makeConstraints { make in
-            make.left.equalTo(playPauseButton.snp.right).offset(16 * widthModifier)
-            make.centerY.equalTo(playPauseButton).offset(-6)
-            make.right.equalToSuperview().offset(-60 * widthModifier)
-            make.height.equalTo(16 * heightModifier)
-        }
-        
-        currentAudioTimeLabel.snp.makeConstraints { make in
-            make.left.equalTo(audioProgressSlider).offset(2 * widthModifier)
-            make.centerY.equalTo(playPauseButton).offset(12)
-            make.width.equalTo(30 * widthModifier)
-            make.height.equalTo(currentAudioTimeLabel.font.pointSize.percentage(120))
-        }
-        
-        timeLeftForAudioLabel.snp.makeConstraints { make in
-            make.right.equalTo(audioProgressSlider).offset(-2 * widthModifier)
-            make.centerY.equalTo(playPauseButton).offset(12)
-            make.width.equalTo(30 * widthModifier)
-            make.height.equalTo(currentAudioTimeLabel.font.pointSize.percentage(120))
+            make.top.equalTo(mainTitle.snp.bottom).offset(36 * heightModifier)
         }
         
         consultButton.snp.makeConstraints { make in
@@ -227,11 +229,18 @@ class FailViewController: UIViewController {
             make.height.equalTo(56 * heightModifier)
         }
         
+        purchaseCourseButton.snp.makeConstraints { make in
+            make.bottom.equalTo(consultButton.snp.top).offset(-12 * heightModifier)
+            make.left.equalToSuperview().offset(28 * widthModifier)
+            make.right.equalToSuperview().offset(-28 * widthModifier)
+            make.height.equalTo(56 * heightModifier)
+        }
+        
         failDescription.snp.makeConstraints { make in
-            make.top.equalTo(audioProgressSlider.snp.bottom).offset(36 * heightModifier)
+            make.top.equalTo(mainArtwork.snp.bottom).offset(36 * heightModifier)
             make.left.equalToSuperview().offset(36 * widthModifier)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(consultButton.snp.top).offset(-36 * heightModifier)
+            make.bottom.equalTo(purchaseCourseButton.snp.top).offset(-36 * heightModifier)
         }
         
     }
@@ -255,66 +264,76 @@ class FailViewController: UIViewController {
     }
     
     //MARK: - media methods
-    
-    func updateAudioUIEvery(interval: TimeInterval) {
-        audioProgressSlider.maximumValue = Float(AudioManager.shared.player?.duration ?? 0)
-        audioUIUpdateTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.updateAudioUI), userInfo: nil, repeats: true)
-    }
-    
-    @objc func updateAudioUI() {
-        updateMediaLabels()
-        updateMediaSlider()
-    }
-    
-    private func updateMediaSlider() {
-        audioProgressSlider.value = Float(AudioManager.shared.playerTime())
-    }
-    
-    private func updateMediaLabels() {
-        //here the code takes the length of the audio in seconds and formats it for text labels
-        //get array of minutes + seconds for audio length
-        let currentAudioTime = AudioManager.shared.playerTime().seconds(inComponents: [.minute, .second])
-        //format array of in to string. also adds a 0 to seconds if it is single digit
-        currentAudioTimeLabel.text = audioFormattedTimeLabel(minutes: currentAudioTime[0], seconds: currentAudioTime[1])
-        //calculate time left for playback and format in the same way
-        let audioTimeLeft = (AudioManager.shared.audioLengthInSeconds() - AudioManager.shared.playerTime()).seconds(inComponents: [.minute, .second])
-        timeLeftForAudioLabel.text = "-" + audioFormattedTimeLabel(minutes: audioTimeLeft[0], seconds: audioTimeLeft[1])
-    }
-    
-    private func audioFormattedTimeLabel(minutes: Int, seconds: Int) -> String {
-        var time = "\(minutes):"
-        let formattedSeconds = String(seconds).count == 1 ? "0\(seconds)" : "\(seconds)"
-        time.append(formattedSeconds)
-        
-        return time
-    }
-    
+//
+//    func updateAudioUIEvery(interval: TimeInterval) {
+//        audioProgressSlider.maximumValue = Float(AudioManager.shared.player?.duration ?? 0)
+//        audioUIUpdateTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.updateAudioUI), userInfo: nil, repeats: true)
+//    }
+//
+//    @objc func updateAudioUI() {
+//        updateMediaLabels()
+//        updateMediaSlider()
+//    }
+//
+//    private func updateMediaSlider() {
+//        audioProgressSlider.value = Float(AudioManager.shared.playerTime())
+//    }
+//
+//    private func updateMediaLabels() {
+//        //here the code takes the length of the audio in seconds and formats it for text labels
+//        //get array of minutes + seconds for audio length
+//        let currentAudioTime = AudioManager.shared.playerTime().seconds(inComponents: [.minute, .second])
+//        //format array of in to string. also adds a 0 to seconds if it is single digit
+//        currentAudioTimeLabel.text = audioFormattedTimeLabel(minutes: currentAudioTime[0], seconds: currentAudioTime[1])
+//        //calculate time left for playback and format in the same way
+//        let audioTimeLeft = (AudioManager.shared.audioLengthInSeconds() - AudioManager.shared.playerTime()).seconds(inComponents: [.minute, .second])
+//        timeLeftForAudioLabel.text = "-" + audioFormattedTimeLabel(minutes: audioTimeLeft[0], seconds: audioTimeLeft[1])
+//    }
+//
+//    private func audioFormattedTimeLabel(minutes: Int, seconds: Int) -> String {
+//        var time = "\(minutes):"
+//        let formattedSeconds = String(seconds).count == 1 ? "0\(seconds)" : "\(seconds)"
+//        time.append(formattedSeconds)
+//
+//        return time
+//    }
+//
     //MARK: - Button selectors
     
     @objc func closeButtonPressed(_ button: UIButton) {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
-    @objc func playPauseButtonPressed(_ button: MediaButton) {
-        
+    @objc func backButtonPressed(_ button: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
-    @objc func handleSliderValueChanged(_ slider: UISlider, _ event: UIEvent) {
-        
-        let wasPlayingAudio = AudioManager.shared.playbackState == .playing ? true : false
-        
-        if AudioManager.shared.playbackState != .standby {
-            audioUIUpdateTimer?.invalidate()
-            
-            if let eventPhase = event.allTouches?.first?.phase {
-                if eventPhase == .ended {
-                    AudioManager.shared.playAudioAt(time: Double(slider.value))
-                    
-                    if wasPlayingAudio { updateAudioUIEvery(interval: 0.1) }
-                    else { AudioManager.shared.pauseAudio() }
-                }
-            }
-            
+//    @objc func playPauseButtonPressed(_ button: MediaButton) {
+//
+//    }
+//
+//    @objc func handleSliderValueChanged(_ slider: UISlider, _ event: UIEvent) {
+//
+//        let wasPlayingAudio = AudioManager.shared.playbackState == .playing ? true : false
+//
+//        if AudioManager.shared.playbackState != .standby {
+//            audioUIUpdateTimer?.invalidate()
+//
+//            if let eventPhase = event.allTouches?.first?.phase {
+//                if eventPhase == .ended {
+//                    AudioManager.shared.playAudioAt(time: Double(slider.value))
+//
+//                    if wasPlayingAudio { updateAudioUIEvery(interval: 0.1) }
+//                    else { AudioManager.shared.pauseAudio() }
+//                }
+//            }
+//
+//        }
+//    }
+    
+    @objc private func purchaseCourseButtonPressed(_ button: UIButton) {
+        if let url = URL(string: "https://traumacourse.tilda.ws/") {
+            UIApplication.shared.open(url)
         }
     }
     

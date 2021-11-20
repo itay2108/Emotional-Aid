@@ -9,9 +9,19 @@ import UIKit
 
 class TheoryTableViewCell: UITableViewCell {
     
+    lazy var isFree: Bool = true
+    
     private lazy var header: UIView = Container()
     
     private lazy var indexBadge: VideoCellIndexBadge = VideoCellIndexBadge()
+    
+    private lazy var premiumBadge: UIImageView = {
+       let view = UIImageView()
+        view.contentMode = .scaleAspectFit
+        view.image = K.uikit.premiumIcon
+        view.isHidden = true
+        return view
+    }()
     
     private lazy var mainContainer: UIView = {
         let view = Container()
@@ -83,6 +93,7 @@ class TheoryTableViewCell: UITableViewCell {
         self.addGestureRecognizer(tapGR)
         self.addSubview(header)
         header.addSubview(indexBadge)
+        header.addSubview(premiumBadge)
         
         self.addSubview(mainContainer)
         mainContainer.addSubview(videoThumb)
@@ -106,6 +117,13 @@ class TheoryTableViewCell: UITableViewCell {
         
         indexBadge.snp.makeConstraints { make in
             make.left.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalToSuperview().multipliedBy(0.85)
+            make.width.equalTo(header.snp.height).multipliedBy(0.85)
+        }
+        
+        premiumBadge.snp.makeConstraints { make in
+            make.left.equalTo(indexBadge.snp.right).offset(12 * widthModifier)
             make.centerY.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.85)
             make.width.equalTo(header.snp.height).multipliedBy(0.85)
@@ -175,6 +193,8 @@ class TheoryTableViewCell: UITableViewCell {
         
         
         self.indexBadge.indexLabel.text = String(index+1)
+        
+        self.premiumBadge.isHidden = data.isFree || UIApplication.isPremiumAvailable() ? true : false
         
         setNeedsLayout()
     }

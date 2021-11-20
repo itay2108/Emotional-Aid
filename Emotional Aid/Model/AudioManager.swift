@@ -58,7 +58,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         if playbackState == .playing { print("player is already playing"); return }
         player!.play()
         playbackState = .playing
-        print("playing: ", player?.url)
+        print("playing: ", player?.url ?? "nil")
     }
     
     func playAudioAt(time: Double) {
@@ -82,10 +82,14 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         playbackState = .standby
     }
     
-    func rewindAudio() {
+    func rewindAudio(wasTriggeredBySpeech: Bool = false) {
         guard player != nil && player?.url != nil else { textLog.write("can't rewind audio - player is nil"); return }
         player!.currentTime = 0
         playbackState = .ready
+        
+        if wasTriggeredBySpeech {
+            playAudio()
+        }
     }
     
     func playerTime() -> Int {
@@ -156,22 +160,23 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         }
 
         audioEngine?.prepare()
-        print("preparing audio engine")
+        print("preparing audio engine...")
         if completion != nil { completion!() }
 
     }
     
     func startAudioEngine() {
-        guard audioEngine != nil,
-              !audioEngine!.isRunning
-        else { return }
+        guard audioEngine != nil else { return }
+        
+        if audioEngine!.isRunning {
+            audioEngine!.stop()
+            audioEngine!.prepare()
+        }
         
         do {
             
-            
-            
             try audioEngine?.start()
-            
+            textLog.write("starting audio engine...")
             DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(audioEngineMaxAllowedTimeActive)) {
                 if let engine = self.audioEngine {
                     if engine.isRunning {
@@ -189,6 +194,9 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
     }
     
     func stopAudioEngine() {
+        guard audioEngine != nil else { return }
+        //guard audioEngine!.isRunning else { return }
+        
         audioEngine?.inputNode.removeTap(onBus: 0)
         audioEngine?.stop()
         

@@ -10,11 +10,19 @@ import SnapKit
 import PaddingLabel
 import AVKit
 
+protocol PracticeControllerDelegate {
+    func DidChangeExerciseTo(exercise: Int)
+}
+
 class PracticeViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .darkContent
     }
+    
+    let def = UserDefaults.standard
+    
+    var delegate: PracticeControllerDelegate?
     
     var isInDemoMode: Bool {
         get {
@@ -27,6 +35,12 @@ class PracticeViewController: UIViewController {
     var currentExercise: Exercise {
         get {
             return exerciseModel.dataBase[exerciseModel.currentExercise]
+        }
+    }
+    
+    var isOnLastExercise: Bool {
+        get {
+            return exerciseModel.currentExercise < exerciseModel.dataBase.count - 1 ? false : true
         }
     }
     
@@ -87,7 +101,7 @@ class PracticeViewController: UIViewController {
     private lazy var demoSwitch: UISwitch = {
         let handle = UISwitch()
         handle.onTintColor = K.colors.appBlue
-        handle.isOn = true
+        handle.isOn = def.bool(forKey: K.def.isDemoPreffered) ? true : false
         handle.transform = CGAffineTransform(scaleX: 0.66, y: 0.66)
         handle.addTarget(self, action: #selector(demoSwitchTapped(uiswitch:)), for: .touchUpInside)
         return handle
@@ -114,7 +128,16 @@ class PracticeViewController: UIViewController {
         button.setTitle(nil, for: .normal)
         
         button.addTarget(self, action: #selector(audioBarPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(audioBarPressed), for: .touchDragExit)
         return button
+    }()
+    
+    private lazy var audioGuideBarArrow: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        view.image = UIImage(systemName: "chevron.compact.up")
+        view.tintColor = .lightGray
+        return view
     }()
     
     private lazy var audioGuideTitle: UILabel = {
@@ -173,10 +196,25 @@ class PracticeViewController: UIViewController {
         return button
     }()
     
+    private lazy var finishButton: UIButton    = {
+        let button = UIButton()
+        button.setBackgroundImage(UIImage(named: "button-md"), for: .normal)
+        
+        button.setTitle("Завершить сессию", for: .normal)
+        button.titleLabel?.font = FontTypes.shared.h3.withSize(18 * heightModifier)
+        button.titleLabel?.textSpacing(of: 1.3)
+        button.setTitleColor(.white, for: .normal)
+        
+        button.isHidden = true
+        
+        button.addTarget(self, action: #selector(finishButtonPressed(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var errorLabel: PaddingLabel = {
         let label = PaddingLabel()
         label.backgroundColor = .darkGray
-        label.roundCorners(.allCorners, radius: label.topInset * 1.3)
+        label.roundCorners(.allCorners, radius: label.topInset * 1.66)
         label.font = FontTypes.shared.ubuntu.withSize(14 * heightModifier)
         label.topInset = label.font.pointSize
         label.bottomInset = label.font.pointSize
@@ -226,6 +264,21 @@ class PracticeViewController: UIViewController {
         UIApplication.shared.isIdleTimerDisabled = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        SpeechRecognitionManager.main.delegate = self
+        
+        //remove recommendationVC from stack in first launch, so when back button is pressed you go back to rootVC. also saves some memory.
+        if let nc = self.navigationController {
+            for vc in nc.viewControllers {
+                if vc is RecommendationViewController {
+                    vc.removeFromParent()
+                }
+            }
+        }
+
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         
         UIApplication.shared.isIdleTimerDisabled = false
@@ -254,12 +307,15 @@ class PracticeViewController: UIViewController {
         
         view.addSubview(audioGuideBar)
         audioGuideBar.addSubview(audioGuideBarTrigger)
+        audioGuideBar.addSubview(audioGuideBarArrow)
         audioGuideBar.addSubview(audioGuideTitle)
         audioGuideBar.addSubview(audioControlsSV)
         
         audioControlsSV.addArrangedSubview(goBackwardsButton)
         audioControlsSV.addArrangedSubview(playPauseButton)
         audioControlsSV.addArrangedSubview(goForwardButton)
+        
+        view.addSubview(finishButton)
         
         view.addGestureRecognizer(swipeLeftGR)
         view.addGestureRecognizer(swipeRightGR)
@@ -340,18 +396,25 @@ class PracticeViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         
+        audioGuideBarArrow.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.height.equalTo(8 * heightModifier)
+            make.width.equalTo(24 * heightModifier)
+            make.top.equalToSuperview().offset(8 * heightModifier)
+        }
+        
         audioGuideTitle.snp.makeConstraints { make in
             make.height.equalToSuperview().multipliedBy(0.4)
             make.width.equalToSuperview().multipliedBy(0.3)
             make.left.equalToSuperview().offset(36 * widthModifier)
-            make.centerY.equalToSuperview().offset(-(view.safeAreaSize(from: .bottom).percentage(50)))
+            make.centerY.equalToSuperview().offset(-(view.safeAreaSize(from: .bottom).percentage(50)) + 6)
         }
         
         audioControlsSV.snp.makeConstraints { make in
             make.width.equalToSuperview().multipliedBy(0.4)
             make.height.equalToSuperview().multipliedBy(0.55)
             make.right.equalToSuperview().offset(-36 * widthModifier)
-            make.centerY.equalToSuperview().offset(-view.safeAreaSize(from: .bottom).percentage(50))
+            make.centerY.equalToSuperview().offset(-(view.safeAreaSize(from: .bottom).percentage(50)) + 6)
         }
         
         goBackwardsButton.snp.makeConstraints { make in
@@ -366,6 +429,13 @@ class PracticeViewController: UIViewController {
             make.height.equalToSuperview().multipliedBy(0.3)
         }
         
+        finishButton.snp.makeConstraints { make in
+            make.bottom.equalTo(playPauseButton.snp.top).offset(-32 * heightModifier)
+            make.left.equalToSuperview().offset(28 * widthModifier)
+            make.right.equalToSuperview().offset(-28 * widthModifier)
+            make.height.equalTo(56 * heightModifier)
+        }
+        
     }
     
     func presentErrorToast(message: String, fadeOutAfter: Double? = nil) {
@@ -378,7 +448,7 @@ class PracticeViewController: UIViewController {
         
         errorLabel.snp.makeConstraints { make in
             make.bottom.equalTo(audioGuideBar.snp.top).offset(-16 * heightModifier)
-            make.left.equalToSuperview().offset(64 * widthModifier)
+            make.left.equalToSuperview().offset(36 * widthModifier)
             make.centerX.equalToSuperview()
         }
         
@@ -404,17 +474,13 @@ class PracticeViewController: UIViewController {
         exerciseModel.deselectAllExercises()
         newExercise.isCurrentlySelected = true
         
-        //set title and descriptions
-        exerciseView.titleLabel.text = "\(index + 1). \(newExercise.title)"
-        audioGuideTitle.text = newExercise.title
-        //attributed description formats the text design and also selects the positive or negative descriptions according to
-        //the user's emotional state.
-        exerciseView.descriptionLabel.attributedText = attributedDescription(of: newExercise, isDemo: demoSwitch.isOn)
+        exerciseView.accessoryAnimation.prepareForReuse()
         
         //if animation is present in exercise, we set it to the default height specified in the exerciseView class.
         //if it is not present, we set the height to 0 and hide it from the VC
         if newExercise.isAnimationPresent && newExercise.animationURLName != nil {
             //here we set the animation that we want to show
+            exerciseView.accessoryAnimation.image = (UIImage(named: newExercise.animationURLName!))
             exerciseView.accessoryAnimation.animate(withGIFNamed: newExercise.animationURLName!)
             
             if isInDemoMode {
@@ -428,6 +494,13 @@ class PracticeViewController: UIViewController {
             exerciseView.accessoryAnimation.stopAnimating()
         }
         
+        //set title and descriptions
+        exerciseView.titleLabel.text = "\(index + 1). \(newExercise.title)"
+        audioGuideTitle.text = newExercise.title
+        //attributed description formats the text design and also selects the positive or negative descriptions according to
+        //the user's emotional state.
+        exerciseView.descriptionLabel.attributedText = attributedDescription(of: newExercise, isDemo: demoSwitch.isOn)
+        
         //same for the slider.
         if newExercise.isSliderPresent {
             exerciseView.changeviewState(of: exerciseView.accessorySlider, to: .expanded, with: exerciseView.defaultSliderHeight)
@@ -440,8 +513,10 @@ class PracticeViewController: UIViewController {
             if let scoreIndex = newExercise.scoreIndex {
                 if let emotionalScore = personality.practiceScores[scoreIndex] {
                     exerciseView.accessorySlider.value = Float(emotionalScore)
+                    print(personality.practiceScores)
                 }
             }
+    
         } else {
             exerciseView.changeviewState(of: exerciseView.accessorySlider, to: .collapsed)
             exerciseView.accessorySlider.isHidden = true
@@ -493,7 +568,7 @@ class PracticeViewController: UIViewController {
             if exerciseModel.dataBase[exerciseModel.currentExercise].isSliderPresent && personality.practiceScores[scoreIndex] == nil {
                 
                 //if were on 2nd or 3rd slider - set score according to last score. if were on first slider - set 0
-                let scoreToSet = scoreIndex > 0 ? personality.practiceScores[scoreIndex - 1] : 0
+                let scoreToSet = 0 //scoreIndex > 0 ? personality.practiceScores[scoreIndex - 1] : 0
                 personality.practiceScores[scoreIndex] = scoreToSet
             }
         }
@@ -501,7 +576,7 @@ class PracticeViewController: UIViewController {
         //dont let user do the practice if he's in a relatively calm state.
         if let firstScore = personality.practiceScores[0] {
             if firstScore == 0 {
-                presentErrorToast(message: "It seems that you are not in such a bad mood, as your score is 0. try using this section when you feel stressed")
+                presentErrorToast(message: "Кажется, вы сейчас не испытываете стресса и вам вряд ли потребуется помощь. Возвращайтесь, если что-то действительно пойдет не так")
                 return
             }
         }
@@ -509,6 +584,7 @@ class PracticeViewController: UIViewController {
         if exerciseModel.currentExercise < exerciseModel.dataBase.count - 1 {
             //move to next exercise
             setNextExercise()
+            delegate?.DidChangeExerciseTo(exercise: exerciseModel.currentExercise)
             
             //only autoplay guides if proceeded by speech
             if wasTriggeredBySpeech {
@@ -520,31 +596,33 @@ class PracticeViewController: UIViewController {
             
             self.exerciseView.scrollView.setContentOffset(.zero, animated: true)
             //reset did set slider score bool value
-            didSetSliderScoreInCurrentExercise = false
+            
+            if !exerciseView.accessorySlider.isHidden {
+                didSetSliderScoreInCurrentExercise = false
+            }
+            
             
         } else /* If it is the last exercise - show success or fail according to scores */{
             
-            if Int(exerciseView.accessorySlider.value) == 0 {
-                personality.practiceScores[2] = 0
+            finishPracticeLogic()
+        }
+        
+        finishButton.isHidden = isOnLastExercise ? false : true
+        
+        if !finishButton.isHidden {
+            exerciseView.snp.remakeConstraints { make in
+                make.top.equalTo(demoModeContainer.snp.bottom).offset(16 * heightModifier)
+                make.left.equalToSuperview().offset(36)
+                make.right.equalToSuperview().offset(-36)
+                make.bottom.equalTo(finishButton.snp.top).offset(-8 * heightModifier)
             }
-            
-            print("last score is: ", personality.practiceScores[2])
-            let firstScore = personality.practiceScores.first
-            let lastScore = personality.practiceScores.last
-            
-            if let finishCondition = checkForFinishCondition(with: personality.practiceScores) {
-                
-                if isFinishWithSuccess(with: finishCondition) {
-                    self.navigationController?.pushViewController(SuccessViewController(success: finishCondition, first: firstScore ?? nil, lastScore: lastScore ?? nil), animated: true)
-                } else {
-                    self.navigationController?.pushViewController(FailViewController(fail: finishCondition), animated: true)
-                }
-            } else {
-                print("couldnt get finish condition, try checking scores array.")
-                textLog.write("couldnt get finish condition, try checking scores array.")
+        } else {
+            exerciseView.snp.remakeConstraints { make in
+                make.top.equalTo(demoModeContainer.snp.bottom).offset(16 * heightModifier)
+                make.left.equalToSuperview().offset(36)
+                make.right.equalToSuperview().offset(-36)
+                make.bottom.equalToSuperview().offset(view.safeAreaSize(from: .bottom))
             }
-            print("scores:", personality.practiceScores)
-            textLog.write("scores: \(personality.practiceScores)")
         }
     }
     
@@ -570,6 +648,24 @@ class PracticeViewController: UIViewController {
         }
         
         if !isPlayerInitiallyPaused { AudioManager.shared.playAudio() }
+        
+        finishButton.isHidden = isOnLastExercise ? false : true
+        
+        if !finishButton.isHidden {
+            exerciseView.snp.remakeConstraints { make in
+                make.top.equalTo(demoModeContainer.snp.bottom).offset(16 * heightModifier)
+                make.left.equalToSuperview().offset(36)
+                make.right.equalToSuperview().offset(-36)
+                make.bottom.equalTo(finishButton.snp.top).offset(-8 * heightModifier)
+            }
+        } else {
+            exerciseView.snp.remakeConstraints { make in
+                make.top.equalTo(demoModeContainer.snp.bottom).offset(16 * heightModifier)
+                make.left.equalToSuperview().offset(36)
+                make.right.equalToSuperview().offset(-36)
+                make.bottom.equalToSuperview().offset(view.safeAreaSize(from: .bottom))
+            }
+        }
     }
     
     func setNextAudioGuidePartAccordingTo(trigger: TriggerWordType, inExercise exercise: Int) {
@@ -649,6 +745,30 @@ class PracticeViewController: UIViewController {
         }
     }
     
+    private func finishPracticeLogic() {
+        if Int(exerciseView.accessorySlider.value) == 0 {
+            personality.practiceScores[2] = 0
+        }
+        
+        print("last score is: ", personality.practiceScores[2] as Any)
+        let firstScore = personality.practiceScores.first
+        let lastScore = personality.practiceScores.last
+        
+        if let finishCondition = checkForFinishCondition(with: personality.practiceScores) {
+            
+            if isFinishWithSuccess(with: finishCondition) {
+                self.navigationController?.pushViewController(SuccessViewController(success: finishCondition, first: firstScore ?? nil, lastScore: lastScore ?? nil), animated: true)
+            } else {
+                self.navigationController?.pushViewController(FailViewController(fail: finishCondition), animated: true)
+            }
+        } else {
+            print("couldnt get finish condition, try checking scores array.")
+            textLog.write("couldnt get finish condition, try checking scores array.")
+        }
+        print("scores:", personality.practiceScores)
+        textLog.write("scores: \(personality.practiceScores)")
+    }
+    
     
     func leavePractice() {
         AudioManager.shared.stopAudio()
@@ -675,6 +795,7 @@ class PracticeViewController: UIViewController {
     }
     
     func isFinishWithSuccess(with finishCondition: FinishCondition) -> Bool {
+        
         if finishCondition == .success || finishCondition == .successBecameNegative || finishCondition == .successBecamePositive {
             return true
         } else {
@@ -695,18 +816,21 @@ class PracticeViewController: UIViewController {
         if let what = (personality.emotionalState == .negative && exercise.theWhatNegative != nil) ? exercise.theWhatNegative : exercise.theWhat,
            let why = (personality.emotionalState == .negative && exercise.theWhyNegative != nil) ? exercise.theWhyNegative : exercise.theWhy {
             
-            let shortDescTitle = NSMutableAttributedString(string: "Как?\n\n", attributes: headingAttr)
-            let shortDesctAttributed = NSMutableAttributedString(string: "\(what)\n", attributes: paragraphAttr)
-            let longDescTitle = NSMutableAttributedString(string: "\nПочему?\n\n", attributes: headingAttr)
-            let descriptionAttributed = NSMutableAttributedString(string: why, attributes: paragraphAttr)
-            
+            let whyTitle = NSMutableAttributedString(string: "Как это работает?\n\n", attributes: headingAttr)
+            let whyDescription = NSMutableAttributedString(string: why, attributes: paragraphAttr)
+            let whatTitle = NSMutableAttributedString(string: "\n\nЧто нужно делать?\n\n", attributes: headingAttr)
+            let whatDescription = NSMutableAttributedString(string: "\(what)\n", attributes: paragraphAttr)
+           
             if isDemo {
-                formattedLongDescription.append(shortDescTitle)
-                formattedLongDescription.append(shortDesctAttributed)
-                formattedLongDescription.append(longDescTitle)
-                formattedLongDescription.append(descriptionAttributed)
+                if why != "" {
+                    formattedLongDescription.append(whyTitle)
+                    formattedLongDescription.append(whyDescription)
+                }
+                
+                formattedLongDescription.append(whatTitle)
+                formattedLongDescription.append(whatDescription)
             } else {
-                formattedLongDescription.append(shortDesctAttributed)
+                formattedLongDescription.append(whatDescription)
             }
             
         }
@@ -738,10 +862,12 @@ class PracticeViewController: UIViewController {
     
     @objc func demoSwitchTapped(uiswitch: UISwitch) {
         applyDemoMode(isActive: uiswitch.isOn)
+        def.set(uiswitch.isOn ? true : false, forKey: K.def.isDemoPreffered)
     }
     
     @objc func audioBarPressed() { 
         let destination = ExerciseQueueController()
+        delegate = destination
         destination.modalPresentationStyle = .popover
         destination.exerciseModel = exerciseModel
         destination.personality = self.personality
@@ -782,6 +908,10 @@ class PracticeViewController: UIViewController {
         
     }
     
+    @objc func finishButtonPressed(_ butotn: UIButton) {
+        finishPracticeLogic()
+    }
+    
     @objc func handleLeftSwipe(_ gr: UISwipeGestureRecognizer) {
         if gr.state == .ended && gr.state != .cancelled {
             Vibration.soft.vibrate()
@@ -802,7 +932,7 @@ class PracticeViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handlePlaybackStateChange), name: NSNotification.Name.audioManagerStateDidChange, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleSpeechRecognitionTrigger(_:)), name: NSNotification.Name.SpeechRecognizerDidMatchTrigger, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleSpeechRecognitionTrigger(_:)), name: NSNotification.Name.SpeechRecognizerDidMatchTrigger, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleExerciseSliderValueChange), name: NSNotification.Name.exerciseSliderValueHasChanged, object: nil)
         
@@ -845,22 +975,23 @@ class PracticeViewController: UIViewController {
     }
 
     
-    @objc func handleSpeechRecognitionTrigger(_ notification: NSNotification) {
-        guard let action = notification.userInfo?["action"] as? TriggerWordType else { textLog.write("unexpectedly received nil as speech recognition trigger"); return }
-        print("received SR Trigger: \(action)")
-        print("current exercise: ", exerciseModel.currentExercise)
-        Vibration.light.vibrate()
-        
-        if currentExercise.doesHaveSpecialLogic {
-            setNextAudioGuidePartAccordingTo(trigger: action, inExercise: exerciseModel.currentExercise)
-        } else {
-            if action == .next { self.nextExerciseLogic(wasTriggeredBySpeech: true) } else
-            if action == .rewind { AudioManager.shared.rewindAudio() }
-        }
-    
-    }
+//    @objc func handleSpeechRecognitionTrigger(_ notification: NSNotification) {
+//        guard let action = notification.userInfo?["action"] as? TriggerWordType else { textLog.write("unexpectedly received nil as speech recognition trigger"); return }
+//        print("received SR Trigger: \(action)")
+//        print("current exercise: ", exerciseModel.currentExercise)
+//        Vibration.light.vibrate()
+//
+//        if currentExercise.doesHaveSpecialLogic {
+//            setNextAudioGuidePartAccordingTo(trigger: action, inExercise: exerciseModel.currentExercise)
+//        } else {
+//            if action == .next { self.nextExerciseLogic(wasTriggeredBySpeech: true) } else
+//            if action == .rewind { AudioManager.shared.rewindAudio() }
+//        }
+//
+//    }
     
     @objc private func handleExerciseSliderValueChange(_ notification: NSNotification) {
+        guard !exerciseView.accessorySlider.isHidden else { return }
         if let score = notification.userInfo?["value"] as? Float {
             
             switch exerciseModel.currentExercise {
@@ -905,6 +1036,24 @@ extension PracticeViewController: ExerciseSelectorDelegate {
     func set(exerciseTo index: Int) {
         setExercise(toExercise: index)
     }
+    
+}
+
+extension PracticeViewController: SpeechRecognitionTriggerDelegate {
+    
+    func didReceiveTrigger(ofType type: TriggerWordType) {
+        print("received SR Trigger: \(type)")
+        print("current exercise: ", exerciseModel.currentExercise)
+        Vibration.light.vibrate()
+        
+        if currentExercise.doesHaveSpecialLogic {
+            setNextAudioGuidePartAccordingTo(trigger: type, inExercise: exerciseModel.currentExercise)
+        } else {
+            if type == .next { self.nextExerciseLogic(wasTriggeredBySpeech: true) } else
+            if type == .rewind { AudioManager.shared.rewindAudio(wasTriggeredBySpeech: true) }
+        }
+    }
+    
     
 }
 

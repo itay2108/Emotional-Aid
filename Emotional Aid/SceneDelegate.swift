@@ -31,6 +31,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.rootViewController = Auth.auth().currentUser == nil ? NavigationController(rootViewController: AuthViewController()) : MainTabBarController()
         }
                 window?.makeKeyAndVisible()
+        
+        Personality.main.gender = !UserDefaults.standard.bool(forKey: "isFemale") ? .male : .female
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

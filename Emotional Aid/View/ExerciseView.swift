@@ -107,13 +107,13 @@ class ExerciseView: UIView {
         }
         
         accessoryContainer.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16 * heightModifier)
+            make.top.equalToSuperview()//.offset(16 * heightModifier)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
         }
         
         accessoryAnimation.snp.makeConstraints { make in
-            make.width.equalToSuperview().multipliedBy(0.8)
+            make.width.equalToSuperview()//.multipliedBy(0.9)
             make.height.equalTo(defaultAnimationHeight * heightModifier)
         }
         
