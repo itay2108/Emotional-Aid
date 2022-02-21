@@ -632,7 +632,7 @@ class PracticeViewController: UIViewController {
         let isPlayerInitiallyPaused = AudioManager.shared.playbackState == .paused || AudioManager.shared.playbackState == .ready ? true : false
         
         if AudioManager.shared.playerTime() < 2 && exerciseModel.currentExercise > 0 {
-            
+
             if AudioManager.shared.playbackState == .playing {
                 AudioManager.shared.stopAudio()
             }
@@ -681,7 +681,7 @@ class PracticeViewController: UIViewController {
                 if currentExercise.audioGuide!.isNextPartAvailable {
                     partToPlay = currentExercise.audioGuide!.nextPart()
                 } else {
-                    self.nextExerciseLogic(wasTriggeredBySpeech: true)
+                    self.nextExerciseLogic(wasTriggeredBySpeech: true);  AudioManager.shared.playAudio()
                     return
                 }
             }
@@ -691,7 +691,7 @@ class PracticeViewController: UIViewController {
                 if trigger == .yes { partToPlay = currentExercise.audioGuide!.part(1)}
                 if trigger == .no { partToPlay = currentExercise.audioGuide!.part(2)}
             case 1:
-                if trigger == .next { self.nextExerciseLogic(); return }
+                if trigger == .next { self.nextExerciseLogic(); AudioManager.shared.playAudio(); return }
                 if trigger == .rewind { partToPlay = mainAudioGuide; currentExercise.audioGuide!.currentPartIndex = 0 }
             case 2:
                 if trigger == .next { partToPlay = currentExercise.audioGuide!.part(3) }
@@ -699,12 +699,12 @@ class PracticeViewController: UIViewController {
                 if trigger == .yes { partToPlay = currentExercise.audioGuide!.part(5)}
                 if trigger == .no { partToPlay = currentExercise.audioGuide!.part(4)}
             case 4:
-                if trigger == .next { self.nextExerciseLogic(); return }
+                if trigger == .next { self.nextExerciseLogic(); AudioManager.shared.playAudio(); return }
                 if trigger == .rewind { partToPlay = mainAudioGuide; currentExercise.audioGuide!.currentPartIndex = 0 }
             case 5:
                 if trigger == .next { partToPlay = currentExercise.audioGuide!.part(6) }
             case 6:
-                if trigger == .next { self.nextExerciseLogic(); return }
+                if trigger == .next { self.nextExerciseLogic(); AudioManager.shared.playAudio(); return }
                 if trigger == .rewind { partToPlay = mainAudioGuide; currentExercise.audioGuide!.currentPartIndex = 0 }
             
             default:
@@ -715,7 +715,7 @@ class PracticeViewController: UIViewController {
             case 0:
                 if trigger == .next { partToPlay = currentExercise.audioGuide!.part(1) }
             case 1:
-                if trigger == .next { self.nextExerciseLogic(); return }
+                if trigger == .next { self.nextExerciseLogic(); AudioManager.shared.playAudio(); return }
                 if trigger == .rewind { partToPlay = mainAudioGuide; currentExercise.audioGuide!.currentPartIndex = 0 }
             default:
                 textLog.write("action not defined for current audio guide part")
@@ -726,7 +726,7 @@ class PracticeViewController: UIViewController {
                 if trigger == .yes { partToPlay = currentExercise.audioGuide!.part(1) }
                 if trigger == .no { partToPlay = currentExercise.audioGuide!.part(2) }
             case 1...2:
-                if trigger == .next { self.nextExerciseLogic(); return }
+                if trigger == .next { self.nextExerciseLogic(); AudioManager.shared.playAudio(); return }
                 if trigger == .rewind { partToPlay = mainAudioGuide; currentExercise.audioGuide!.currentPartIndex = 0 }
             default:
                 textLog.write("action not defined for current audio guide part")
@@ -737,7 +737,6 @@ class PracticeViewController: UIViewController {
         
         if partToPlay != nil {
             AudioManager.shared.insert(audio: partToPlay) {
-                print("aaa")
                 AudioManager.shared.playAudio()
             }
         } else {
@@ -750,9 +749,19 @@ class PracticeViewController: UIViewController {
             personality.practiceScores[2] = 0
         }
         
+        //if user skipped any score just set it as 0 to prevent errors. mostly reffering to 2nd slider.
+        let scoresCount = personality.practiceScores.count
+        for i in 0..<scoresCount {
+            if personality.practiceScores[i] == nil {
+                personality.practiceScores[i] = 0
+            }
+        }
+        
         print("last score is: ", personality.practiceScores[2] as Any)
         let firstScore = personality.practiceScores.first
         let lastScore = personality.practiceScores.last
+        
+        AudioManager.shared.stopAudio()
         
         if let finishCondition = checkForFinishCondition(with: personality.practiceScores) {
             
@@ -785,18 +794,26 @@ class PracticeViewController: UIViewController {
         let firstScore: Int = scores.first!!
         let lastScore: Int = scores.last!!
         
-        if firstScore.isNegative() && lastScore.isPositive() && lastScore > 4 { return .warningBecamePositive }
-        else if firstScore.isPositive() && lastScore.isNegative() && lastScore < -4 { return .warningBecameNegative }
-        else if firstScore.isNegative() && lastScore.isPositive() && lastScore <= 4 { return .successBecamePositive }
-        else if firstScore.isPositive() && lastScore.isNegative() && lastScore >= -4 { return .successBecameNegative }
-        else if lastScore * firstScore > 0 && lastScore.positiveValue() - firstScore.positiveValue() >= 0 { return .failDidNotHelp }
-        else { return .success }
+//        if firstScore.isNegative() && lastScore.isPositive() && lastScore > 4 { return .warningBecamePositive }
+//        else if firstScore.isPositive() && lastScore.isNegative() && lastScore < -4 { return .warningBecameNegative }
+//        else if firstScore.isNegative() && lastScore.isPositive() && lastScore <= 4 { return .successBecamePositive }
+//        else if firstScore.isPositive() && lastScore.isNegative() && lastScore >= -4 { return .successBecameNegative }
+//        else if lastScore * firstScore > 0 && lastScore.positiveValue() - firstScore.positiveValue() >= 0 { return .failDidNotHelp }
+//        else { return .success }
+        
+        if -1...1 ~= lastScore { return .superSuccess }
+        else if firstScore.positiveValue() - lastScore.positiveValue() > 0 && firstScore * lastScore > 0 { return .success }
+        else if firstScore.isPositive() && lastScore <= -2 && lastScore >= -4 { return .successBecameNegative }
+        else if firstScore.isNegative() && lastScore >= 2 && lastScore <= 4 { return .successBecamePositive }
+        else if firstScore.isPositive() && lastScore <= -5 { return .warningBecameNegative }
+        else if firstScore.isNegative() && lastScore >= 5 { return .warningBecamePositive }
+        else { return .failDidNotHelp }
         
     }
     
     func isFinishWithSuccess(with finishCondition: FinishCondition) -> Bool {
         
-        if finishCondition == .success || finishCondition == .successBecameNegative || finishCondition == .successBecamePositive {
+        if finishCondition == .superSuccess || finishCondition == .success || finishCondition == .successBecameNegative || finishCondition == .successBecamePositive {
             return true
         } else {
             return false
@@ -938,6 +955,8 @@ class PracticeViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleUserReturnToApp), name: NSNotification.Name.ApplicationDidEnterForeground, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAudioSessionInterruption(_:)), name: NSNotification.Name.AudioSessionDidInterrupt, object: nil)
+        
     }
     
     @objc private func handleUserReturnToApp() {
@@ -951,7 +970,14 @@ class PracticeViewController: UIViewController {
         
         //start listening to keywaords that will change current exercise (ie "next"/"rewind"/etc)
         if AudioManager.shared.playbackState == .finished {
-
+            
+            if (self.navigationController?.topViewController == self) {
+                //the view is currently displayed
+                //for some reason, when first watching a theory video and then starting the practice, the SR manager delegate doesnt get set
+                //viewDidAppear. this forces the delegate to become self when audio is finished.
+                SpeechRecognitionManager.main.delegate = self
+            }
+            
             AudioManager.shared.prepareAudioEngine {
 
                 AudioManager.shared.startAudioEngine()
@@ -1019,6 +1045,33 @@ class PracticeViewController: UIViewController {
             
             didSetSliderScoreInCurrentExercise = true
         }
+    }
+    
+    @objc func handleAudioSessionInterruption(_ notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+                let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+                let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+                    return
+            }
+
+            // Switch over the interruption type.
+            switch type {
+
+            case .began:
+                // An interruption began. Update the UI as necessary.
+                AudioManager.shared.pauseAudio()
+            case .ended:
+               // An interruption ended. Resume playback, if appropriate.
+                guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+                let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+                if options.contains(.shouldResume) {
+                    // An interruption ended. Resume playback.
+                    AudioManager.shared.playAudio()
+                }
+
+            default: (textLog.write("received audio interruption. audio has \(type)"))
+                
+            }
     }
     
     //MARK: - deinit

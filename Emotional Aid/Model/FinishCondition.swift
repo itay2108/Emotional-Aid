@@ -18,5 +18,5 @@ enum FinishCondition {
     case successBecameNegative
     
     case success
-    
+    case superSuccess
 }

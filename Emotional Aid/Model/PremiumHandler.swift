@@ -11,6 +11,8 @@ import StoreKit
 
 protocol PremiumViewDelegate {
     func premiumViewShouldDismiss(withSuccess transactionSuccess: Bool)
+    
+    func premiumViewShouldCloseFromXButton()
 }
 
 extension UIViewController: PremiumViewDelegate {
@@ -19,6 +21,16 @@ extension UIViewController: PremiumViewDelegate {
         premiumDismiss(success: transactionSuccess)
     }
     
+    func premiumViewShouldCloseFromXButton() {
+        for view in self.view.subviews {
+            if view.tag == 363 {
+                if let premiumView = view as? SKPaymentTransactionObserver {
+                    SKPaymentQueue.default().remove(premiumView)
+                }
+                view.removeFromSuperview()
+            }
+        }
+    }
     
     var isPremiumDisplayed: Bool {
         get {
@@ -56,7 +68,7 @@ extension UIViewController: PremiumViewDelegate {
         
         premium.snp.makeConstraints { make in
             make.width.equalTo(332 * widthModifier)
-            make.height.equalTo(premium.snp.width).dividedBy(1.17)
+            make.height.equalTo(558 * heightModifier) 
             make.center.equalToSuperview()
         }
     }
@@ -73,20 +85,24 @@ extension UIViewController: PremiumViewDelegate {
             }
         }
         
-        if success {
-            handleTransactionSuccess()
-        } else {
+        if !success {
             handleTransactionFail()
         }
         
     }
     
-    @objc func handleTransactionSuccess() {
-        
-    }
-    
     @objc func handleTransactionFail() {
-        
+        let errorAlert = UIAlertController(title: "Не удалось завершить процесс покупки. Если вы уже приобретали подписку, попробуйте восстановить покупку", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Пропустить", style: .cancel) { (action) in
+        }
+
+        let restoreAction = UIAlertAction(title: "восстановить покупки", style: .default) { action in
+            SKPaymentQueue.default().restoreCompletedTransactions()
+        }
+
+        errorAlert.addAction(action)
+        errorAlert.addAction(restoreAction)
+        self.present(errorAlert, animated: true)
     }
     
 }

@@ -8,6 +8,7 @@
 import UIKit
 import AVKit
 import FirebaseStorage
+import StoreKit
 
 class TheoryViewController: UIViewController {
     
@@ -24,7 +25,8 @@ class TheoryViewController: UIViewController {
     private lazy var profileButton: UIButton    = {
         let button = UIButton()
         button.backgroundColor = .clear
-    
+        button.adjustsImageWhenHighlighted = false
+        
         button.setImage(getProfilePic(), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
@@ -74,7 +76,11 @@ class TheoryViewController: UIViewController {
         // Do any additional setup after loading the view.
         setUpUI()
         setUpObservers()
+        SKPaymentQueue.default().add(self)
         
+        if UserDefaults.standard.value(forKey: "premium") == nil {
+            SKPaymentQueue.default().restoreCompletedTransactions()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,7 +88,7 @@ class TheoryViewController: UIViewController {
         
         videoTableView.reloadData()
         profileButton.setImage(getProfilePic(), for: .normal)
-
+        
     }
     
     func setUpUI() {
@@ -141,10 +147,13 @@ class TheoryViewController: UIViewController {
     
     func getProfilePic() -> UIImage? {
         let image: UIImage?
+        
         if Personality.main.gender == .female {
             image = UIApplication.isPremiumAvailable() ? K.uikit.profileFemalePremium : K.uikit.profileFemale
+            //image = K.uikit.profileFemale
         } else {
             image = UIApplication.isPremiumAvailable() ? K.uikit.profileMalePremium : K.uikit.profileMale
+            //image = K.uikit.profileMale
         }
         
         return image
@@ -154,7 +163,7 @@ class TheoryViewController: UIViewController {
         super.premiumViewShouldDismiss(withSuccess: transactionSuccess)
         
         if transactionSuccess {
-
+            
             videoTableView.reloadData()
             profileButton.setImage(getProfilePic(), for: .normal)
         }
@@ -208,11 +217,11 @@ extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.setCell(with: videoDatabase.database[indexPath.row], index: indexPath.row)
         
-
-//        if indexPath.row == videoDatabase.database.count - 1 {
-//            print(indexPath.row, videoDatabase.database.count - 1)
-//            cell.cellSeparator.isHidden = true
-//        }
+        
+        //        if indexPath.row == videoDatabase.database.count - 1 {
+        //            print(indexPath.row, videoDatabase.database.count - 1)
+        //            cell.cellSeparator.isHidden = true
+        //        }
         
         return cell
     }
@@ -246,6 +255,12 @@ extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
             print(url)
             if let destination = videoPlayerVC(with: url) {
                 present(destination, animated: true) {
+                    do {
+                        try AVAudioSession.sharedInstance().setCategory(.playback)
+                        try AVAudioSession.sharedInstance().setActive(true)
+                    } catch(let error) {
+                        print(error.localizedDescription)
+                    }
                     destination.player?.play()
                 }
             }
@@ -257,5 +272,27 @@ extension TheoryViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    
+}
+
+extension TheoryViewController: SKPaymentTransactionObserver {
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            if transaction.transactionState == .restored || transaction.transactionState == .purchased {
+                if !UIApplication.isPremiumAvailable() {
+                    UserDefaults.standard.set(true, forKey: "premium")
+                }
+                view.layoutSubviews()
+            }
+        }
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
+        let alert = UIAlertController(title: "Не удалось восстановить покупки", message: "\(error)", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Пропустить", style: .cancel)
+        alert.addAction(dismissAction)
+        
+        self.present(alert, animated: true)
+    }
     
 }

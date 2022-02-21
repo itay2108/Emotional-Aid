@@ -25,11 +25,19 @@ class ProfileViewController: UIViewController {
         let label = UILabel()
         label.numberOfLines = 1
         label.textAlignment = .center
-        label.font = FontTypes.shared.h4.withSize(22 * heightModifier)
+        label.font = FontTypes.shared.h4.withSize(21 * heightModifier)
         label.text = "Профиль"
         label.textSpacing(of: 2)
         label.textColor = K.colors.appText
         return label
+    }()
+    
+    private lazy var profileChevronLeft: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFit
+        view.image = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysTemplate)
+        view.tintColor = .lightGray
+        return view
     }()
     
     private lazy var profileButton: UIButton    = {
@@ -40,24 +48,50 @@ class ProfileViewController: UIViewController {
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
+        button.adjustsImageWhenHighlighted = false
+        
         button.addTarget(self, action: #selector(profileButtonTapped(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(profileButtonTapped(_:)), for: .touchDragExit)
+
         return button
     }()
     
-    private lazy var userNameLabel: UILabel         = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.font = FontTypes.shared.ubuntuMedium.withSize(20 * heightModifier)
+    private lazy var profileChevronRight: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFit
+        view.image = UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysTemplate)
+        view.tintColor = .lightGray
+        return view
+    }()
+    
+    private lazy var userNameLabel: UITextField         = {
+        let tf = UITextField()
+        tf.delegate = self
+        tf.isUserInteractionEnabled = true
+        tf.textAlignment = .center
+        tf.font = FontTypes.shared.ubuntuMedium.withSize(24 * heightModifier)
+        tf.autocapitalizationType = .words
         
-        if let username = def.string(forKey: K.def.name) {
-            label.text = username
-        } else if let email = def.string(forKey: K.def.email) {
-            label.text = email
-        }
+        tf.attributedPlaceholder = NSAttributedString(string: "Ваше имя", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         
-        label.textColor = K.colors.appText
-        return label
+        tf.textColor = K.colors.appText
+        return tf
+    }()
+    
+    private lazy var userNameLabelEditIcon: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFit
+        view.image = UIImage(systemName: "pencil.circle.fill")?.withRenderingMode(.alwaysTemplate)
+        view.tintColor = def.string(forKey: K.def.name) != nil ? K.colors.appText : .lightGray
+        return view
+    }()
+    
+    private lazy var profileSettingStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .vertical
+        sv.distribution = .equalSpacing
+        //sv.spacing = 10 * heightModifier
+        return sv
     }()
     
     private lazy var consultationButton: UIButton = {
@@ -71,10 +105,6 @@ class ProfileViewController: UIViewController {
         return button
     }()
     
-    private lazy var line1: UIImageView = {
-        return Scribble().random()
-    }()
-    
     private lazy var helpButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
@@ -84,10 +114,6 @@ class ProfileViewController: UIViewController {
         
         button.addTarget(self, action: #selector(helpButtonPressed(_:)), for: .touchUpInside)
         return button
-    }()
-    
-    private lazy var line2: UIImageView = {
-        return Scribble().random()
     }()
     
     private lazy var restorePurchasesButton: UIButton = {
@@ -101,23 +127,37 @@ class ProfileViewController: UIViewController {
         return button
     }()
     
-    private lazy var line3: UIImageView = {
-        return Scribble().random()
-    }()
-    
-    private lazy var logoutButton: UIButton = {
+    private lazy var termsButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
-        button.setTitle("Выход из аккаунта", for: .normal)
+        button.setTitle("Условия использования", for: .normal)
         button.setTitleColor(K.colors.appText, for: .normal)
         button.titleLabel?.font = FontTypes.shared.h4.withSize(16 * heightModifier)
         
-        button.addTarget(self, action: #selector(logoutButtonPressed(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(termsButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
     
-    private lazy var line4: UIImageView = {
-        return Scribble().random()
+    private lazy var privacyPolicyButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        button.setTitle("Политика конфиденциальности", for: .normal)
+        button.setTitleColor(K.colors.appText, for: .normal)
+        button.titleLabel?.font = FontTypes.shared.h4.withSize(16 * heightModifier)
+        
+        button.addTarget(self, action: #selector(privacyPolicyButtonPressed(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var mentalHelathResourcesButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        button.setTitle("Ресурсы психического здоровья", for: .normal)
+        button.setTitleColor(K.colors.appText, for: .normal)
+        button.titleLabel?.font = FontTypes.shared.h4.withSize(16 * heightModifier)
+        
+        button.addTarget(self, action: #selector(mentalHealthResourcesButtonPressed(_:)), for: .touchUpInside)
+        return button
     }()
     
     private lazy var sendLogsButton: UIButton = {
@@ -135,9 +175,14 @@ class ProfileViewController: UIViewController {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.font = FontTypes.shared.ubuntuLight.withSize(14 * heightModifier)
+        label.font = FontTypes.shared.ubuntuLight.withSize(12 * heightModifier)
         label.text = "расскажите вашим друзьям о нашем приложении"
         label.textColor = K.colors.appText
+        
+        if !emotionalAid.canOpenURL(messengerSharingURL()) && !emotionalAid.canOpenURL(whatsappSharingURL()) && !emotionalAid.canOpenURL(telegramSharingURL()) {
+            label.isHidden = true
+        }
+        
         return label
     }()
     
@@ -157,6 +202,8 @@ class ProfileViewController: UIViewController {
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
         
+        button.isHidden = emotionalAid.canOpenURL(messengerSharingURL()) ? false : true
+        
         button.addTarget(self, action: #selector(shareToMessenger(_:)), for: .touchUpInside)
         return button
     }()
@@ -168,6 +215,8 @@ class ProfileViewController: UIViewController {
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
+        
+        button.isHidden = emotionalAid.canOpenURL(telegramSharingURL()) ? false : true
         
         button.addTarget(self, action: #selector(shareToTelegram(_:)), for: .touchUpInside)
         return button
@@ -181,6 +230,8 @@ class ProfileViewController: UIViewController {
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
         
+        button.isHidden = emotionalAid.canOpenURL(whatsappSharingURL()) ? false : true
+        
         button.addTarget(self, action: #selector(shareToWhatsapp(_:)), for: .touchUpInside)
         return button
     }()
@@ -191,22 +242,27 @@ class ProfileViewController: UIViewController {
         // Do any additional setup after loading the view.
         setUpUI()
         setUpObservers()
+        
+        SKPaymentQueue.default().add(self)
+        
         setNeedsStatusBarAppearanceUpdate()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let username = def.string(forKey: K.def.name) {
+            userNameLabel.text = username
+        }
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        if let username = def.string(forKey: K.def.name) {
-            userNameLabel.text = username
-        } else if let email = def.string(forKey: K.def.email) {
-            userNameLabel.text = email
-        }
-        
         if !UIApplication.isDeveloperModeEnabled() {
-            line4.isHidden = true
             sendLogsButton.isHidden = true
+            profileSettingStackView.arrangedSubviews[profileSettingStackView.arrangedSubviews.count - 2].isHidden = true
         }
     }
     
@@ -215,28 +271,40 @@ class ProfileViewController: UIViewController {
         
         addSubviews()
         addConstraintsToSubviews()
+        
+        setupToHideKeyboardOnTapOnView()
     }
     
     private func addSubviews() {
         view.addSubview(headTitle)
         
+        view.addSubview(profileChevronLeft)
         view.addSubview(profileButton)
-        view.addSubview(userNameLabel)
+        view.addSubview(profileChevronRight)
         
-        view.addSubview(consultationButton)
-        view.addSubview(line1)
-        view.addSubview(helpButton)
-        view.addSubview(line2)
-        view.addSubview(restorePurchasesButton)
-        view.addSubview(line3)
-        view.addSubview(logoutButton)
-        view.addSubview(line4)
-        view.addSubview(sendLogsButton)
+        view.addSubview(userNameLabel)
+        view.addSubview(userNameLabelEditIcon)
+        
+        view.addSubview(profileSettingStackView)
+        profileSettingStackView.addArrangedSubview(consultationButton)
+        profileSettingStackView.addArrangedSubview(Scribble().random())
+        profileSettingStackView.addArrangedSubview(helpButton)
+        profileSettingStackView.addArrangedSubview(Scribble().random())
+        profileSettingStackView.addArrangedSubview(restorePurchasesButton)
+        profileSettingStackView.addArrangedSubview(Scribble().random())
+        profileSettingStackView.addArrangedSubview(termsButton)
+        profileSettingStackView.addArrangedSubview(Scribble().random())
+        profileSettingStackView.addArrangedSubview(privacyPolicyButton)
+        profileSettingStackView.addArrangedSubview(Scribble().random())
+        profileSettingStackView.addArrangedSubview(mentalHelathResourcesButton)
+        profileSettingStackView.addArrangedSubview(Scribble().random())
+        profileSettingStackView.addArrangedSubview(sendLogsButton)
+
         
         view.addSubview(socialSV)
-        if emotionalAid.canOpenURL(messengerSharingURL()) { socialSV.addArrangedSubview(messengerButton) }
-        if emotionalAid.canOpenURL(whatsappSharingURL()) { socialSV.addArrangedSubview(whatsappButton) }
-        if emotionalAid.canOpenURL(telegramSharingURL()) { socialSV.addArrangedSubview(telegramButton) }
+        socialSV.addArrangedSubview(messengerButton)
+        socialSV.addArrangedSubview(whatsappButton)
+        socialSV.addArrangedSubview(telegramButton)
         
         if socialSV.arrangedSubviews.count > 0 { view.addSubview(socialDescription) }
         
@@ -249,85 +317,45 @@ class ProfileViewController: UIViewController {
             make.width.equalToSuperview().multipliedBy(0.4)
         }
         
+        profileChevronLeft.snp.makeConstraints { make in
+            make.height.equalTo(16 * heightModifier)
+            make.width.equalTo(profileChevronLeft.snp.height)
+            make.centerY.equalTo(profileButton)
+            make.right.equalTo(profileButton.snp.left).offset(4.5 * widthModifier)
+        }
+        
         profileButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview().offset(-9 * widthModifier)
             make.top.equalTo(headTitle.snp.bottom).offset(18 * heightModifier)
-            make.height.equalTo(172 * heightModifier)
+            make.height.equalTo(116 * heightModifier)
             make.width.equalTo(profileButton.snp.height)
+        }
+        
+        profileChevronRight.snp.makeConstraints { make in
+            make.height.equalTo(16 * heightModifier)
+            make.width.equalTo(profileChevronRight.snp.height)
+            make.centerY.equalTo(profileButton)
+            make.left.equalTo(profileButton.snp.right).offset(9 * widthModifier)
         }
         
         userNameLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(profileButton.snp.bottom).offset(16 * heightModifier)
-            make.width.equalToSuperview().multipliedBy(0.75)
-            
-            if def.string(forKey: K.def.name) == nil && def.string(forKey: K.def.email) == nil {
-                make.height.equalTo(0)
-            }
+            make.top.equalTo(profileButton.snp.bottom).offset(10 * heightModifier)
+
         }
         
-        consultationButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(userNameLabel.snp.bottom).offset(32 * heightModifier)
-            make.width.equalToSuperview().multipliedBy(0.75)
-            make.height.equalTo(48 * heightModifier)
+        userNameLabelEditIcon.snp.makeConstraints { make in
+            make.left.equalTo(userNameLabel.snp.right)
+            make.centerY.equalTo(userNameLabel).offset(2 * heightModifier)
+            make.height.equalTo(userNameLabel).multipliedBy(0.45)
+            make.width.equalTo(userNameLabel.snp.height)
         }
         
-        line1.snp.makeConstraints { make in
+        profileSettingStackView.snp.makeConstraints { make in
+            make.top.equalTo(userNameLabel.snp.bottom).offset(48 * heightModifier)
             make.centerX.equalToSuperview()
-            make.top.equalTo(consultationButton.snp.bottom)
-            make.width.equalToSuperview().multipliedBy(0.75)
-            make.height.equalTo(8 * heightModifier)
-        }
-        
-        helpButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(line1.snp.bottom)
-            make.width.equalToSuperview().multipliedBy(0.75)
-            make.height.equalTo(48 * heightModifier)
-        }
-        
-        line2.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(helpButton.snp.bottom)
-            make.width.equalToSuperview().multipliedBy(0.75)
-            make.height.equalTo(8 * heightModifier)
-        }
-        
-        restorePurchasesButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(line2.snp.bottom)
-            make.width.equalToSuperview().multipliedBy(0.75)
-            make.height.equalTo(48 * heightModifier)
-        }
-        
-        line3.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(restorePurchasesButton.snp.bottom)
-            make.width.equalToSuperview().multipliedBy(0.75)
-            make.height.equalTo(8 * heightModifier)
-        }
-        
-        
-        logoutButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(line3.snp.bottom)
-            make.width.equalToSuperview().multipliedBy(0.75)
-            make.height.equalTo(48 * heightModifier)
-        }
-        
-        line4.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(logoutButton.snp.bottom)
-            make.width.equalToSuperview().multipliedBy(0.75)
-            make.height.equalTo(8 * heightModifier)
-        }
-        
-        sendLogsButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(line4.snp.bottom)
-            make.width.equalToSuperview().multipliedBy(0.75)
-            make.height.equalTo(48 * heightModifier)
+            make.left.equalToSuperview().offset(56 * widthModifier)
+            make.bottom.equalTo(socialDescription.snp.top).offset(-56 * heightModifier)
         }
         
         socialSV.snp.makeConstraints { make in
@@ -363,7 +391,6 @@ class ProfileViewController: UIViewController {
     
     func getProfilePic() -> UIImage? {
         let image: UIImage?
-        print("premium: \(UIApplication.isPremiumAvailable())")
         if Personality.main.gender == .female {
             image = UIApplication.isPremiumAvailable() ? K.uikit.profileFemalePremium : K.uikit.profileFemale
         } else {
@@ -378,6 +405,7 @@ class ProfileViewController: UIViewController {
     
     @objc private func profileButtonTapped(_ button: UIButton) {
         Personality.main.gender = Personality.main.gender == .female ? .male : .female
+        Vibration.selection.vibrate()
     }
     
     @objc private func consultButtonPressed(_ button: UIButton) {
@@ -437,6 +465,31 @@ class ProfileViewController: UIViewController {
     
     @objc private func restorePurchasesButtonPressed(_ button: UIButton) {
         SKPaymentQueue.default().restoreCompletedTransactions()
+    }
+    
+    @objc private func termsButtonPressed(_ button: UIButton) {
+//        if let url = URL(string: "https://www.termsfeed.com/live/bea204aa-97d8-4c50-9212-9729152fdeac") {
+//            UIApplication.shared.open(url)
+//        }
+        if let url = URL(string: "https://letaem-bez-straha.ru/terms/") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    @objc private func privacyPolicyButtonPressed(_ button: UIButton) {
+//        if let url = URL(string: "https://www.termsfeed.com/live/ccde8341-7f81-4a68-ae1f-badf6420695d") {
+//            UIApplication.shared.open(url)
+//        }
+        if let url = URL(string: "https://letaem-bez-straha.ru/politika/") {
+            UIApplication.shared.open(url)
+        }
+        
+    }
+    
+    @objc private func mentalHealthResourcesButtonPressed(_ button: UIButton) {
+        if let url = URL(string: "https://www.telegra.ph/Mental-Health-Resources-11-29") {
+            UIApplication.shared.open(url)
+        }
     }
     
     //MARK: - sharing functions
@@ -501,6 +554,7 @@ class ProfileViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        SKPaymentQueue.default().remove(self)
     }
     
     //MARK: - logging functions
@@ -538,19 +592,62 @@ extension ProfileViewController: MFMailComposeViewControllerDelegate {
 
 extension ProfileViewController: SKPaymentTransactionObserver {
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        textLog.write(String(describing: transactions))
+        for transaction in transactions {
+            if transaction.transactionState == .restored {
+               
+                let alert = UIAlertController(title: "ваши покупки были успешно восстановлены", message: "", preferredStyle: .alert)
+                let dismissAction = UIAlertAction(title: "Пропустить", style: .cancel)
+                alert.addAction(dismissAction)
+                
+                UserDefaults.standard.set(true, forKey: "premium")
+                
+                present(alert, animated: true)
+            }
+        }
     }
     
-    
-    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
+        print("restoreCompletedTransactionsFailedWithError")
+        let alert = UIAlertController(title: "Не удалось восстановить покупки", message: "\(error)", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Пропустить", style: .cancel)
+        alert.addAction(dismissAction)
         
-        let successAlert = UIAlertController(title: "Покупка успешно восстановлена", message: "Теперь у вас есть доступ ко всем частям приложения", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Пропустить", style: .cancel) { (action) in
+        self.present(alert, animated: true)
+    }
+    
+}
+
+
+
+extension ProfileViewController: UITextFieldDelegate {
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text != nil && textField.text != "" {
+            def.set(textField.text, forKey: K.def.name)
+        } else {
+            textField.text = def.string(forKey: K.def.name)
         }
         
-        successAlert.addAction(action)
-        self.present(successAlert, animated: true)
-        
+        userNameLabelEditIcon.isHidden = false
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        userNameLabelEditIcon.snp.remakeConstraints { make in
+            make.left.equalTo(userNameLabel.snp.right)
+            make.centerY.equalTo(userNameLabel).offset(2 * heightModifier)
+            make.height.equalTo(userNameLabel).multipliedBy(0.6)
+            make.width.equalTo(userNameLabel.snp.height)
+        }
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        Vibration.selection.vibrate()
+        
+        textField.attributedPlaceholder = NSAttributedString(string: textField.text ?? "Ваше имя", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        textField.text = nil
+        
+        userNameLabelEditIcon.isHidden = true
+    }
 }

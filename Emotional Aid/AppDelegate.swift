@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
         
         if UserDefaults.standard.value(forKey: K.def.recommendationsHaveBeenShown) == nil {
@@ -25,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UIApplication.isFirstLaunch() || UserDefaults.standard.value(forKey: K.def.isDemoPreffered) == nil {
             UserDefaults.standard.set(true, forKey: K.def.isDemoPreffered)
         }
-        
-        if UIApplication.isFirstLaunch() || UserDefaults.standard.value(forKey: "premium") == nil {
+
+        if UserDefaults.standard.value(forKey: "premium") == nil {
             UserDefaults.standard.set(false, forKey: "premium")
         }
         
@@ -37,6 +38,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UIApplication.isFirstLaunch() {
             UserDefaults.standard.register(defaults: [String : Any]())
         }
+        
+        //1.0.2 hotfix where people could get premium without paying. this removes premium access on first run on new versions.
+        if UIApplication.appIsOnFirstRunOnCurrentVersion() && UIApplication.appVersion() == "1.0.2" {
+            print("hotfix")
+            UserDefaults.standard.set(true, forKey: "premium_hotfix")
+            UserDefaults.standard.set(false, forKey: "premium")
+        }
+        
+//        
+//        if UserDefaults.standard.value(forKey: "premium") == nil || UserDefaults.standard.bool(forKey: "premium") == false {
+//            UserDefaults.standard.set(true, forKey: "premium")
+//        }
         
         return true
     }
@@ -99,5 +112,33 @@ extension UIApplication {
         return false
     }
     
+    class func appIsOnFirstRunOnCurrentVersion() -> Bool {
+        let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let versionOfLastRun = UserDefaults.standard.object(forKey: "VersionOfLastRun") as? String
+        
+        var isFirstTime = false
+
+        if versionOfLastRun == nil {
+            // First start after installing the app
+            isFirstTime = true
+
+        } else if versionOfLastRun != currentVersion {
+            // App was updated since last run
+            isFirstTime = true
+
+        }
+
+        UserDefaults.standard.set(currentVersion, forKey: "VersionOfLastRun")
+        UserDefaults.standard.synchronize()
+        
+        return isFirstTime
+    }
+    
+    class func appVersion() -> String {
+        if let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
+            return currentVersion
+        }
+        return "nil"
+    }
 }
 

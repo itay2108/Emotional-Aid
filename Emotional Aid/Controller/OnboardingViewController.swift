@@ -108,8 +108,8 @@ class OnboardingViewController: UIViewController {
                 }
                 
                 DispatchQueue.main.async {
-                    let destination = AuthViewController()
-                    
+                    //let destination = AuthViewController()
+                    let destination = MainTabBarController()
                     destination.modalPresentationStyle = .fullScreen
                     destination.modalTransitionStyle = .coverVertical
                     
@@ -174,7 +174,7 @@ extension OnboardingViewController: PaperOnboardingDataSource {
             OnboardingItemInfo(informationImage: UIImage.gifImageWithName("004") ?? UIImage(),
                                title: "С нами вы в безопасности",
                                description: K.text.onboard4,
-                               pageIcon: UIImage(systemName: "arrow.right.circle.fill") ?? UIImage(),
+                               pageIcon: UIImage(),
                                color: .white,
                                titleColor: K.colors.appBlue ?? .darkGray,
                                descriptionColor: K.colors.appText ?? .darkGray,

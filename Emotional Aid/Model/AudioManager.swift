@@ -22,7 +22,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             if playbackState == .finished { NotificationCenter.default.post(name: NSNotification.Name.audioManagerDidFinishPlayback, object: nil)}
             
             NotificationCenter.default.post(name: NSNotification.Name.audioManagerStateDidChange, object: nil)
-            textLog.write("AudioManager state chaged to: \(playbackState)")
+            textLog.write("AudioManager state chaged to: \(playbackState). audio session category: \(AVAudioSession.sharedInstance().category)")
         }
     }
     
@@ -53,12 +53,13 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         
     }
     
-    func playAudio() {
+    func playAudio(file: String = #file, line: Int = #line) {
         guard player != nil && player?.url != nil else { textLog.write("can't play audio - player is nil"); return }
         if playbackState == .playing { print("player is already playing"); return }
         player!.play()
         playbackState = .playing
         print("playing: ", player?.url ?? "nil")
+        textLog.write("playing audio session. called from \(file.bareFileFormat()), line \(line)")
     }
     
     func playAudioAt(time: Double) {
@@ -68,18 +69,20 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         playbackState = .playing
     }
     
-    func pauseAudio() {
+    func pauseAudio(file: String = #file, line: Int = #line) {
         guard player != nil && player?.url != nil else { textLog.write("can't pause audio - player is nil"); return }
         if playbackState == .paused { print("player is already paused"); return }
         player!.pause()
         playbackState = .paused
+        textLog.write("pausing audio session. called from \(file.bareFileFormat()), line \(line)")
     }
     
-    func stopAudio() {
+    func stopAudio(file: String = #file, line: Int = #line) {
         guard player != nil && player?.url != nil else { textLog.write("can't stop audio - player is nil"); return }
         if playbackState == .standby { print("player is already stopped"); return }
         player!.stop()
         playbackState = .standby
+        textLog.write("stopping audio session. called from \(file.bareFileFormat()), line \(line)")
     }
     
     func rewindAudio(wasTriggeredBySpeech: Bool = false) {
@@ -116,10 +119,6 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
     //MARK: - Audio Recorder
     
     private var audioEngine: AVAudioEngine?
-    
-    var audioEngineMaxAllowedTimeActive = 180
-    
-    var timer: Timer?
     
     func requestMicrophoneUsage(completion: ((_ success: Bool) -> Void)?) {
         AVAudioSession.sharedInstance().requestRecordPermission { success in
@@ -177,38 +176,27 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             
             try audioEngine?.start()
             textLog.write("starting audio engine...")
-            DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(audioEngineMaxAllowedTimeActive)) {
-                if let engine = self.audioEngine {
-                    if engine.isRunning {
-                        
-                        self.stopAudioEngine()
-                    }
-                }
-            }
             
-            print("starting audio engine")
         } catch let error {
             print(error.localizedDescription)
             textLog.write("Error: couldn't start audio engine - \(error.localizedDescription)")
         }
     }
     
-    func stopAudioEngine() {
+    func stopAudioEngine(file: String = #file, line: Int = #line) {
         guard audioEngine != nil else { return }
         //guard audioEngine!.isRunning else { return }
         
         audioEngine?.inputNode.removeTap(onBus: 0)
         audioEngine?.stop()
-        
-        timer?.invalidate()
-        timer = nil
+
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback)
         } catch {
             textLog.write("error setting session category to playback when stopping audio engine.")
         }
         
-        textLog.write("stopping audio engine")
+        textLog.write("stopping audio engine. called from \(file.bareFileFormat()), line \(line)")
     }
     
     private func volume(of buffer: AVAudioPCMBuffer, bufferSize: Int) -> Float {

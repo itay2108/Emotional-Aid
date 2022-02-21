@@ -189,6 +189,18 @@ extension UIButton {
 
 }
 
+extension UIStackView {
+    func addHorizontalSeparators(with view: UIView) {
+            var i = self.arrangedSubviews.count
+            while i >= 0 {
+                let separator = view
+                insertArrangedSubview(separator, at: i)
+                separator.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1).isActive = true
+                i -= 1
+            }
+        }
+}
+
 extension UILabel {
     
     func textSpacing(of spacing: CGFloat) {
@@ -508,6 +520,15 @@ extension String {
         let fontAttribute = [NSAttributedString.Key.font: font]
         let size = self.size(withAttributes: fontAttribute)  // for Single Line
        return size;
+    }
+    
+    func bareFileFormat() -> String {
+
+        guard let lastSlashIndex = self.lastIndex(of: "/") else { return self }
+        let fileStartIndex = self.index(after: lastSlashIndex)
+        let newSelf = self[fileStartIndex...]
+        
+        return String(newSelf)
     }
 }
 

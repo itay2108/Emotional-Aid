@@ -62,6 +62,11 @@ class ConsultationFormViewController: UIViewController {
         view.title.text = "Ваше имя"
         view.type = .name
         view.textField.attributedPlaceholder = NSAttributedString(string: "Jeff Jefferson", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray.withAlphaComponent(0.5)])
+        
+        if let userName = def.string(forKey: K.def.name) {
+            view.textField.text = userName
+        }
+        
         view.textField.delegate = self
         view.textField.returnKeyType = .next
         view.tag = 0

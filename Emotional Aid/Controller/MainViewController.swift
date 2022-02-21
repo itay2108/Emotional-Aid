@@ -10,6 +10,7 @@ import SnapKit
 import CryptoKit
 import Speech
 import FirebaseAuth
+import StoreKit
 
 
 class MainViewController: UIViewController {
@@ -28,6 +29,8 @@ class MainViewController: UIViewController {
     
     private lazy var profileButton: UIButton    = {
        let button = UIButton()
+        
+        button.adjustsImageWhenHighlighted = false
         button.backgroundColor = .clear
         button.setImage(getProfilePic(), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
@@ -102,16 +105,14 @@ class MainViewController: UIViewController {
         return label
     }()
     
-//    private lazy var testSlider: EASlider = {
-//        return EASlider()
-//    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setUpUI()
         setUpObservers()
-        
+        SKPaymentQueue.default().add(self)
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -232,8 +233,10 @@ class MainViewController: UIViewController {
         
         if Personality.main.gender == .female {
             image = UIApplication.isPremiumAvailable() ? K.uikit.profileFemalePremium : K.uikit.profileFemale
+            //image = K.uikit.profileFemale
         } else {
             image = UIApplication.isPremiumAvailable() ? K.uikit.profileMalePremium : K.uikit.profileMale
+            //image = K.uikit.profileMale
         }
         
         return image
@@ -337,5 +340,27 @@ class MainViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
+}
+
+extension MainViewController: SKPaymentTransactionObserver {
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            if transaction.transactionState == .restored || transaction.transactionState == .purchased {
+                if !UIApplication.isPremiumAvailable() {
+                    UserDefaults.standard.set(true, forKey: "premium")
+                }
+                view.layoutSubviews()
+            }
+        }
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
+        let alert = UIAlertController(title: "Не удалось восстановить покупки", message: "\(error)", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Пропустить", style: .cancel)
+        alert.addAction(dismissAction)
+        
+        self.present(alert, animated: true)
+    }
+    
 }
 

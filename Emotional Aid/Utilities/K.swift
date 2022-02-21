@@ -136,6 +136,8 @@ struct K {
         static let successDescriptionB = ", сейчас оно "
         static let successDescriptionC = ". Рады, что вам удалось приблизиться к балансу! С каждым разом ваша нервная система будет всё увереннее овладевать навыком саморегуляции. Если что, мы рядом!"
         
+        static let superSuccessDescriptionC = ". Рады, что вам удалось прийти к балансу! С каждым разом ваша нервная система будет всё увереннее овладевать навыком саморегуляции. Если что, мы рядом!"
+        
         static let authDescription = "Зарегистрируйтесь, чтобы получить возможность просматривать видеоматериалы, выполнять упражнения, редактировать личную информацию или назначать консультации."
         
         static let verificationDescription = "Мы отправили вам письмо на \(UserDefaults.standard.string(forKey: K.def.email) ?? "NaN@mail.co"), чтобы подтвердить ваш e-mail и активировать аккаунт."
@@ -144,7 +146,10 @@ struct K {
         
         static let consultationFormDescription = "Заполните форму, если вы хотели бы записаться на консультацию в наш центр - и мы вам перезвоним"
         
-        static let proVersionID = "ru.letaem_bez_straha.emotional_aid.premium"
+        static let proVersionID1Year = "ru.letaem_bez_straha.emotional_aid.premium"
+        static let proVersionID1Month = "ru.letaem_bez_straha.emotional_aid.premium1"
+        static let proVersionID3Months = "ru.letaem_bez_straha.emotional_aid.premium3"
+        static let proVersionID6Months = "ru.letaem_bez_straha.emotional_aid.premium6"
         
         static let privacyAndTermsDescription: NSMutableAttributedString = {
             let style = NSMutableParagraphStyle()

@@ -63,7 +63,7 @@ class SuccessViewController: UIViewController {
     
     private lazy var successDescription: UITextView = {
         let textView = UITextView()
-        textView.font = FontTypes.shared.ubuntu.withSize(13 * heightModifier)
+        textView.font = FontTypes.shared.ubuntu.withSize(14 * heightModifier)
         textView.textColor = .white
         textView.backgroundColor = .clear
         textView.backgroundColor = .black.withAlphaComponent(0.12)
@@ -72,6 +72,8 @@ class SuccessViewController: UIViewController {
         textView.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
         textView.isScrollEnabled = true
         textView.text = K.text.failDidNotHelpDescription
+        textView.isEditable = false
+        textView.isSelectable = false
         return textView
     }()
     
@@ -184,6 +186,8 @@ class SuccessViewController: UIViewController {
             successDescription.text = K.text.successBecameNegativeDescription
         case .success:
             successDescription.text = "\(K.text.successDescriptionA)\(firstScore!)\(K.text.successDescriptionB)\( lastScore!)\(K.text.successDescriptionC)"
+        case .superSuccess:
+            successDescription.text = "\(K.text.successDescriptionA)\(firstScore!)\(K.text.successDescriptionB)\( lastScore!)\(K.text.superSuccessDescriptionC)"
         default:
             successDescription.text = ""
         }

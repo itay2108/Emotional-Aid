@@ -52,5 +52,9 @@ extension Notification.Name {
     static var GenderDidChange: Notification.Name {
             return .init("gender.didChange")
     }
+    
+    static var AudioSessionDidInterrupt: Notification.Name {
+            return .init("audioSession.didInterrupt")
+    }
 
 }

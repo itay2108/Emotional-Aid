@@ -84,7 +84,7 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
                             delegate?.didReceiveTrigger(ofType: action!)
                             AudioManager.shared.stopAudioEngine()
                             Vibration.success.vibrate()
-                            textLog.write("found *\(action!)* trigger in \"\(SRResult!)\"")
+                            textLog.write("found *\(action!)* trigger in \"\(SRResult!)\". delegate is: \(String(describing: delegate))")
                             self.invalidate()
                         }
                     }
@@ -128,7 +128,6 @@ class SpeechRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         for word in words {
             if recognizedSpeechContent.contains(word.value) {
                 completion(true, word.type)
-                print("completion called")
                 invalidate()
                 return
             }

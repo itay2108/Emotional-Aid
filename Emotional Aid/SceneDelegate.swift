@@ -24,11 +24,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 window?.windowScene = windowScene
 //                window?.rootViewController = Auth.auth().currentUser == nil ? NavigationController(rootViewController: AuthViewController()) : MainTabBarController()
                 
-        
+        print("premium?: \(String(describing: UserDefaults.standard.value(forKey: "premium")))")
         if UIApplication.isFirstLaunch() {
             window?.rootViewController = NavigationController(rootViewController: OnboardingViewController())
         } else {
-            window?.rootViewController = Auth.auth().currentUser == nil ? NavigationController(rootViewController: AuthViewController()) : MainTabBarController()
+            window?.rootViewController = MainTabBarController()
         }
                 window?.makeKeyAndVisible()
         
